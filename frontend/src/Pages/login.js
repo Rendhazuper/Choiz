@@ -9,13 +9,20 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
-  const [variant, setVariant] = useState("success"); // success or danger
+  const [variant, setVariant] = useState("success"); 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+ 
+    if (!email || !password) {
+      setMessage("Email dan password harus diisi.");
+      setVariant("danger");
+      return; 
+    }
+
     try {
       const response = await axios.post(
-        "http://localhost:8000/Auth/Login.php", // ubah sini buat ganti path arah backend --note : error cors pas login (tidak dapat terhubung ke server), backend udah aman tembak browser/postman. 
+        "http://localhost/Backend/Auth/Login.php", // ubah sini buat ganti path arah backend --note : error cors pas login (tidak dapat terhubung ke server), backend udah aman tembak browser/postman. 
         { email, password },
         {
           headers: {
@@ -27,20 +34,38 @@ const Login = () => {
       if (response.status === 200) {
         setMessage("Anda berhasil login!");
         setVariant("success");
-
-        // Redirect to dashboard after a short delay
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/home");
         }, 2000);
       } else {
+       
         setMessage(response.data.error || "Terjadi kesalahan saat login");
         setVariant("danger");
-        console.error("Login error:", response.data);
       }
     } catch (error) {
-      setMessage(error.response?.data?.error || "Tidak dapat terhubung ke server");
-      setVariant("danger");
-      console.error("Connection error:", error);
+      if (error.response) {
+       
+        if (error.response.status === 401) {
+     
+          setMessage("Password salah");
+          setVariant("danger");
+        } else if (error.response.status === 404) {
+         
+          setMessage("Pengguna tidak ditemukan");
+          setVariant("danger");
+        } else {
+        
+          setMessage(error.response?.data?.error || "Terjadi kesalahan saat login");
+          setVariant("danger");
+        }
+      } else if (error.request) {
+        setMessage("Tidak dapat terhubung ke server");
+        setVariant("danger");
+      } else {
+        
+        setMessage("Terjadi kesalahan yang tidak diketahui");
+        setVariant("danger");
+      }
     }
   };
 
