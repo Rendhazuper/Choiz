@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 // koneksi ke db
 try {
-    require_once  "./Helper/DB.php";//ubah sini buat db
+    require_once  "../Helper/DB.php";//ubah sini buat db
 } catch (Exception $err) {
     echo "Error: " . $err->getMessage();
 }
@@ -26,12 +26,14 @@ if (!isset($input["email"]) || !isset($input["password"])) {
     exit();
 }
 
-$email = $conn->real_escape_string($input["email"]);
+$email = $input["email"];
 $password = $input["password"];
 
-// Query untuk memeriksa pengguna berdasarkan email
-$sql = "SELECT * FROM user WHERE email = '$email'";
-$result = $conn->query($sql);
+// Query menggunakan prepared statement untuk memeriksa pengguna berdasarkan email
+$stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();

@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap');
+
+.judul {
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 96px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.kolom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url("../asset/Login.png"); /* Ganti dengan gambar latar untuk halaman register */
+    background-size: cover;
+    background-position: center center;
+}
+
+h1 {
+    color: black;
+}
+
+.label {
+    color: black;
+}
+
+.register {
+    color: black;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.Button {
+    margin-left: 10px;
+    width: 97%;
+    background-color: #B88E2F;
+    color: white;
+    font-size: 16px;
+}
+
+.kolom .button {
+    padding: 10px 20px;
+    width: 100%;
+    background-color: #B88E2F;
+    color: white;
+    font-size: 16px;
+}
+
+.Forgot .right {
+    text-align: right;
+    flex: 1;
+}
+
+.Forgot {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+p {
+    margin: 0;
+    color: black;
+}

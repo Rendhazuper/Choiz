@@ -4,8 +4,10 @@ import {BroserRouter, createBrowserRouter, RouterProvider} from "react-router-do
 import './index.css';
 import App from './App';
 import Login from './Pages/login';
-import forgot from './Pages/login';
+import Forgot from './Pages/forgot';
 import reportWebVitals from './reportWebVitals';
+import Register from './Pages/register';
+import Reset from './Pages/reset';
 
 const router =  createBrowserRouter([
   {
@@ -18,8 +20,16 @@ const router =  createBrowserRouter([
   },
   {
     path:"/forgot",
-    element : <forgot/>,
+    element : <Forgot/>,
   },
+  {
+    path:"/register",
+    element : <Register/>
+  },
+  {
+    path:"/reset",
+    element : <Reset/>
+  }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
