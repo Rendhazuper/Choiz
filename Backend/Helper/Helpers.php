@@ -51,3 +51,35 @@ function generateOtp()
     }
     return $otp;
 }
+
+function sortProductsByPriceAscending($products)
+{
+    usort($products, function($a, $b) {
+        return $a['harga'] - $b['harga'];
+    });
+    return $products;
+}
+
+function sortProductsByPriceDescending($products)
+{
+    usort($products, function($a, $b) {
+        return $b['harga'] - $a['harga'];
+    });
+    return $products;
+}
+
+function sortProductsByNameAscending($products)
+{
+    usort($products, function($a, $b) {
+        return strcmp($a['nama_produk'], $b['nama_produk']);
+    });
+    return $products;
+}
+
+function sortProductsByNameDescending($products)
+{
+    usort($products, function($a, $b) {
+        return strcmp($b['nama_produk'], $a['nama_produk']);
+    });
+    return $products;
+}
