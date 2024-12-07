@@ -9,6 +9,7 @@ import Forgot from './Pages/forgot';
 import reportWebVitals from './reportWebVitals';
 import Register from './Pages/register';
 import Reset from './Pages/reset';
+import ProductInput from './Pages/ProductInput';
 
 const router =  createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router =  createBrowserRouter([
   {
     path:"/reset",
     element : <Reset/>
+  },
+  {
+    path: "/ProductInput",
+    element: <ProductInput/>,
   }
 ])
 
