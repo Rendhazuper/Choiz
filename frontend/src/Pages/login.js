@@ -28,6 +28,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true  // Pastikan cookie dikirim
         }
       );
   
@@ -36,10 +37,13 @@ const Login = () => {
         const { level, username } = response.data;
         setMessage("Anda berhasil login!");
         setVariant("success");
+
+        console.log(response.data);
+        // console.log("level ", level);
   
         // Menyimpan data sesi pengguna
-        localStorage.setItem("userLevel", level); // Simpan level
-        localStorage.setItem("username", username); // Simpan username (atau data lain yang diperlukan)
+        sessionStorage.setItem("userLevel", level);
+        sessionStorage.setItem("username", username); // Simpan username (atau data lain yang diperlukan)
   
         if (level === 'admin') {
           setTimeout(() => {

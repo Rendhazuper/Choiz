@@ -1,21 +1,35 @@
-import logo from './logo.svg';
+import axios from "axios";
 import './App.css';
 import MyNavbar from './Component/navbar';
 import { Container, Row, Col, Button, Image, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-import React, { useEffect } from 'react';
+import React, {useState , useEffect } from 'react';
 
 
 function App() {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  const checkLogin = async () => {
+    try {
+      const response = await axios.get("http://localhost/Backend/Auth/cekLogin.php", {
+        withCredentials: true,  
+      });
+      if (response.status === 200) {
+        setUser(response.data);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        navigate("/login");
+      } else {
+        console.error("Error checking login:", error);
+      }
+    }
+  };
 
   useEffect(() => {
-    const userLevel = localStorage.getItem("level");
-    if (!userLevel || userLevel !== 'admin') {
-      // Jika tidak ada sesi atau bukan admin, arahkan ke halaman login
-        Navigate("/login");
-    }
-  }, [Navigate]);
+    checkLogin();
+  }, [navigate]);
 
   
   return (
