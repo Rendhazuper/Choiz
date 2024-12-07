@@ -2,9 +2,22 @@ import logo from './logo.svg';
 import './App.css';
 import MyNavbar from './Component/navbar';
 import { Container, Row, Col, Button, Image, Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
+import React, { useEffect } from 'react';
 
 
 function App() {
+  const Navigate = useNavigate();
+
+  useEffect(() => {
+    const userLevel = localStorage.getItem("level");
+    if (!userLevel || userLevel !== 'admin') {
+      // Jika tidak ada sesi atau bukan admin, arahkan ke halaman login
+        Navigate("/login");
+    }
+  }, [Navigate]);
+
+  
   return (
     <div className="App">
       <div><MyNavbar/></div>

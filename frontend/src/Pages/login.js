@@ -22,7 +22,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost/Backend/Auth/Login.php", // ubah sini buat ganti path arah backend --note : error cors pas login (tidak dapat terhubung ke server), backend udah aman tembak browser/postman. 
+        "http://localhost/Backend/Auth/Login.php", 
         { email, password },
         {
           headers: {
@@ -30,31 +30,39 @@ const Login = () => {
           },
         }
       );
-
+  
+      // Mengecek status 200 dari response backend
       if (response.status === 200) {
+        const { level, username } = response.data;
         setMessage("Anda berhasil login!");
         setVariant("success");
-        setTimeout(() => {
-          navigate("/home");
-        }, 2000);
+  
+        // Menyimpan data sesi pengguna
+        localStorage.setItem("userLevel", level); // Simpan level
+        localStorage.setItem("username", username); // Simpan username (atau data lain yang diperlukan)
+  
+        if (level === 'admin') {
+          setTimeout(() => {
+            navigate("/admin");
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            navigate("/home");
+          }, 1000);
+        }
       } else {
-       
         setMessage(response.data.error || "Terjadi kesalahan saat login");
         setVariant("danger");
       }
     } catch (error) {
       if (error.response) {
-       
         if (error.response.status === 401) {
-     
           setMessage("Password salah");
           setVariant("danger");
         } else if (error.response.status === 404) {
-         
           setMessage("Pengguna tidak ditemukan");
           setVariant("danger");
         } else {
-        
           setMessage(error.response?.data?.error || "Terjadi kesalahan saat login");
           setVariant("danger");
         }
@@ -62,12 +70,12 @@ const Login = () => {
         setMessage("Tidak dapat terhubung ke server");
         setVariant("danger");
       } else {
-        
         setMessage("Terjadi kesalahan yang tidak diketahui");
         setVariant("danger");
       }
     }
-  };
+  };  
+
 
   return (
     <div className="login relative justify-center items-center min-h-screen">
