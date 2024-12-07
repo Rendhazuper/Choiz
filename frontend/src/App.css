@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.banner {
+  width: 2000px; /* Gambar memenuhi lebar kontainer */
+  height: 606px; /* Atur sesuai tinggi gambar yang diinginkan */
+  object-fit: cover; /* Menyesuaikan gambar agar ter-crop atau distorsi sesuai kebutuhan */
+  position: relative; /* Menjadikan gambar referensi untuk konten yang ada di atas */
+}

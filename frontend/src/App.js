@@ -1,6 +1,7 @@
 import axios from "axios";
 import './App.css';
 import MyNavbar from './Component/navbar';
+import banner from './asset/banner.png';  
 import { Container, Row, Col, Button, Image, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import React, {useState , useEffect } from 'react';
@@ -31,16 +32,16 @@ function App() {
     checkLogin();
   }, [navigate]);
 
-  
   return (
     <div className="App">
-      <div><MyNavbar/></div>
-      
-      <header className="App-header">
-      <section className="py-5">
+    <div><MyNavbar /></div>
+
+    <header className="App-header">
+      <section className="py-0">
+        <Image className="banner" src={banner} fluid />
         <Container>
           <Row className="justify-content-center">
-            <Col md={5000}>
+            <Col md={8}>
               <Card className="bg-light text-center">
                 <Card.Body>
                   <h2 className="mb-4">New Outfit</h2>
@@ -53,6 +54,8 @@ function App() {
           </Row>
         </Container>
       </section>
+
+      {/* Section Kedua dengan tema pakaian */}
       <section className="py-5">
         <Container>
           <h2 className="text-center mb-4">Browse Your Outfit Theme</h2>
@@ -62,7 +65,7 @@ function App() {
               <Image src="https://via.placeholder.com/300x400" fluid rounded />
               <p className="text-center mt-2">Skena</p>
             </Col>
-            <Col md={3} className ="mb-4">
+            <Col md={3} className="mb-4">
               <Image src="https://via.placeholder.com/300x400" fluid rounded />
               <p className="text-center mt-2">Casual</p>
             </Col>
@@ -77,12 +80,10 @@ function App() {
           </Row>
         </Container>
       </section>
-      </header>
-      
-
-    </div>
+    </header>
+  </div>
+);
+};
   
-  );
-}
 
 export default App;
