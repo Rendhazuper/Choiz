@@ -82,8 +82,8 @@ const Login = () => {
 
 
   return (
-    <div className="login relative justify-center items-center min-h-screen">
-      <Container className="kon-login">
+    <div className="kon-login login relative justify-center items-center min-h-screen">
+      <Container className="">
         <Row>
           <Col className="judul">
             <p>CHOIZ</p>

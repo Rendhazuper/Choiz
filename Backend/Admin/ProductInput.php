@@ -120,7 +120,7 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
                 while ($row = $resultIdSize->fetch_assoc()) {
                     $idSize[] = $row;
                 }
-                echo json_encode($idSize);
+                // echo json_encode($idSize);
 
                 // Insert stok berdasarkan id size -------
                 $querySize = "INSERT INTO stok_size_produk (id_size, stok) VALUES ";
@@ -129,14 +129,15 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
                 $typesSize = "";
 
                 // Mengisi values untuk setiap stok
+                $i = 0;
                 foreach ($stocks as $size => $stok) {
-                    $i = 0;
                     $valuesSize[] = "(?, ?)";
                     $paramsSize[] = $idSize['id_size'][$i];
                     $paramsSize[] = $stok;
                     $typesSize .= "ii";
-                    $i++;
+                    $i = $i + 1;
                 }
+                // echo json_encode(value: $paramsSize);
 
                 // Gabungkan values ke dalam query
                 $querySize .= implode(", ", $values);

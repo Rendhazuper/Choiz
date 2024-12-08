@@ -64,7 +64,7 @@ const Forgot = () => {
   };
 
   return (
-    <div className="forgot relative justify-center items-center min-h-screen">
+    <div className="kon-forgot forgot relative justify-center items-center min-h-screen">
       <Container className="kon-forgot">
         <Row>
           <Col className="judul">

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+
 .bannershop{ 
     position: relative;
     
@@ -13,8 +14,58 @@
     text-align: center;
 }
 
-.filtershop{
+.kontainerr {
     background-color: #F9F1E7 ;
-    height: 100px;
-    /* padding-left: 50%; */
+    display: flex;
+    justify-content: center; 
+    align-items: center;     
+    padding: 20px;   
+}
+
+
+
+.Dropdown{
+    display: flex;
+    align-items: center; 
+    justify-content: end;
+    gap : 15px;
+    /* background-color: black; */
+}
+
+.Dropdown .Toggle {
+    background-color: white;
+    border-radius: 0;         
+    color: #9F9F9F;       
+    border: 1px solid #ccc;  
+}
+
+.Dropdown .Toggle:focus,
+.Dropdown .Toggle:active,
+.Dropdown .Toggle:hover {
+    background-color: white;  
+    color: #9F9F9F;           
+    border: 1px solid #ccc;  
+    outline: none;         
+   }   
+
+.kolomkiri{
+    display: flex;
+    gap : 20px;
+    align-items: center;
+    /* background-color: red; */
+}
+
+.drop1{
+    display: flex;
+    align-items: center; 
+    gap : 15px
+}
+
+
+.kontainerr .kolomkiri, .kontainerr .Dropdown {
+    margin-right: 500px;  /* Menambahkan jarak antar kolom */
+}
+
+.kontainerr .Dropdown {
+    margin-right: 0;  /* Optional: jika Anda ingin menghapus margin di kolom terakhir */
 }

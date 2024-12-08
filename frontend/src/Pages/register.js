@@ -30,7 +30,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost/Backend/Auth/Register.php", // Ubah sesuai path backend Anda
+        "http://localhost/Backend/Auth/Register.php", 
         { name, email, username, password },
         {
           headers: {
@@ -64,8 +64,8 @@ const Register = () => {
   };
 
   return (
-    <div className="register relative justify-center items-center min-h-screen">
-      <Container className="kon-register">
+    <div className="kon-register register relative justify-center items-center min-h-screen">
+      <Container>
         <Row>
           <Col className="judul">
             <p>CHOIZ</p>

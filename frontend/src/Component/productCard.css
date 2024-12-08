@@ -3,11 +3,28 @@
 .konten{
     font-family: 'Poppins', sans-serif;
     background-color: #F4F5F7;
+    width: 15rem;
 }
 .card{
  border: none;   
- margin-bottom: 35px;
+ margin-bottom: 32px;
 }
+.card-body {
+    padding: 15px;
+}
+
+.card-img {
+    width: 100%;        /* Memastikan gambar memenuhi lebar card */
+    height: 290px;      /* Menentukan tinggi gambar agar konsisten */
+    object-fit: cover;  /* Memastikan gambar tidak terdistorsi, bisa crop sesuai ukuran */
+    border-radius: 0; /* Menghilangkan border-radius pada gambar */
+    transition: opacity 0.3s ease; /* Efek transisi pada hover */
+}
+
+.card:hover .card-img {
+    opacity: 0.7; /* Gambar akan sedikit menggelap saat di-hover */
+}
+
 
 
 .Titlecard{
