@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import ProductCard from './productCard'; // Import ProductCard
 import axios from 'axios'; // Menggunakan Axios untuk mengambil data
+import './productgrid.css';
 
 const ProductGrid = () => {
   const [products, setProducts] = useState([]);
@@ -25,9 +26,9 @@ const ProductGrid = () => {
   }, []); 
 
   return (
-    <Container>
+    <Container className='rowindex'>
     {rows.map((row, rowIndex) => (
-        <Row key={rowIndex} className="rowindex d-flex justify-content-start">
+        <Row key={rowIndex} className="d-flex justify-content-start">
             {row.map((product) => (
                 <Col
                     key={product.id_produk}

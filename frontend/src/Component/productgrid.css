@@ -1,0 +1,12 @@
+.rowindex {
+    background-color: red;
+    /* display: flex; */
+    justify-content: center;   /* Menengahkan konten secara horizontal */
+    align-items: flex-start;   /* Menjaga konten berada di atas jika konten banyak */
+    flex-direction: column;    /* Menata row dalam kolom */
+    gap: 32px;                 /* Menambahkan jarak antar card */
+    margin-top: 50px;          /* Margin atas jika perlu */
+    margin-bottom: 50px;       /* Margin bawah jika perlu */
+    width: 100%;               /* Pastikan lebar kontainer penuh */
+    padding: 0 20px;           /* Padding kiri dan kanan untuk ruang */
+}

@@ -59,7 +59,7 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
         // Generate unique filename
         $file_extension = pathinfo($_FILES['gambar_produk']['name'], PATHINFO_EXTENSION);
         $unique_filename = uniqid() . '.' . $file_extension;
-        $upload_directory = 'D:\\Code Activity\\Werk\\choiz\\Choiz\\frontend\\src\\asset\\produk\\'; // Adjust this path as needed
+        $upload_directory = 'C:\\PUNYA SAYA\\Portofolio\\choiz\\frontend\\public\\asset\\produk\\'; // Adjust this path as needed
 
         // Ensure upload directory exists
         if (!file_exists($upload_directory)) {
@@ -132,7 +132,7 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
                 $i = 0;
                 foreach ($stocks as $size => $stok) {
                     $valuesSize[] = "(?, ?)";
-                    $paramsSize[] = $idSize['id_size'][$i];
+                    $paramsSize[] = $idSize[$i]['id_size'];
                     $paramsSize[] = $stok;
                     $typesSize .= "ii";
                     $i = $i + 1;
