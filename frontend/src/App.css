@@ -1,5 +1,19 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Menghindari scrollbar horizontal */
+  box-sizing: border-box; /* Menghindari overflow karena padding/border */
+}
+
 .App {
   text-align: center;
+  font-family: 'Poppins', sans-serif;
 }
 
 .App-logo {
@@ -38,8 +52,92 @@
 }
 
 .banner {
-  width: 2000px; /* Gambar memenuhi lebar kontainer */
-  height: 606px; /* Atur sesuai tinggi gambar yang diinginkan */
-  object-fit: cover; /* Menyesuaikan gambar agar ter-crop atau distorsi sesuai kebutuhan */
-  position: relative; /* Menjadikan gambar referensi untuk konten yang ada di atas */
+  width: 100vw; 
+  height: 606px; 
+  object-fit: cover;
+  display: flex;
+  justify-content: flex-end;  /* Menempatkan card di sisi kanan */
+}
+
+.kartu{
+  width : 700px;
+  padding : 50px 0 50px 0;
+  position: absolute !important; 
+  top: 150px;
+  right: 50px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.text1{
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+}
+.textsub{
+  font-family: 'Poppins', sans-serif;
+  font-size: 52px;
+  font-weight: bolder;
+  color : #B88E2F
+}
+.paragraf{
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: medium;
+}
+
+.section1{
+  position: relative;
+}
+.button.btn{
+  background-color: #B88E2F;
+  border: 0px;
+  color : white;
+  width: 150px;
+  height: 50px;
+}
+
+.button.btn:hover{
+  background-color : white;
+  color : #B88E2F;
+  border : 1px solid #B88E2F;
+  width: 150px;
+  height: 50px;
+}
+
+.section2{
+  margin-top : 40px;
+
+}
+
+.button2.btn{
+  width : 245px;
+  height : 48px;
+  background-color: white;
+  color : #B88E2F;
+  border : 1px solid #B88E2F;
+}
+.button2.btn:hover {
+  background-color: #B88E2F;
+  color: white;
+  border: none;
+}
+
+.header{
+  font-family: 'Poppins', sans-serif;
+    font-weight: bolder;
+    color : #333333;
+}
+
+.subheader{
+  font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color: #666666;
+}
+.section4{
+  background-color: #FCF8F3;
+  width: 100vw;
+}
+
+.section6{
+  background-color: #E6DBC6;
+  width: 100vw;
 }

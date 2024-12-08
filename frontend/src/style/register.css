@@ -16,7 +16,7 @@
     gap: 5px;
 }
 
-body {
+.kon-register {
     font-family: 'Poppins', sans-serif;
     background-image: url("../asset/Login.png"); /* Ganti dengan gambar latar untuk halaman register */
     background-size: cover;

@@ -10,6 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import Register from './Pages/register';
 import Reset from './Pages/reset';
 import ProductInput from './Pages/ProductInput';
+import Shop from './Pages/shop';
 
 const router =  createBrowserRouter([
   {
@@ -35,7 +36,11 @@ const router =  createBrowserRouter([
   {
     path: "/ProductInput",
     element: <ProductInput/>,
-  }
+  },
+  {
+  path: "/shop",
+  element: <Shop/>,
+},
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

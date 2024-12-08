@@ -19,7 +19,7 @@
     gap : 5px;
   }
 
-  body{
+  .kon-login{
     font: 'Poppins', sans-serif;
     background-image: url("../asset/Login.png"); 
     background-size: cover; /* Agar gambar memenuhi seluruh area */
