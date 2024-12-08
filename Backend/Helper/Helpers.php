@@ -1,4 +1,6 @@
 <?php
+require_once "./DB.php";
+
 function GenerateToken64()
 {
     $token = '';
@@ -82,4 +84,111 @@ function sortProductsByNameDescending($products)
         return strcmp($b['nama_produk'], $a['nama_produk']);
     });
     return $products;
+}
+
+function getProductById($id_produk) {
+    $conn = connectToDatabase();
+    $sql = "SELECT pr.nama_produk, pr.warna, pr.kategori, pr.harga, pr.gambar_produk, pr.deskripsi, sz.size, st.stok
+            FROM produk pr
+            INNER JOIN size_produk sz ON pr.id_produk = sz.id_produk
+            INNER JOIN stok_size_produk st ON sz.id_size = st.id_size
+            WHERE pr.id_produk = ?
+            GROUP by pr.nama_produk, sz.size, st.stok;";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_produk);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    $conn->close();
+
+    return $data;
+}
+
+function deleteProductById($id_produk) {
+    $conn = connectToDatabase();
+
+    // Hapus data di tabel stok_size_produk terlebih dahulu
+    $sql1 = "DELETE st FROM stok_size_produk st 
+             INNER JOIN size_produk sz ON st.id_size = sz.id_size
+             WHERE sz.id_produk = ?";
+    $stmt1 = $conn->prepare($sql1);
+    $stmt1->bind_param("i", $id_produk);
+    $stmt1->execute();
+
+    // Hapus data di tabel size_produk
+    $sql2 = "DELETE FROM size_produk WHERE id_produk = ?";
+    $stmt2 = $conn->prepare($sql2);
+    $stmt2->bind_param("i", $id_produk);
+    $stmt2->execute();
+
+    // Hapus data di tabel produk
+    $sql3 = "DELETE FROM produk WHERE id_produk = ?";
+    $stmt3 = $conn->prepare($sql3);
+    $stmt3->bind_param("i", $id_produk);
+    $stmt3->execute();
+
+    $stmt1->close();
+    $stmt2->close();
+    $stmt3->close();
+    $conn->close();
+}
+
+function updateProductData($id_produk, $fields, $id_size, $size, $stok) {
+    $conn = connectToDatabase();
+
+    try {
+        // Mulai transaksi
+        $conn->begin_transaction();
+
+        // Update tabel produk
+        if (!empty($fields)) {
+            $setClauses = [];
+            $params = [];
+            $types = "";
+
+            foreach ($fields as $key => $value) {
+                $setClauses[] = "$key = ?";
+                $params[] = $value;
+                $types .= is_int($value) ? "i" : "s";
+            }
+
+            $params[] = $id_produk;
+            $types .= "i";
+
+            $sql = "UPDATE produk SET " . implode(", ", $setClauses) . " WHERE id_produk = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        // Update tabel size_produk
+        $sql = "UPDATE size_produk SET size = ? WHERE id_size = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $size, $id_size);
+        $stmt->execute();
+        $stmt->close();
+
+        // Update tabel stok_size_produk
+        $sql = "UPDATE stok_size_produk SET stok = ? WHERE id_size = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $stok, $id_size);
+        $stmt->execute();
+        $stmt->close();
+
+        // Commit transaksi
+        $conn->commit();
+
+        $conn->close();
+        return "Data produk, size, dan stok berhasil diperbarui.";
+
+    } catch (Exception $e) {
+        // Rollback jika ada kesalahan
+        $conn->rollback();
+        $conn->close();
+        return "Terjadi kesalahan: " . $e->getMessage();
+    }
 }
