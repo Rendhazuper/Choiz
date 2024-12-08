@@ -59,7 +59,8 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
         // Generate unique filename
         $file_extension = pathinfo($_FILES['gambar_produk']['name'], PATHINFO_EXTENSION);
         $unique_filename = uniqid() . '.' . $file_extension;
-        $upload_directory = 'C:\\PUNYA SAYA\\Portofolio\\choiz\\frontend\\public\\asset\\produk\\'; // Adjust this path as needed
+        $upload_directory = 'C:\\PUNYA SAYA\\Portofolio\\choiz\\frontend\\public\\asset\\produk\\';
+        // $upload_directory = 'D:\\Code Activity\\Werk\\choiz\\Choiz\\frontend\\public\\asset\\produk\\'; //eits bagi dua
 
         // Ensure upload directory exists
         if (!file_exists($upload_directory)) {
