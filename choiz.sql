@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Des 2024 pada 21.39
+-- Waktu pembuatan: 08 Des 2024 pada 17.58
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -101,7 +101,11 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id_produk`, `nama_produk`, `warna`, `kategori`, `harga`, `gambar_produk`, `deskripsi`) VALUES
-(115, 'Jaket Bomber YB', 'Black', 'Jaket', 599000, 0x61737365742f70726f64756b2f363735346163653938343361662e706e67, 'jaket ini sangat tebal');
+(121, 'Polo Shirt', 'Navy Blue', 'Pakaian', 149000, 0x61737365742f70726f64756b2f363735356336306363396361302e706e67, 'Cotton polo shirt with classic styling'),
+(122, 'Skinny Jeans', 'Black', 'Pakaian', 199000, 0x61737365742f70726f64756b2f363735356336356434396366372e706e67, 'Slim fit stretch denim jeans'),
+(123, 'Hiking Backpack', 'Olive Green', 'Perlengkapan Outdoor', 399000, 0x61737365742f70726f64756b2f363735356336373734386162332e706e67, 'Durable backpack with multiple compartments'),
+(124, 'Ceramic Mug', 'White', 'Perlengkapan Rumah', 40000, 0x61737365742f70726f64756b2f363735356336393731613132382e706e67, '12oz ceramic mug with minimalist design'),
+(125, 'Running Shoes', 'Gray', 'Olahraga', 498999, 0x61737365742f70726f64756b2f363735356336616361316338652e706e67, 'Lightweight, breathable running shoes with cushioned sole');
 
 -- --------------------------------------------------------
 
@@ -120,10 +124,19 @@ CREATE TABLE `size_produk` (
 --
 
 INSERT INTO `size_produk` (`id_size`, `id_produk`, `size`) VALUES
-(108, 115, 'M'),
-(109, 115, 'L'),
-(110, 115, 'XL'),
-(111, 115, 'XXL');
+(123, 121, 'S'),
+(124, 121, 'M'),
+(125, 121, 'L'),
+(126, 121, 'XL'),
+(127, 122, 'L'),
+(128, 122, 'XL'),
+(129, 122, 'XXL'),
+(130, 122, 'M'),
+(131, 123, 'M'),
+(132, 123, 'L'),
+(133, 124, 'L'),
+(134, 125, 'L'),
+(135, 125, 'XL');
 
 -- --------------------------------------------------------
 
@@ -141,10 +154,19 @@ CREATE TABLE `stok_size_produk` (
 --
 
 INSERT INTO `stok_size_produk` (`id_size`, `stok`) VALUES
-(108, 11),
-(108, 90),
-(108, 28),
-(108, 20);
+(123, 20),
+(124, 11),
+(125, 25),
+(126, 12),
+(127, 12),
+(128, 35),
+(129, 23),
+(130, 21),
+(131, 23),
+(132, 23),
+(133, 1),
+(134, 12),
+(135, 2);
 
 -- --------------------------------------------------------
 
@@ -264,13 +286,13 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT untuk tabel `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT untuk tabel `size_produk`
 --
 ALTER TABLE `size_produk`
-  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`

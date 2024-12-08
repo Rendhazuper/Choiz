@@ -3,7 +3,7 @@
 .konten{
     font-family: 'Poppins', sans-serif;
     background-color: #F4F5F7;
-    width: 15rem;
+    width: 18rem;
 }
 .card{
  border: none;   
@@ -15,8 +15,8 @@
 
 
 .card-img {
-    width: 100%;        /* Memastikan gambar memenuhi lebar card */
-    height: 290px;      /* Menentukan tinggi gambar agar konsisten */
+    width: 120%;        /* Memastikan gambar memenuhi lebar card */
+    height: 300px;      /* Menentukan tinggi gambar agar konsisten */
     object-fit: cover;  /* Memastikan gambar tidak terdistorsi, bisa crop sesuai ukuran */
     border-radius: 0; /* Menghilangkan border-radius pada gambar */
     transition: opacity 0.3s ease; /* Efek transisi pada hover */

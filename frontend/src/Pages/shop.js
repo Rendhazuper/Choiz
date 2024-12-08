@@ -20,7 +20,7 @@ const Shop = () => {
             <MyNavbar/> 
         </div>
         <div className="bannershop">
-            <Image src = { bannershop } />
+            <Image className="foto"src = { bannershop } />
             <div className="tulisanbanner text-center">
             <h1 className="Headerbanner">Shop</h1>
             <h3 className="subheaderbanner"> Home &gt; Shop</h3>

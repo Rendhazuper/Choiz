@@ -3,7 +3,11 @@
 
 .bannershop{ 
     position: relative;
-    
+    width: 100vw;
+}
+
+.foto{
+    width: 100vw;
 }
 
 .tulisanbanner{

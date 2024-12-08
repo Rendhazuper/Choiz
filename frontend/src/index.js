@@ -11,6 +11,7 @@ import Register from './Pages/register';
 import Reset from './Pages/reset';
 import ProductInput from './Pages/ProductInput';
 import Shop from './Pages/shop';
+import DetailProduk from './Pages/detailproduk'; 
 
 const router =  createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router =  createBrowserRouter([
   {
   path: "/shop",
   element: <Shop/>,
+},
+{
+  path : "/produk/:id",
+  element : <DetailProduk/>
 },
 ])
 
