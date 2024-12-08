@@ -92,7 +92,7 @@ const Reset = () => {
 
   return (
     <div className="reset relative justify-center items-center min-h-screen">
-      <Container>
+      <Container className="kon-reset">
         <Row>
           <Col className="judul">
             <p>CHOIZ</p>

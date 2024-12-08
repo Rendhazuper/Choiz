@@ -36,7 +36,7 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
         array_filter($stocks, fn($stok) => $stok < 0) ||
         $harga < 0 || strlen($deskripsi) > 65535
     ) {
-        echo json_encode(["error" => "Input tidak valid."]);
+        // echo json_encode(["error" => "Input tidak valid."]);
         exit;
     }
 
@@ -47,12 +47,12 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
 
         // Validate file type and size
         if (!in_array($_FILES['gambar_produk']['type'], $allowed_types)) {
-            echo json_encode(["error" => "Tipe file tidak diizinkan."]);
+            // echo json_encode(["error" => "Tipe file tidak diizinkan."]);
             exit;
         }
 
         if ($_FILES['gambar_produk']['size'] > $max_file_size) {
-            echo json_encode(["error" => "Ukuran file terlalu besar."]);
+            // echo json_encode(["error" => "Ukuran file terlalu besar."]);
             exit;
         }
 
@@ -132,7 +132,7 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
                 $i = 0;
                 foreach ($stocks as $size => $stok) {
                     $valuesSize[] = "(?, ?)";
-                    $paramsSize[] = $idSize[$i]['id_size'];
+                    $paramsSize[] = $idSize['id_size'][$i];
                     $paramsSize[] = $stok;
                     $typesSize .= "ii";
                     $i = $i + 1;
@@ -156,10 +156,10 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
 
                 // Commit transaction
                 $conn->commit();
-                echo json_encode(["success" => "Data berhasil disimpan."]);
+                // echo json_encode(["success" => "Data berhasil disimpan."]);
             } catch (Exception $e) {
                 $conn->rollback();
-                echo json_encode(["error" => "Transaksi gagal: " . $e->getMessage()]);
+                // echo json_encode(["error" => "Transaksi gagal: " . $e->getMessage()]);
             }
         } else {
             echo json_encode(["error" => "Gagal memindahkan file yang diupload."]);

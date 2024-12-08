@@ -65,7 +65,7 @@ const Register = () => {
 
   return (
     <div className="register relative justify-center items-center min-h-screen">
-      <Container>
+      <Container className="kon-register">
         <Row>
           <Col className="judul">
             <p>CHOIZ</p>

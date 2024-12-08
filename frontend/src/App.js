@@ -1,10 +1,17 @@
 import axios from "axios";
 import './App.css';
 import MyNavbar from './Component/navbar';
+import Footer from './Component/Footer';
+import ProductCard from './Component/productCard';
 import banner from './asset/banner.png';  
+import Theme from './Component/theme';
+import Share from './Component/share'
+import CardCarousel from "./Component/Carousel";
+import ProductGrid from "./Component/productgrid";
 import { Container, Row, Col, Button, Image, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import React, {useState , useEffect } from 'react';
+
 
 
 function App() {
@@ -34,51 +41,40 @@ function App() {
 
   return (
     <div className="App">
-    <div><MyNavbar /></div>
-
+        <div><MyNavbar /></div>
+      
     <header className="App-header">
-      <section className="py-0">
-        <Image className="banner" src={banner} fluid />
+      <section className ="section1">
+        <Image className="banner" src={banner}  />
+        <Card className="kartu text-start" style={{ backgroundColor: '#FFF3E3' }}>
+          <Card.Body>
+              <h2 className="text1 mb-4">New Outfit</h2>
+              <h3 className="textsub">Discover Our New Collection</h3>
+              <p className="paragraf mb-4">Style evolution, skip the price</p>
+              <Button className="button" >BUY NOW</Button>
+          </Card.Body>
+        </Card>
+        </section>
+      <section className="section2 py-4">
+      <Theme/>
+      </section>
+      <section className="section3 py-4">
         <Container>
-          <Row className="justify-content-center">
-            <Col md={8}>
-              <Card className="bg-light text-center">
-                <Card.Body>
-                  <h2 className="mb-4">New Outfit</h2>
-                  <h3>Discover Our New Collection</h3>
-                  <p className="mb-4">Style evolution, skip the price</p>
-                  <Button variant="warning">BUY NOW</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+          <h1 className="header text-center mb-4">Our Product</h1>
+          <p className="subheader text-center mb-5">Find outfit theme these days</p>
+            <ProductGrid/>
+            <ProductGrid/>
+            <Button className="button2" >Show More</Button>
         </Container>
       </section>
-
-      {/* Section Kedua dengan tema pakaian */}
-      <section className="py-5">
-        <Container>
-          <h2 className="text-center mb-4">Browse Your Outfit Theme</h2>
-          <p className="text-center mb-5">Find outfit theme these days</p>
-          <Row className="justify-content-center">
-            <Col md={3} className="mb-4">
-              <Image src="https://via.placeholder.com/300x400" fluid rounded />
-              <p className="text-center mt-2">Skena</p>
-            </Col>
-            <Col md={3} className="mb-4">
-              <Image src="https://via.placeholder.com/300x400" fluid rounded />
-              <p className="text-center mt-2">Casual</p>
-            </Col>
-            <Col md={3} className="mb-4">
-              <Image src="https://via.placeholder.com/300x400" fluid rounded />
-              <p className="text-center mt-2">Formal</p>
-            </Col>
-            <Col md={3} className="mb-4">
-              <Image src="https://via.placeholder.com/300x400" fluid rounded />
-              <p className="text-center mt-2">Sporty</p>
-            </Col>
-          </Row>
-        </Container>
+      <section className="section4 py-4"> 
+        <CardCarousel/>
+      </section>
+      <section className="section5 py-4">
+        <Share/>
+      </section>
+      <section className="section6">
+      <Footer/>
       </section>
     </header>
   </div>

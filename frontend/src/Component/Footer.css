@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+.kontainer{
+    /* background-color: red; */
+    position: relative;
+    width: 100vw;
+    margin-left: 100px;
+    padding-top: 50px;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+ul{
+    color: black;
+    font-size: 16px;
+}
+
+li{
+    list-style-type:none;
+    margin-bottom: 20px;
+}
+
+.Judul{
+    font-size: 16px;
+    font-weight: bolder ;
+}
+
+.copyrait{
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.newsletter{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* Menghapus border default dan menambahkan hanya border bawah pada input */
+.input-group .form-control {
+    border: none; /* Menghapus border */
+    border-bottom: 2px solid black ; /* Menambahkan garis bawah biru */
+    border-radius: 0; /* Menghilangkan sudut melengkung pada input */
+    box-shadow: none; /* Menghilangkan shadow saat input aktif */
+    padding-left: 0; /* Menghilangkan padding kiri */
+    padding-right: 0; /* Menghilangkan padding kanan */
+    background-color: transparent; /* Membuat latar belakang transparan */
+    color: #333; /* Warna teks untuk placeholder dan input */
+  }
+  
+  /* Mengubah warna placeholder */
+  .input-group .form-control::placeholder {
+    color: black; /* Warna placeholder */
+    opacity: 1; /* Menghilangkan transparansi */
+  }
+  
+  /* Style tombol "Enter" */
+  .input-group .btn {
+    border: none; /* Menghapus border tombol */
+    background-color: transparent; /* Latar belakang transparan */
+    color: black; /* Warna teks tombol */
+    font-weight: bold; /* Membuat teks tombol lebih tebal */
+    border-radius: 0; /* Sudut tombol tanpa lengkungan */
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: color 0.3s ease;
+  }
+  
+  /* Tombol saat hover */
+  .input-group .btn:hover {
+    color: black; /* Ubah warna tombol saat hover */
+  }
+  
