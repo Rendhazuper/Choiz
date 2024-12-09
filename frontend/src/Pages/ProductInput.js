@@ -126,7 +126,7 @@ const ProductInput = () => {
                                         <div key={size} className="form-check">
                                             <input 
                                                 type="checkbox" 
-                                                className="form-check-input" 
+                                                className="form-check-input " 
                                                 id={`size-${size}`} 
                                                 checked={sizes.includes(size)} 
                                                 onChange={() => handleSizeChange(size)} 

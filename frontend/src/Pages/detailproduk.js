@@ -1,13 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Image, Card, Dropdown} from 'react-bootstrap';
+import {BsFacebook,BsLinkedin, BsTwitterX } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import MyNavbar from '../Component/navbar';
+import '../style/detailproduk.css'
 import axios from 'axios';
+// import terakhir from '../asset/Baju/terakhir.png';
 
-const DetailProduk = () => {
+const DetailProduk = ({ produk }) => {
   const { id } = useParams(); // Mengambil parameter id dari URL
-  const [produk, setProduk] = useState(null);
+  const [product, setProduk] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [quantity, setQuantity] = useState(1); // State untuk jumlah produk yang dipilih
+  const [cart, setCart] = useState([]);
+  const [stok, setStok] = useState(0);
+  
+
+  const handleSizeClick = (size) => {
+    setSelectedSize(size);
+    const selectedSizeObj = product.sizes.find(item => item.size === size);
+    if (selectedSizeObj) {
+      setStok(selectedSizeObj.stok); 
+      console.log("Button clicked for size: ", size);
+  };
+}
+
+  const handleIncrease = () => {
+    if (quantity < stok) { // Pastikan tidak melebihi stok
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const addToCart = () => {
+    // Menambahkan produk ke dalam keranjang
+    const cartItem = { ...product, size: selectedSize, quantity };
+    setCart([...cart, cartItem]);
+    localStorage.setItem('cart', JSON.stringify([...cart, cartItem])); // Menyimpan ke localStorage
+    console.log('Product added to cart:', cartItem);
+  };
+
+  const compareProduct = () => {
+    // Menyimpan produk yang sedang dibandingkan
+    localStorage.setItem('compareProduct', JSON.stringify(product));
+    console.log('Product added to compare:', product);
+  };
 
   useEffect(() => {
     // Ambil data produk berdasarkan ID dari backend
@@ -22,28 +65,114 @@ const DetailProduk = () => {
       });
   }, [id]);
 
-  if (!produk) {
+  if (!product) {
     return <div>Loading...</div>; // Tampilkan loading jika data belum tersedia
   }
+
+  const formatHarga = new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+}).format(product.harga);
 
   return (
     <div>
       <MyNavbar />
       <div className="bannershop">
-     <Container className="kontainerr" fluid>
-            <Row className="d-flex justify-content-center align-items-center" gap={10}> 
-                <Col className="kolomkiri ">           
-                    <Link to={`/home`} > Home </Link>
-                    <p> &gt; </p>
-                    <Link to={`/shop`} > Shop </Link>
-                    <p> &gt; </p>
-                    <p> | </p>
-                    <p> {produk.kategori} </p>
-                </Col>
-            </Row>
+        <Container className="kontainerr" fluid>
+          <Row className="row1 d-flex" gap={10}>
+            <Col className="kolomkiri">
+              <Link to={`/home`}>Home</Link>
+              <p> &gt; </p>
+              <Link to={`/shop`}>Shop</Link>
+              <p> &gt; </p>
+              <p> | </p>
+              <p> {product.kategori} </p>
+            </Col>
+          </Row>
         </Container>
-            </div>
-        </div>
+
+        <section className="kon-detail">
+          <Container className="kontrakan">
+            <Row>
+              <Col className="col-kiri" md={6}>
+                {/* Pastikan URL gambar benar */}
+                <Image src={'/' + product.gambar_produk} />
+              </Col>
+              <Col className="col-kanan" md={7}>
+                <Container>
+                  <Col className="Header">
+                    <h2>{product.nama_produk}</h2>
+                    <h3>{formatHarga}</h3>
+                  </Col>
+                  <Col className="description text-start">
+                    <p>{product.deskripsi}</p>
+                  </Col>
+                  <Col className="size">
+                    <p>Size</p>
+                    {Array.isArray(product.sizes) ? (
+                      product.sizes.map((size, index) => (
+                        <Button
+                          key={index}
+                          variant="primary"
+                          onClick={() => handleSizeClick(size.size)}
+                          style={{
+                            marginRight: '18px',
+                            backgroundColor: selectedSize === size.size ? '#B88E2F' : 'white',
+                            color: selectedSize === size.size ? 'white' : '#B88E2F',
+                            border: selectedSize === size.size ? '#B88E2F' : '1px solid #B88E2F',
+                            padding: '10px 20px',
+                          }}
+                        >
+                          {size.size}
+                        </Button>
+                      ))
+                    ) : (
+                      <p>{product.size}</p>
+                    )}
+                    <p>Color</p>
+                    <div className={`colored-container ${product.warna.toLowerCase()}`} />
+                    <p>Quantity</p>
+                    <Col className='bawah'>
+                   
+                    
+                    <div className="quantity-controls">
+                      <Button 
+                          onClick={handleDecrease} 
+                          disabled={quantity <= 1} 
+                          style={{
+                              backgroundColor: quantity > 1 ? '#B88E2F' : 'white', 
+                              color: quantity > 1 ? 'white' : '#B88E2F',
+                              border: quantity > 1 ? 'none' : '1px solid #B88E2F'
+                          }}
+                      >
+                          -
+                      </Button>
+                      <span>{quantity}</span>
+                      <Button 
+                          onClick={handleIncrease} 
+                          disabled={quantity >= stok} 
+                          style={{
+                              backgroundColor: quantity < stok ? '#B88E2F' : 'white', 
+                              color: quantity < stok ? 'white' : '#B88E2F',
+                              border: quantity < stok ? 'none' : '1px solid #B88E2F'
+                          }}
+                      >
+                          +
+                      </Button>
+                     </div> 
+                    <div className="action-buttons">
+                      <Button onClick={addToCart} variant="success" className="mt-3">Add to Cart</Button>
+                      <Button onClick={compareProduct} variant="info" className="mt-3 ms-2">Compare</Button>
+                    </div>
+                    </Col>
+                  </Col>
+                </Container>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+      </div>
+    </div>
   );
 };
 

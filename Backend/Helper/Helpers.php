@@ -92,8 +92,7 @@ function getProductById($id_produk) {
             FROM produk pr
             INNER JOIN size_produk sz ON pr.id_produk = sz.id_produk
             INNER JOIN stok_size_produk st ON sz.id_size = st.id_size
-            WHERE pr.id_produk = ?
-            GROUP by pr.nama_produk, sz.size, st.stok;";
+            WHERE pr.id_produk = ?";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id_produk);
