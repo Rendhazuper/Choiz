@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col, Container, Button } from 'react-bootstrap';
 import ProductCard from './productCard'; // Import ProductCard
 import axios from 'axios'; // Menggunakan Axios untuk mengambil data
+import { Link } from 'react-router-dom';
 import './productgrid.css';
 
-const ProductGrid = () => {
+const ProductGridDetail = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); // Menyimpan halaman saat ini
-  const itemsPerPage = 16; // Menentukan jumlah produk per halaman (4 baris * 4 produk)
+  const itemsPerPage = 4; // Menentukan jumlah produk per halaman (4 baris * 4 produk)
   const itemsPerRow = 4; // Menentukan jumlah produk per baris (4 produk)
 
   // Mengambil produk untuk halaman yang sedang aktif
@@ -80,46 +81,16 @@ for (let i = 0; i < currentProducts.length; i += itemsPerRow) {
       <p>No products available</p>
     )}
 
-    {/* Pagination */}
-    {totalPages > 1 && (
-      <div
-        ref={paginationRef} // Menambahkan referensi ke bagian pagination
-        className="pagination-container d-flex justify-content-center mt-4"
-      >
-        {/* Tombol Previous hanya muncul jika currentPage > 1 */}
-        {currentPage > 1 && (
-          <Button
-            onClick={(e) => paginate(currentPage - 1, e)}
-            className="pagination-button"
-          >
-            Previous
+     {/* Tombol Show More */}
+     <div className="d-flex justify-content-center mt-4">
+        <Link to="/shop">
+          <Button className="showmore">
+            Show More
           </Button>
-        )}
-
-        {/* Menampilkan tombol untuk halaman */}
-        {[...Array(totalPages)].map((_, index) => (
-          <Button
-            key={index}
-            onClick={(e) => paginate(index + 1, e)}
-            className={index + 1 === currentPage ? 'active' : 'pagination-button'}
-          >
-            {index + 1}
-          </Button>
-        ))}
-
-        {/* Tombol Next hanya muncul jika currentPage < totalPages */}
-        {currentPage < totalPages && (
-          <Button
-            onClick={(e) => paginate(currentPage + 1, e)}
-            className="pagination-button"
-          >
-            Next
-          </Button>
-        )}
+        </Link>
       </div>
-    )}
-  </Container>
+    </Container>
   );
 };
 
-export default ProductGrid;
+export default ProductGridDetail;

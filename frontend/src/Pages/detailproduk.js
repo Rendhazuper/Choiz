@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Image, Card, Dropdown} from 'react-bootstrap';
 import {BsFacebook,BsLinkedin, BsTwitterX } from 'react-icons/bs';
+import ProductGridDetail  from "../Component/productgriddetail";
 import { Link } from 'react-router-dom';
 import MyNavbar from '../Component/navbar';
-import '../style/detailproduk.css'
+import '../style/detailproduk.css';
 import axios from 'axios';
 // import terakhir from '../asset/Baju/terakhir.png';
 
@@ -39,10 +40,10 @@ const DetailProduk = ({ produk }) => {
   };
 
   const addToCart = () => {
-    // Menambahkan produk ke dalam keranjang
+   
     const cartItem = { ...product, size: selectedSize, quantity };
     setCart([...cart, cartItem]);
-    localStorage.setItem('cart', JSON.stringify([...cart, cartItem])); // Menyimpan ke localStorage
+    localStorage.setItem('cart', JSON.stringify([...cart, cartItem])); 
     console.log('Product added to cart:', cartItem);
   };
 
@@ -53,17 +54,18 @@ const DetailProduk = ({ produk }) => {
   };
 
   useEffect(() => {
-    // Ambil data produk berdasarkan ID dari backend
+    
     axios
       .get(`http://localhost/Backend/Auth/getproduct.php?id=${id}`)
       .then((response) => {
-        console.log(response.data);
-        setProduk(response.data); // Simpan data produk ke state
+        setProduk(response.data);
       })
       .catch((error) => {
         console.error('Error fetching product detail:', error);
       });
-  }, [id]);
+      
+  }, [id])
+  
 
   if (!product) {
     return <div>Loading...</div>; // Tampilkan loading jika data belum tersedia
@@ -166,10 +168,66 @@ const DetailProduk = ({ produk }) => {
                     </div>
                     </Col>
                   </Col>
+                  <Col className='deskripsibawah'>
+                  <hr />
+                    <p>Category: {product.kategori}</p>
+                    <p>Tags: {product.kategori}</p>
+                    <p className='share'>
+                      
+                    Share: 
+                    <div>
+                    <BsFacebook size={16} style={{ marginLeft: '10px' }} />
+                    <BsLinkedin size={16} style={{ marginLeft: '10px' }} />
+                    <BsTwitterX size={16} style={{ marginLeft: '10px' }} />
+                    </div>
+                  </p>
+                    
+                  </Col>
                 </Container>
               </Col>
             </Row>
           </Container>
+        </section>
+        <section>
+          <hr/>
+          <Container className='deskripsiproduk'>
+            <Row >
+            <Col className='kol1des'>
+            <h4> Description</h4>
+            </Col>    
+            <Col className='kolom2'>
+            <h4> Additional Infomration</h4>
+            </Col>
+            </Row>
+            <Row className='row3'>
+              <p> {product.deskripsi} </p>
+            </Row>
+            <Row>
+              <Col className='colImage'>
+              <Image className='imeg1' src={'/' + product.gambar_produk} />
+              </Col>
+              <Col className='colImage'>
+              <Image className='imeg2' src={'/' + product.gambar_produk} />
+              </Col>
+            </Row>
+       </Container>
+        </section>
+        <section>
+          <hr/>
+          <Container className='deskripsiproduk'>
+            <Row >
+            <Col className='kol1des'>
+            <h4> Related Products</h4>
+            </Col>   
+            </Row>
+            <Row>
+             <Col>
+             <div className="product-grid-container">
+                  < ProductGridDetail />
+                </div>
+             </Col>
+            </Row>
+       </Container>
         </section>
       </div>
     </div>

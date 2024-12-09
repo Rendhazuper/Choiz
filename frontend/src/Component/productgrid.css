@@ -62,3 +62,18 @@
     background-color: #B88E2F;
     color: #fff;
 }
+
+.showmore{
+    background-color: white;
+    border: 1px solid #B88E2F;
+    color : #B88E2F;
+    width: 240px;
+    height: 60px  ;
+    border-radius: 0px;
+}
+
+.showmore:hover{
+    background-color: #B88E2F;
+    color: white;
+    border : 0px;
+}

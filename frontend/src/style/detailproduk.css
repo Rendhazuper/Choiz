@@ -5,8 +5,60 @@
     justify-content: center;
 }
 
+.kol1des h4{
+  font-weight: black;
+  font-size: 24px;
+  font-weight: 500;
+  display : flex;
+  justify-content: center;
+}
+
+.colImage{
+  display : flex;
+width : 50px;
+height: 348px;
+overflow: hidden;
+border-radius: 20px;
+margin :0;
+padding:0;
+flex-shrink: 0;
+}
+
+.imeg1{
+  width: 100%;
+  height : 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.imeg2{
+  width: 100%;
+  height : 100%;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+.kolom2 h4{
+  color: #9F9F9F;
+  font-weight: 400;
+  font-size: 24px;
+  display : flex;
+  justify-content: center;
+}
+
 .row1{
   padding-right: 450px;
+}
+
+.row3{
+  width: 1320px;
+  height: 300px;
+  
+}
+
+.row3 p{
+  color: #9F9F9F;
+  font-weight: 400; 
+  font-size: 16px;
 }
 
 .Header h2{
@@ -31,8 +83,20 @@
 .flexin{
   display: flex;
 }
-.flexin div{
+.size div{
   color: black;
+}
+.deskripsibawah p {
+  font-weight: 400;
+  font-size: 14px;
+  color : #9F9F9F ;
+  margin-bottom: 18px; 
+}
+.deskripsibawah div{
+  color: black;
+}
+.share{
+  display: flex;
 }
 
 .colored-container{
@@ -157,5 +221,3 @@
   border : 0px;
 }
 
-
-  
