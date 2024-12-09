@@ -51,7 +51,7 @@ const Login = () => {
           }, 1000);
         } else {
           setTimeout(() => {
-            navigate("/home");
+            navigate("/");
           }, 1000);
         }
       } else {

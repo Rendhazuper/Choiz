@@ -36,21 +36,6 @@ for (let i = 0; i < currentProducts.length; i += itemsPerRow) {
       });
   }, []);
   
-
-  // Fungsi untuk mengubah halaman dan menggulirkan ke bawah
-  const paginate = (pageNumber, event) => {
-    event.preventDefault(); // Mencegah scroll otomatis ke atas saat pagination diklik
-    setCurrentPage(pageNumber);
-
-    // Scroll ke bagian bawah setelah pagination
-    setTimeout(() => {
-      window.scrollTo({
-        top: document.body.scrollHeight, // Scroll ke bawah halaman
-        behavior: 'smooth', // Efek scroll halus
-      });
-    }, 200); // Delay untuk memastikan setState sudah diterapkan
-  };
-
   // Menghitung jumlah total halaman berdasarkan total produk
   const totalPages = Math.ceil(products.length / itemsPerPage);
 

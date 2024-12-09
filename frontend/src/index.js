@@ -15,7 +15,7 @@ import DetailProduk from './Pages/detailproduk';
 
 const router =  createBrowserRouter([
   {
-    path: "/home",
+    path: "/",
     element: <App />,
   },
   {

@@ -65,6 +65,8 @@ const DetailProduk = ({ produk }) => {
       });
       
   }, [id])
+
+  
   
 
   if (!product) {

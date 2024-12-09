@@ -12,7 +12,7 @@ const MyNavbar = () => {
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav" className="justify-content-center">
             <Nav className="mx-auto">
-              <Nav.Link href="/home" style={{ marginLeft: '75px', marginRight: '75px' }}>Home</Nav.Link>
+              <Nav.Link href="/" style={{ marginLeft: '75px', marginRight: '75px' }}>Home</Nav.Link>
               <Nav.Link href="/shop" style={{ marginLeft: '75px', marginRight: '75px' }}>Shop</Nav.Link>
               <Nav.Link href="#" style={{ marginLeft: '75px', marginRight: '75px' }}>About</Nav.Link>
               <Nav.Link href="#" style={{ marginLeft: '75px', marginRight: '75px' }}>Contact</Nav.Link>
