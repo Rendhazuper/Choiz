@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import {BroserRouter, createBrowserRouter, RouterProvider} from "react-router-dom";
 import './index.css';
 import App from './App';
-import Home from './Pages/home';
 import Login from './Pages/login';
 import Forgot from './Pages/forgot';
 import reportWebVitals from './reportWebVitals';
@@ -12,6 +11,8 @@ import Reset from './Pages/reset';
 import ProductInput from './Pages/ProductInput';
 import Shop from './Pages/shop';
 import DetailProduk from './Pages/detailproduk'; 
+import Contact from './Pages/Contact';
+import About from './Pages/About';
 
 const router =  createBrowserRouter([
   {
@@ -46,6 +47,14 @@ const router =  createBrowserRouter([
   path : "/produk/:id",
   element : <DetailProduk/>
 },
+{
+  path :"/Contact",
+  element : <Contact/>
+},
+{
+  path :"/about",
+  element : <About/>
+}
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

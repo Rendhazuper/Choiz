@@ -6,10 +6,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const ProductInput = () => {
     const [namaProduk, setNamaProduk] = useState("");
-    const [sizes, setSizes] = useState([]); // Array for selected sizes
+    const [sizes, setSizes] = useState([]); 
     const [warna, setWarna] = useState("");
     const [kategori, setKategori] = useState("");
-    const [stok, setStok] = useState({}); // Object to store stocks for each size
+    const [stok, setStok] = useState({}); 
     const [harga, setHarga] = useState("");
     const [gambarProduk, setGambarProduk] = useState(null);
     const [deskripsi, setDeskripsi] = useState("");
@@ -21,7 +21,7 @@ const ProductInput = () => {
     };
 
     const handleSizeChange = (sizeValue) => {
-        // Toggle the size selection
+        
         if (sizes.includes(sizeValue)) {
             setSizes(sizes.filter(size => size !== sizeValue));
             const newStok = { ...stok };
@@ -58,6 +58,7 @@ const ProductInput = () => {
         formData.append("deskripsi", deskripsi);
 
         try {
+            // const response = await axios.post("http://lightcoral-rat-258584.hostingersite.com/Backend/Admin/ProductInput.php", formData, {
             const response = await axios.post("http://localhost/Backend/Admin/ProductInput.php", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });

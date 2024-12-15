@@ -20,7 +20,8 @@ const Forgot = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost/Backend/Auth/Forgot.php",//backend
+        // "http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/Forgot.php",//backend
+        "http://localhost/Backend/Auth/Forgot.php",
         { email },
         {
           headers: {

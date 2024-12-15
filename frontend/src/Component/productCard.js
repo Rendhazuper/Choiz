@@ -14,7 +14,7 @@ const ProductCard = ({ namaProduk, harga, gambarProduk, kategori, idProduk }) =>
 
 
     return (
-        <Card className="card text-start" style={{ width: '15rem' }}>
+        <Card className="cardu text-start" style={{ width: '15rem' }}>
      <Link to={`/produk/${idProduk}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <Card.Img
             variant="top"

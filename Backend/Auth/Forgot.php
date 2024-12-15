@@ -1,6 +1,6 @@
 <?php
 // Mengatur header untuk mengizinkan koneksi dari frontend
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: https://lightcoral-rat-258584.hostingersite.com");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("access-Control-Allow-Credentials: true");

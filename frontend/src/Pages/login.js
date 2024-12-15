@@ -22,6 +22,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
+        // "http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/Login.php", 
         "http://localhost/Backend/Auth/Login.php", 
         { email, password },
         {
@@ -47,7 +48,7 @@ const Login = () => {
   
         if (level === 'admin') {
           setTimeout(() => {
-            navigate("/admin");
+            navigate("/ProductInput");
           }, 1000);
         } else {
           setTimeout(() => {

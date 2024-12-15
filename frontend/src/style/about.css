@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+.bannershop {
+  position: relative;
+  width: 100vw;
+}
+
+.tulisannya {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.kon-artikel {
+  /* background-color: red; */
+  padding-top: 50px;
+  width: 100vw;
+}
+
+.kontainerartikel {
+  border: none;
+}
+
+.lebarform {
+  width: 20px;
+}
+.kontenartikel {
+  padding: 20px;
+}
+.judulartikel {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.deskripsiartikel {
+  font-size: 16px;
+  font-weight: 400;
+  color: #9f9f9f;
+}
+
+.tombolartikel {
+  background: none;
+  border: none;
+  color: black;
+  text-decoration: underline;
+  padding: 0;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.tombolartikel:hover {
+  color: #333;
+  text-decoration: none;
+  background: none;
+}
+
+.futernya {
+  width: 100vw;
+  background-color: #e6dbc6;
+}

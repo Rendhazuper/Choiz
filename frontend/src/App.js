@@ -3,6 +3,7 @@ import './App.css';
 import MyNavbar from './Component/navbar';
 import Footer from './Component/Footer';
 import ProductCard from './Component/productCard';
+import ProductGridDetail from './Component/productgriddetail';
 import banner from './asset/banner.png';  
 import Theme from './Component/theme';
 import Share from './Component/share'
@@ -20,6 +21,7 @@ function App() {
 
   const checkLogin = async () => {
     try {
+      // const response = await axios.get("http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/cekLogin.php", {
       const response = await axios.get("http://localhost/Backend/Auth/cekLogin.php", {
         withCredentials: true,  
       });
@@ -58,13 +60,11 @@ function App() {
       <section className="section2 py-4">
       <Theme/>
       </section>
-      <section className="section3 py-4">
-        <Container>
+      <section className="section3 py-2">
+        <Container className="kon-imeg">
           <h1 className="header text-center mb-4">Our Product</h1>
-          <p className="subheader text-center mb-5">Find outfit theme these days</p>
-            <ProductGrid/>
-            <ProductGrid/>
-            <Button className="button2" >Show More</Button>
+          <p className="subheader text-center mb-2">Find outfit theme these days</p>
+          <ProductGridDetail/>
         </Container>
       </section>
       <section className="section4 py-4"> 

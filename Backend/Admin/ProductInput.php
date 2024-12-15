@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: https://lightcoral-rat-258584.hostingersite.com");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
@@ -59,7 +59,7 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
         // Generate unique filename
         $file_extension = pathinfo($_FILES['gambar_produk']['name'], PATHINFO_EXTENSION);
         $unique_filename = uniqid() . '.' . $file_extension;
-        $upload_directory = 'C:\\PUNYA SAYA\\Portofolio\\choiz\\frontend\\public\\asset\\produk\\';
+        $upload_directory = $_SERVER['DOCUMENT_ROOT'] . '/asset/produk/';
         // $upload_directory = 'D:\\Code Activity\\Werk\\choiz\\Choiz\\frontend\\public\\asset\\produk\\'; //eits bagi dua
 
         // Ensure upload directory exists

@@ -5,17 +5,19 @@
     background-color: #F4F5F7;
     width: 18rem;
 }
-.card{
+.cardu{
  border: none;   
  margin-bottom: 32px;
+ width: 18rem;
 }
 .card-body {
     padding: 15px;
+    width: 100%;
 }
 
 
 .card-img {
-    width: 120%;        /* Memastikan gambar memenuhi lebar card */
+    width: 100%;        /* Memastikan gambar memenuhi lebar card */
     height: 300px;      /* Menentukan tinggi gambar agar konsisten */
     object-fit: cover;  /* Memastikan gambar tidak terdistorsi, bisa crop sesuai ukuran */
     border-radius: 0; /* Menghilangkan border-radius pada gambar */

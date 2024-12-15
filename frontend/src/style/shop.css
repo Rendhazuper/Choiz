@@ -30,6 +30,7 @@
 
 .Dropdown{
     display: flex;
+    width : max-content;
     align-items: center; 
     justify-content: end;
     gap : 15px;
@@ -73,3 +74,8 @@
 .kontainerr .Dropdown {
     margin-right: 0;  /* Optional: jika Anda ingin menghapus margin di kolom terakhir */
 }
+
+.futer{
+    background-color: #E6DBC6;
+    width: 100vw;
+  }
