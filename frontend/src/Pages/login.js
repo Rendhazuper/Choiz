@@ -9,30 +9,29 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
-  const [variant, setVariant] = useState("success"); 
+  const [variant, setVariant] = useState("success");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
- 
     if (!email || !password) {
       setMessage("Email dan password harus diisi.");
       setVariant("danger");
-      return; 
+      return;
     }
 
     try {
       const response = await axios.post(
-        // "http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/Login.php", 
-        "http://localhost/Backend/Auth/Login.php", 
+        // "http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/Login.php",
+        "http://localhost/Backend/Auth/Login.php",
         { email, password },
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true  // Pastikan cookie dikirim
+          withCredentials: true, // Pastikan cookie dikirim
         }
       );
-  
+
       // Mengecek status 200 dari response backend
       if (response.status === 200) {
         const { level, username } = response.data;
@@ -40,13 +39,12 @@ const Login = () => {
         setVariant("success");
 
         console.log(response.data);
-        // console.log("level ", level);
-  
-        // Menyimpan data sesi pengguna
+
+        
         sessionStorage.setItem("userLevel", level);
-        sessionStorage.setItem("username", username); // Simpan username (atau data lain yang diperlukan)
-  
-        if (level === 'admin') {
+        sessionStorage.setItem("username", username);
+
+        if (level === "admin") {
           setTimeout(() => {
             navigate("/ProductInput");
           }, 1000);
@@ -68,7 +66,9 @@ const Login = () => {
           setMessage("Pengguna tidak ditemukan");
           setVariant("danger");
         } else {
-          setMessage(error.response?.data?.error || "Terjadi kesalahan saat login");
+          setMessage(
+            error.response?.data?.error || "Terjadi kesalahan saat login"
+          );
           setVariant("danger");
         }
       } else if (error.request) {
@@ -79,8 +79,7 @@ const Login = () => {
         setVariant("danger");
       }
     }
-  };  
-
+  };
 
   return (
     <div className="kon-login login relative justify-center items-center min-h-screen">
@@ -102,13 +101,23 @@ const Login = () => {
               <Row>
                 <Form.Group className="mb-3" controlId="email">
                   <Form.Label className="label">Email address</Form.Label>
-                  <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <Form.Control
+                    type="email"
+                    placeholder="name@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </Form.Group>
               </Row>
               <Row>
                 <Form.Group className="mb-3" controlId="password">
                   <Form.Label className="label">Password</Form.Label>
-                  <Form.Control type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <Form.Control
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </Form.Group>
               </Row>
               <Row>
@@ -122,7 +131,8 @@ const Login = () => {
                     <Link to="/forgot">Lupa Password ?</Link>
                   </p>
                   <p className="right">
-                    Belum Punya akun ? <Link to="/register">Daftar sekarang</Link>
+                    Belum Punya akun ?{" "}
+                    <Link to="/register">Daftar sekarang</Link>
                   </p>
                 </Row>
               </Container>

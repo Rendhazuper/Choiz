@@ -1,6 +1,6 @@
 <?php
 session_start();
-header("Access-Control-Allow-Origin: https://lightcoral-rat-258584.hostingersite.com");
+header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("access-Control-Allow-Credentials: true");
@@ -18,6 +18,7 @@ if (isset($_SESSION['user'])) {
         "username" => $_SESSION['user']['username'],
         "level" => $_SESSION['user']['level']
     ]);
+    
     exit;
 }
 
@@ -55,7 +56,6 @@ if ($result->num_rows > 0) {
             'username' => $user["username"],
             'level' => $user["level"]
         ];
-        var_dump($_SESSION);
         echo json_encode(array(
             "message" => "Login berhasil",
             "username" => $user["username"],

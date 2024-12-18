@@ -1,15 +1,15 @@
 <?php
 session_start();
-header("Access-Control-Allow-Origin: https://lightcoral-rat-258584.hostingersite.com");
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');  // Mengizinkan metode HTTP tertentu
-header('Access-Control-Allow-Headers: Content-Type'); 
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE"); 
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 include('../Helper/DB.php'); 
 
-// Ambil parameter id dari URL
+
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if ($id) {
-    // Query untuk mengambil produk berdasarkan id
     $sql = "SELECT pr.nama_produk, pr.warna, pr.kategori, pr.harga, pr.gambar_produk, pr.deskripsi, 
        sz.size, st.stok
         FROM produk pr
@@ -17,15 +17,10 @@ if ($id) {
         INNER JOIN stok_size_produk st ON sz.id_size = st.id_size
         WHERE pr.id_produk = ?";
         
-    // Siapkan statement
+    
     if ($stmt = $conn->prepare($sql)) {
-        // Bind parameter
-        $stmt->bind_param("i", $id); // "i" untuk integer (id_produk)
-        
-        // Eksekusi query
+        $stmt->bind_param("i", $id); 
         $stmt->execute();
-        
-        // Ambil hasilnya
         $result = $stmt->get_result();
         $produk = [];
         
@@ -39,7 +34,6 @@ if ($id) {
                     $produk['harga'] = $row['harga'];
                     $produk['gambar_produk'] = $row['gambar_produk'];
                     $produk['deskripsi'] = $row['deskripsi'];
-                    // Menambahkan ukuran dan stok ke array sizes
                     $produk['sizes'][] = [
                         'size' => $row['size'],
                         'stok' => $row['stok']

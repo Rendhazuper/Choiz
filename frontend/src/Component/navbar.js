@@ -4,9 +4,6 @@ import { Navbar, Nav, NavDropdown, Container, Button } from 'react-bootstrap';
 import { BsPerson,BsSearch, BsHeart, BsCart3 } from 'react-icons/bs';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-
-
 const MyNavbar = () => {
 
   const handleLogout = async () => {
@@ -77,7 +74,7 @@ const MyNavbar = () => {
                 <Nav.Link style={{ marginLeft: '10px', marginRight: '10px' }} href="#"><BsHeart /></Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link style={{ marginLeft: '10px'}} href="#"><BsCart3 /></Nav.Link>
+                <Nav.Link style={{ marginLeft: '10px'}} href="/cart"><BsCart3 /></Nav.Link>
             </Nav.Item>
         </Nav>
     </Container>

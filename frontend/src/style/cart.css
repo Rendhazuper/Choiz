@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
+
+.Cart {
+  position: relative;
+}
+
+.fotocart {
+  width: 100vw;
+}
+
+.tulisanbanner1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.headbanner1 {
+  font-weight: 500;
+  font-size: 48px;
+}
+
+.subheadbanner1 {
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.cardtotal1 {
+  background-color: #f9f1e7;
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  height: auto;
+}
+
+.kontencardtotal1 {
+  text-align: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+}
+
+.rowtotal {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.labeltotal {
+  flex: 1;
+  text-align: left;
+}
+
+.nominal {
+  font-size: 20px;
+  font-weight: 500;
+  color: #b88e2f;
+}
+
+.judultotal {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.checkoutbut {
+  background-color: transparent;
+  color: black;
+  border: 1px solid black;
+  width: 222px;
+  height: 59px;
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 15px;
+}
+
+.checkoutbut:hover {
+  background-color: #b88e2f;
+  border: none;
+}
+
+.futercart {
+  width: 100vw;
+  background-color: #e6dbc6;
+}
+
+.bodynya td {
+  /* text-align: center; */
+  vertical-align: middle;
+}

@@ -18,7 +18,7 @@ function sendResetEmail($email, $token)
     $apiKey = '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'; // Ganti dengan API key Anda
     $url = 'https://api.brevo.com/v3/smtp/email';
 
-    $resetLink = "http:/lightcoral-rat-258584.hostingersite.com/reset?token=$token"; // Ganti dengan URL reset password Anda
+    $resetLink = "http://localhost:3000/reset?token=$token"; // Ganti dengan URL reset password Anda
 
     $data = [
         'sender' => ['Administrator' => 'Polinema Career', 'email' => 'giojio936@gmail.com'],

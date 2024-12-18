@@ -1,9 +1,8 @@
 <?php
-
 session_start();
 var_dump($_SESSION);
 
-header("Access-Control-Allow-Origin: https://lightcoral-rat-258584.hostingersite.com");  // Sesuaikan dengan domain frontend kamu
+header("Access-Control-Allow-Origin: http://localhost:3000");  // Sesuaikan dengan domain frontend kamu
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");

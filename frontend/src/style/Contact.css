@@ -1,53 +1,47 @@
-.bannershop{ 
-    position: relative;
-    width: 100vw;
-}
-
-.tulisanbanner{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-}
-
-.masih{
-    justify-content: center;
-    align-items: center;
-
-}
-
-.rou{ 
-    margin  :50px 50px 50px 50px;
-    /* background-color: red; */
-}
-
-
-
-.masih h1{
-    font-weight: 600;
-    font-size: 36px;
-}
-.masih p{
-    font-weight: 400;
-    font-size: 16px;
-    color : #9F9F9F
-}
-
-.icon{
-    background-color: red;
-    position: relative;
-    padding : 0 0 0 0 ;
-    box-sizing: border-box;
-}
-
-
-.footer{
-    background-color: #E6DBC6;
+.bannershop {
+  position: relative;
   width: 100vw;
 }
 
-.textarea{
-    width : 580px
+.tulisanbanner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
+.masih {
+  justify-content: center;
+  align-items: center;
+}
+
+.rou {
+  margin: 50px 50px 50px 50px;
+}
+
+.masih h1 {
+  font-weight: 600;
+  font-size: 36px;
+}
+.masih p {
+  font-weight: 400;
+  font-size: 16px;
+  color: #9f9f9f;
+}
+
+.icon {
+  background-color: red;
+  position: relative;
+  padding: 0 0 0 0;
+  box-sizing: border-box;
+}
+
+.footer {
+  background-color: #e6dbc6;
+  width: 100vw;
+}
+
+.textarea {
+  width: 580px;
+}

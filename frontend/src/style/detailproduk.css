@@ -1,223 +1,230 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
 
-.kon-detail{
-    margin: 50px;
-    justify-content: center;
-}
-
-.kol1des h4{
-  font-weight: black;
-  font-size: 24px;
-  font-weight: 500;
-  display : flex;
+.kon-detail {
+  margin: 50px;
   justify-content: center;
 }
 
-.colImage{
-  display : flex;
-width : 50px;
-height: 348px;
-overflow: hidden;
-border-radius: 20px;
-margin :0;
-padding:0;
-flex-shrink: 0;
+.kol1des h4 {
+  font-weight: black;
+  font-size: 24px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
 }
 
-.imeg1{
+.colImage {
+  display: flex;
+  width: 50px;
+  height: 348px;
+  overflow: hidden;
+  border-radius: 20px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.imeg1 {
   width: 100%;
-  height : 100%;
+  height: 100%;
   object-fit: cover;
   object-position: top;
 }
-.imeg2{
+.imeg2 {
   width: 100%;
-  height : 100%;
+  height: 100%;
   object-fit: cover;
   object-position: bottom;
 }
 
-.kolom2 h4{
-  color: #9F9F9F;
+.kolom2 h4 {
+  color: #9f9f9f;
   font-weight: 400;
   font-size: 24px;
-  display : flex;
+  display: flex;
   justify-content: center;
 }
 
-.row1{
+.row1 {
   padding-right: 450px;
 }
 
-.row3{
+.row3 {
   width: 1320px;
   height: 300px;
-  
 }
 
-.row3 p{
-  color: #9F9F9F;
-  font-weight: 400; 
+.row3 p {
+  color: #9f9f9f;
+  font-weight: 400;
   font-size: 16px;
 }
 
-.Header h2{
-  font-family: 'Poppins', sans-serif;
+.Header h2 {
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
-  font-size: 42px ;
+  font-size: 42px;
 }
-.category-row, .tags-row {
-  display: flex;         /* Menggunakan Flexbox */
-  align-items: center;   /* Vertikal center agar titik dua dan teks sejajar */
+.category-row,
+.tags-row {
+  display: flex; /* Menggunakan Flexbox */
+  align-items: center; /* Vertikal center agar titik dua dan teks sejajar */
 }
 
 .tag {
-  margin-left: 10px;  /* Memberikan jarak antara titik dua dan kategori/tags */
+  margin-left: 10px; /* Memberikan jarak antara titik dua dan kategori/tags */
 }
-.size p{
+.size p {
   font-weight: 400;
   font-size: 14px;
-  color : #9F9F9F ;
+  color: #9f9f9f;
   margin-bottom: 18px;
 }
-.flexin{
+.flexin {
   display: flex;
 }
-.size div{
+.size div {
   color: black;
 }
 .deskripsibawah p {
   font-weight: 400;
   font-size: 14px;
-  color : #9F9F9F ;
-  margin-bottom: 18px; 
+  color: #9f9f9f;
+  margin-bottom: 18px;
 }
-.deskripsibawah div{
+.deskripsibawah div {
   color: black;
 }
-.share{
+.share {
   display: flex;
 }
 
-.colored-container{
-  margin-bottom : 20px;
+.colored-container {
+  margin-bottom: 20px;
 }
 
 .quantity-controls button {
-  border: none;                   /* Menghapus border tombol */
-  background: transparent;        /* Menghapus background tombol */
-  color: inherit;                  /* Warna teks mengikuti warna elemen induk */
-  font-size: 18px;                 /* Ukuran font tombol */
-  padding: 5px 10px;                      /* Menghapus padding */
-  cursor: pointer;                /* Menambahkan pointer saat dihover */
+  border: none; /* Menghapus border tombol */
+  background: transparent; /* Menghapus background tombol */
+  color: inherit; /* Warna teks mengikuti warna elemen induk */
+  font-size: 18px; /* Ukuran font tombol */
+  padding: 5px 10px; /* Menghapus padding */
+  cursor: pointer; /* Menambahkan pointer saat dihover */
 }
 .quantity-controls span {
-  margin: 0 10px;                  /* Memberikan jarak antara tombol dan angka */
+  margin: 0 10px; /* Memberikan jarak antara tombol dan angka */
   font-size: 18px;
-  font-weight: bold;               /* Menambahkan ketebalan pada angka */
+  font-weight: bold; /* Menambahkan ketebalan pada angka */
 }
-.lanjutan p{
+.lanjutan p {
   font-weight: 400;
   font-size: 14px;
-  color : #9F9F9F ;
+  color: #9f9f9f;
   margin-bottom: 5px;
 }
 
-.size Button{
-  margin : 0 0 20px 0;
+.size Button {
+  margin: 0 0 20px 0;
 }
 
-.description{
-  margin : 50px 0 50px 0;
-  width : 424px;
-  height : 80px;
+.description {
+  margin: 50px 0 50px 0;
+  width: 424px;
+  height: 80px;
   /* font-weight: 400; */
-  font-size : 13px;
+  font-size: 13px;
 }
 
-.description p{
+.description p {
   font-weight: 400;
 }
 
-.Header h3{
-  font-family: 'Poppins', sans-serif;
+.Header h3 {
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
-  font-size: 24px ;
-  color : #9F9F9F ;
+  font-size: 24px;
+  color: #9f9f9f;
 }
 
 .col-kiri {
-    width: 423px; /* Tentukan lebar kolom */
-    height: 500px; /* Tentukan tinggi kolom */
-    overflow: hidden; /* Jika gambar lebih besar, sembunyikan bagian yang melebihi */
-    margin-right: auto;
-  }
-
-.col-kanan{
-    margin-left: auto;
+  width: 423px; /* Tentukan lebar kolom */
+  height: 500px; /* Tentukan tinggi kolom */
+  overflow: hidden; /* Jika gambar lebih besar, sembunyikan bagian yang melebihi */
+  margin-right: auto;
 }
-  .col-kiri img {
-    width: 100%; /* Pastikan gambar memenuhi lebar kolom */
-    height: 100%; /* Pastikan gambar memenuhi tinggi kolom */
-    object-fit: cover; /* Mengatur gambar agar mengisi area tanpa merusak proporsi */
-  }
 
-  .colored-container {
-    width: 30px; /* Menentukan diameter lingkaran */
-    height: 30px; /* Menentukan diameter lingkaran */
-    border-radius: 50%; /* Membuat bentuk lingkaran */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white; /* Warna teks kontras */
-    font-size: 12px; /* Ukuran font */
-    text-align: center; /* Teks tengah */
-  }
-  
-  .hitam {
-    background-color: black;
-  }
-  
-  .kuning {
-    background-color: yellow;
-  }
-  
-  .merah {
-    background-color: red;
-  }
-  
-  .biru {
-    background-color: blue;
-  }
+.col-kanan {
+  margin-left: auto;
+}
+.col-kiri img {
+  width: 100%; /* Pastikan gambar memenuhi lebar kolom */
+  height: 100%; /* Pastikan gambar memenuhi tinggi kolom */
+  object-fit: cover; /* Mengatur gambar agar mengisi area tanpa merusak proporsi */
+}
 
-  .putih{
-    background-color: white;
-    border : 1px solid black;
-  }
+.colored-container {
+  width: 30px; /* Menentukan diameter lingkaran */
+  height: 30px; /* Menentukan diameter lingkaran */
+  border-radius: 50%; /* Membuat bentuk lingkaran */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Warna teks kontras */
+  font-size: 12px; /* Ukuran font */
+  text-align: center; /* Teks tengah */
+}
 
-  .brown{
-    background-color: brown;
-  }
-  .cream{
-    background-color: #FFFDD0 ;
-  }
+.hitam {
+  background-color: black;
+}
 
-  .bawah{
-    display: flex ;
-    align-items: center;
-    gap : 25px
-  }
-.mt-3{
-  border : 1px solid black;
+.kuning {
+  background-color: yellow;
+}
+
+.merah {
+  background-color: red;
+}
+
+.biru {
+  background-color: blue;
+}
+
+.putih {
   background-color: white;
-  color : black; 
+  border: 1px solid black;
+}
+
+.brown {
+  background-color: brown;
+}
+.cream {
+  background-color: #fffdd0;
+}
+
+.bawah {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.mt-3 {
+  border: 1px solid black;
+  background-color: white;
+  color: black;
   width: 180px;
   height: 64px;
 }
 
-.mt-3:hover{
-  background-color: #B88E2F;
-  color : white;
-  border : 0px;
+.mt-3:hover {
+  background-color: #b88e2f;
+  color: white;
+  border: 0px;
 }
 
+.custom-toast {
+  background-color: #e7f9e9;
+  width: 400px;
+  height: auto;
+  margin: 100px;
+  color: #2fb846;
+}
