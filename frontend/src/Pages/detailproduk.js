@@ -17,10 +17,10 @@ import "../style/detailproduk.css";
 import axios from "axios";
 
 const DetailProduk = ({ produk }) => {
-  const { id } = useParams(); // Mengambil parameter id dari URL
+  const { id } = useParams();
   const [product, setProduk] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [quantity, setQuantity] = useState(1); // State untuk jumlah produk yang dipilih
+  const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState([]);
   const [stok, setStok] = useState(0);
   const [showToast, setShowToast] = useState(false);
@@ -87,7 +87,7 @@ const DetailProduk = ({ produk }) => {
   }, [id]);
 
   if (!product) {
-    return <div>Loading...</div>; // Tampilkan loading jika data belum tersedia
+    return <div>Loading...</div>;
   }
 
   const onPurchase = async () => {

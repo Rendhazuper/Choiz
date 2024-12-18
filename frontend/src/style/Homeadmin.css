@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+.judul {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.kontainernya {
+  display: flex;
+  justify-content: center;
+}
+
+.judul p {
+  margin: 0px;
+  padding: 0px;
+  line-height: 1;
+}
+
+.subjudul {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.centerrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.kolom-button {
+  display: flex;
+  gap: 60px;
+}
+
+.button-admin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 200px;
+  height: 100px;
+  background-color: transparent;
+  border: 1px solid #b88e2f;
+}
+
+.button-admin:hover {
+  background-color: #b88e2f;
+  border: none;
+}
+
+.button-admin:hover p,
+.button-admin:hover svg {
+  color: white;
+  fill: white;
+}
+
+.button-admin p {
+  font-size: 20px;
+  color: #b88e2f;
+}
+
+@media (max-width: 768px) {
+  .button-admin {
+    width: 150px;
+    height: 80px;
+  }
+  .button-admin .icon {
+    font-size: 25px;
+  }
+  .judul {
+    display: none;
+  }
+  .kolom-button {
+    margin: 10x;
+  }
+
+  .container {
+    height: 100%;
+  }
+  .centerrow {
+    gap: 10px;
+  }
+}

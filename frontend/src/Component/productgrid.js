@@ -4,7 +4,7 @@ import ProductCard from "./productCard";
 import axios from "axios";
 import "./productgrid.css";
 
-const ProductGrid = () => {
+const ProductGrid = ({ isAdmin }) => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
@@ -80,6 +80,7 @@ const ProductGrid = () => {
                       harga={product.harga}
                       gambarProduk={"/" + product.gambar_produk}
                       kategori={product.kategori}
+                      isAdmin={isAdmin}
                     />
                   </Col>
                 ))}

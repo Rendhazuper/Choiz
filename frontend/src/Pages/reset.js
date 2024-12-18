@@ -15,10 +15,9 @@ const Reset = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Ambil token dari URL query parameters
     const searchParams = new URLSearchParams(location.search);
-    const tokenFromUrl = searchParams.get('token');
-    
+    const tokenFromUrl = searchParams.get("token");
+
     if (!tokenFromUrl) {
       setMessage("Token reset password tidak valid.");
       setVariant("danger");
@@ -44,9 +43,9 @@ const Reset = () => {
     try {
       const response = await axios.post(
         "http://localhost/Backend/Auth/Reset.php",
-        { 
+        {
           token: token,
-          newPassword: password 
+          newPassword: password,
         },
         {
           headers: {
@@ -58,8 +57,6 @@ const Reset = () => {
       if (response.status === 200) {
         setMessage("Password berhasil direset. Silakan login.");
         setVariant("success");
-        
-        // Redirect ke halaman login setelah 2 detik
         setTimeout(() => {
           navigate("/login");
         }, 2000);
@@ -110,20 +107,20 @@ const Reset = () => {
               <Row>
                 <Form.Group className="mb-3" controlId="password">
                   <Form.Label className="label">Password Baru</Form.Label>
-                  <Form.Control 
-                    type="password" 
-                    placeholder="Masukkan password baru" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
+                  <Form.Control
+                    type="password"
+                    placeholder="Masukkan password baru"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="confirmPassword">
                   <Form.Label className="label">Konfirmasi Password</Form.Label>
-                  <Form.Control 
-                    type="password" 
-                    placeholder="Konfirmasi password baru" 
-                    value={confirmPassword} 
-                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                  <Form.Control
+                    type="password"
+                    placeholder="Konfirmasi password baru"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </Form.Group>
               </Row>

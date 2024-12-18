@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { BsEye, BsEyeSlash, BsEyeFill } from "react-icons/bs";
 import axios from "axios";
 import "../style/login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(null);
   const [variant, setVariant] = useState("success");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -28,11 +30,10 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true, // Pastikan cookie dikirim
+          withCredentials: true,
         }
       );
 
-      // Mengecek status 200 dari response backend
       if (response.status === 200) {
         const { level, username } = response.data;
         setMessage("Anda berhasil login!");
@@ -40,13 +41,12 @@ const Login = () => {
 
         console.log(response.data);
 
-        
         sessionStorage.setItem("userLevel", level);
         sessionStorage.setItem("username", username);
 
         if (level === "admin") {
           setTimeout(() => {
-            navigate("/ProductInput");
+            navigate("/admin");
           }, 1000);
         } else {
           setTimeout(() => {
@@ -81,6 +81,10 @@ const Login = () => {
     }
   };
 
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="kon-login login relative justify-center items-center min-h-screen">
       <Container className="">
@@ -112,12 +116,25 @@ const Login = () => {
               <Row>
                 <Form.Group className="mb-3" controlId="password">
                   <Form.Label className="label">Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <div className="d-flex align-items-center">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      style={{ paddingRight: "40px" }}
+                    />
+                    <div
+                      onClick={togglePassword}
+                      style={{
+                        color: "black",
+                        cursor: "pointer",
+                        marginLeft: "-30px",
+                      }}
+                    >
+                      {showPassword ? <BsEyeSlash /> : <BsEyeFill />}
+                    </div>
+                  </div>
                 </Form.Group>
               </Row>
               <Row>

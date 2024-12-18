@@ -25,11 +25,11 @@ const ProductInput = () => {
     if (sizes.includes(sizeValue)) {
       setSizes(sizes.filter((size) => size !== sizeValue));
       const newStok = { ...stok };
-      delete newStok[sizeValue]; 
+      delete newStok[sizeValue];
       setStok(newStok);
     } else {
       setSizes([...sizes, sizeValue]);
-      setStok({ ...stok, [sizeValue]: 0 }); 
+      setStok({ ...stok, [sizeValue]: 0 });
     }
   };
 
@@ -40,7 +40,6 @@ const ProductInput = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate input
     if (
       !namaProduk ||
       !sizes.length ||
@@ -57,10 +56,10 @@ const ProductInput = () => {
 
     const formData = new FormData();
     formData.append("nama_produk", namaProduk);
-    formData.append("sizes", JSON.stringify(sizes)); 
+    formData.append("sizes", JSON.stringify(sizes));
     formData.append("warna", warna);
     formData.append("kategori", kategori);
-    formData.append("stocks", JSON.stringify(stok)); 
+    formData.append("stocks", JSON.stringify(stok));
     formData.append("harga", harga);
     formData.append("gambar_produk", gambarProduk);
     formData.append("deskripsi", deskripsi);

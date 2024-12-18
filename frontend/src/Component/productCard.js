@@ -18,23 +18,23 @@ const ProductCard = ({
   gambarProduk,
   kategori,
   idProduk,
+  isAdmin,
 }) => {
   const formatHarga = new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
   }).format(harga);
 
+  const linkTo = isAdmin ? `/edit-product/${idProduk}` : `/produk/${idProduk}`;
+
   return (
     <Card className="cardu text-start" style={{ width: "20rem" }}>
-      <Link
-        to={`/produk/${idProduk}`}
-        style={{ textDecoration: "none", color: "inherit" }}
-      >
+      <Link to={linkTo} style={{ textDecoration: "none", color: "inherit" }}>
         <Card.Img
           variant="top"
           src={gambarProduk}
           alt={namaProduk}
-          className="gambarkartu card-img" 
+          className="gambarkartu card-img"
         />
         <Card.Body className="konten">
           <Card.Title className="Titlecard">{namaProduk}</Card.Title>

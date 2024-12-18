@@ -18,6 +18,8 @@ import DetailProduk from "./Pages/detailproduk";
 import Contact from "./Pages/Contact";
 import About from "./Pages/About";
 import Cart from "./Pages/Cart";
+import HomeAdmin from "./Pages/Homeadmin";
+import Produk from "./Pages/Produk";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +65,14 @@ const router = createBrowserRouter([
   {
     path: "/cart",
     element: <Cart />,
+  },
+  {
+    path: "/admin",
+    element: <HomeAdmin />,
+  },
+  {
+    path: "/produk",
+    element: <Produk />,
   },
 ]);
 

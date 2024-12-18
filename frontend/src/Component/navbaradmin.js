@@ -8,21 +8,17 @@ const AdminNavbar = () => {
   const handleLogout = async () => {
     const response = await fetch("http://localhost/Backend/Auth/logout.php", {
       method: "POST",
-      credentials: "include", // Mengirimkan cookie jika ada
+      credentials: "include",
     });
 
     try {
-      // Cek apakah respons statusnya OK
       if (!response.ok) {
         throw new Error("Logout gagal");
       }
-
-      // Cek teks respons yang diterima
       const text = await response.text();
-      console.log("Raw response:", text); // Tampilkan respons mentah untuk debugging
+      console.log("Raw response:", text);
 
-      // Jika respons adalah JSON yang valid, lanjutkan parsing
-      const data = JSON.parse(text); // Gantilah dari response.json() ke JSON.parse()
+      const data = JSON.parse(text);
 
       console.log("Session ID before logout:", data.session_id);
 
@@ -32,12 +28,12 @@ const AdminNavbar = () => {
 
         console.log("Logout berhasil!");
 
-        window.location.href = "/login"; // Redirect ke halaman login
+        window.location.href = "/login";
       } else {
         alert("Logout gagal");
       }
     } catch (error) {
-      console.error("Error parsing JSON:", error); // Jika ada kesalahan saat parsing JSON
+      console.error("Error parsing JSON:", error);
       alert("Terjadi kesalahan saat logout. Silakan coba lagi.");
     }
   };
@@ -45,20 +41,24 @@ const AdminNavbar = () => {
   return (
     <Navbar bg="white" expand="lg" className="border-bottom">
       <Container fluid>
-        <Navbar.Brand href="#" className="fw-bold" style={{ fontSize: "24px" }}>
+        <Navbar.Brand
+          href="/admin"
+          className="fw-bold"
+          style={{ fontSize: "24px" }}
+        >
           CHOIZ
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav" className="justify-content-center">
           <Nav className="mx-auto">
             <Nav.Link
-              href="/"
+              href="/UserCRUD"
               style={{ marginLeft: "75px", marginRight: "75px" }}
             >
               User
             </Nav.Link>
             <Nav.Link
-              href="/ProductInput"
+              href="/produk"
               style={{ marginLeft: "75px", marginRight: "75px" }}
             >
               Product
