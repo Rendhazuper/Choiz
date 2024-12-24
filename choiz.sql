@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 08 Des 2024 pada 17.58
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Generation Time: Dec 24, 2024 at 01:17 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `artikel`
+-- Table structure for table `artikel`
 --
 
 CREATE TABLE `artikel` (
@@ -39,7 +39,7 @@ CREATE TABLE `artikel` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `billing`
+-- Table structure for table `billing`
 --
 
 CREATE TABLE `billing` (
@@ -56,20 +56,21 @@ CREATE TABLE `billing` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `cart`
+-- Table structure for table `cart`
 --
 
 CREATE TABLE `cart` (
   `id_cart` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `id_produk` int(11) NOT NULL,
+  `id_size` int(11) NOT NULL,
   `jumlah` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `password_resets`
+-- Table structure for table `password_resets`
 --
 
 CREATE TABLE `password_resets` (
@@ -83,7 +84,7 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `produk`
+-- Table structure for table `produk`
 --
 
 CREATE TABLE `produk` (
@@ -97,20 +98,31 @@ CREATE TABLE `produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `produk`
+-- Dumping data for table `produk`
 --
 
 INSERT INTO `produk` (`id_produk`, `nama_produk`, `warna`, `kategori`, `harga`, `gambar_produk`, `deskripsi`) VALUES
-(121, 'Polo Shirt', 'Navy Blue', 'Pakaian', 149000, 0x61737365742f70726f64756b2f363735356336306363396361302e706e67, 'Cotton polo shirt with classic styling'),
-(122, 'Skinny Jeans', 'Black', 'Pakaian', 199000, 0x61737365742f70726f64756b2f363735356336356434396366372e706e67, 'Slim fit stretch denim jeans'),
-(123, 'Hiking Backpack', 'Olive Green', 'Perlengkapan Outdoor', 399000, 0x61737365742f70726f64756b2f363735356336373734386162332e706e67, 'Durable backpack with multiple compartments'),
-(124, 'Ceramic Mug', 'White', 'Perlengkapan Rumah', 40000, 0x61737365742f70726f64756b2f363735356336393731613132382e706e67, '12oz ceramic mug with minimalist design'),
-(125, 'Running Shoes', 'Gray', 'Olahraga', 498999, 0x61737365742f70726f64756b2f363735356336616361316338652e706e67, 'Lightweight, breathable running shoes with cushioned sole');
+(166, 'Jaket skena', 'hitam', 'jaket', 1231, 0x61737365742f70726f64756b2f363736393965316434326663612e706e67, 'ts');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `size_produk`
+-- Table structure for table `riwayat_transaksi`
+--
+
+CREATE TABLE `riwayat_transaksi` (
+  `id_transaksi` int(11) NOT NULL,
+  `id_user` varchar(255) NOT NULL,
+  `id_produk` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `total_harga` int(11) NOT NULL,
+  `tanggal_transaksi` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `size_produk`
 --
 
 CREATE TABLE `size_produk` (
@@ -120,28 +132,17 @@ CREATE TABLE `size_produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `size_produk`
+-- Dumping data for table `size_produk`
 --
 
 INSERT INTO `size_produk` (`id_size`, `id_produk`, `size`) VALUES
-(123, 121, 'S'),
-(124, 121, 'M'),
-(125, 121, 'L'),
-(126, 121, 'XL'),
-(127, 122, 'L'),
-(128, 122, 'XL'),
-(129, 122, 'XXL'),
-(130, 122, 'M'),
-(131, 123, 'M'),
-(132, 123, 'L'),
-(133, 124, 'L'),
-(134, 125, 'L'),
-(135, 125, 'XL');
+(235, 166, 'XS'),
+(236, 166, 'S');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `stok_size_produk`
+-- Table structure for table `stok_size_produk`
 --
 
 CREATE TABLE `stok_size_produk` (
@@ -150,28 +151,17 @@ CREATE TABLE `stok_size_produk` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `stok_size_produk`
+-- Dumping data for table `stok_size_produk`
 --
 
 INSERT INTO `stok_size_produk` (`id_size`, `stok`) VALUES
-(123, 20),
-(124, 11),
-(125, 25),
-(126, 12),
-(127, 12),
-(128, 35),
-(129, 23),
-(130, 21),
-(131, 23),
-(132, 23),
-(133, 1),
-(134, 12),
-(135, 2);
+(235, 1),
+(236, 2);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -184,7 +174,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_user`, `email`, `username`, `name`, `password`, `level`) VALUES
@@ -192,35 +182,39 @@ INSERT INTO `users` (`id_user`, `email`, `username`, `name`, `password`, `level`
 (13, 'ge@gmail.com', 'ge', 'ge', 'ge', 'user'),
 (14, 'giovanoalkandri@gmail.com', 'giovanoalkandri', 'Giovano Alkandri', 'asd', 'user'),
 (15, 'giojio825@gmail.com', 'geoooo', 'geoooo', 'geo', 'user'),
-(16, 'a@g.com', 'a', 'a', 'a', 'user');
+(16, 'a@g.com', 'a', 'a', 'a', 'user'),
+(17, 'admin', 'admin', 'admin', 'admin', 'admin'),
+(18, 'baru@gmail.com', 'baru', 'baru', 'admin', 'admin'),
+(19, 'viona', 'viona', 'Viona', 'viona', 'admin');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `artikel`
+-- Indexes for table `artikel`
 --
 ALTER TABLE `artikel`
   ADD PRIMARY KEY (`id_artikel`);
 
 --
--- Indeks untuk tabel `billing`
+-- Indexes for table `billing`
 --
 ALTER TABLE `billing`
   ADD PRIMARY KEY (`id_bill`),
   ADD KEY `id_user` (`id_user`);
 
 --
--- Indeks untuk tabel `cart`
+-- Indexes for table `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id_cart`),
   ADD KEY `id_user` (`id_user`),
-  ADD KEY `id_produk` (`id_produk`);
+  ADD KEY `id_produk` (`id_produk`),
+  ADD KEY `id_size` (`id_size`);
 
 --
--- Indeks untuk tabel `password_resets`
+-- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD PRIMARY KEY (`id`),
@@ -228,26 +222,32 @@ ALTER TABLE `password_resets`
   ADD KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `produk`
+-- Indexes for table `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`);
 
 --
--- Indeks untuk tabel `size_produk`
+-- Indexes for table `riwayat_transaksi`
+--
+ALTER TABLE `riwayat_transaksi`
+  ADD PRIMARY KEY (`id_transaksi`);
+
+--
+-- Indexes for table `size_produk`
 --
 ALTER TABLE `size_produk`
   ADD PRIMARY KEY (`id_size`),
   ADD KEY `id_produk` (`id_produk`);
 
 --
--- Indeks untuk tabel `stok_size_produk`
+-- Indexes for table `stok_size_produk`
 --
 ALTER TABLE `stok_size_produk`
   ADD KEY `id_size` (`id_size`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id_user`),
@@ -255,84 +255,92 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `artikel`
+-- AUTO_INCREMENT for table `artikel`
 --
 ALTER TABLE `artikel`
   MODIFY `id_artikel` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `billing`
+-- AUTO_INCREMENT for table `billing`
 --
 ALTER TABLE `billing`
   MODIFY `id_bill` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `cart`
+-- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `password_resets`
+-- AUTO_INCREMENT for table `password_resets`
 --
 ALTER TABLE `password_resets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT untuk tabel `produk`
+-- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
 
 --
--- AUTO_INCREMENT untuk tabel `size_produk`
+-- AUTO_INCREMENT for table `riwayat_transaksi`
+--
+ALTER TABLE `riwayat_transaksi`
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `size_produk`
 --
 ALTER TABLE `size_produk`
-  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=237;
 
 --
--- AUTO_INCREMENT untuk tabel `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `billing`
+-- Constraints for table `billing`
 --
 ALTER TABLE `billing`
   ADD CONSTRAINT `billing_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`);
 
 --
--- Ketidakleluasaan untuk tabel `cart`
+-- Constraints for table `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
-  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`);
+  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`),
+  ADD CONSTRAINT `fk_produk_id` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `password_resets`
+-- Constraints for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `size_produk`
+-- Constraints for table `size_produk`
 --
 ALTER TABLE `size_produk`
   ADD CONSTRAINT `size_produk_ibfk_1` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`);
 
 --
--- Ketidakleluasaan untuk tabel `stok_size_produk`
+-- Constraints for table `stok_size_produk`
 --
 ALTER TABLE `stok_size_produk`
+  ADD CONSTRAINT `fk_size_produk` FOREIGN KEY (`id_size`) REFERENCES `size_produk` (`id_size`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `stok_size_produk_ibfk_1` FOREIGN KEY (`id_size`) REFERENCES `size_produk` (`id_size`);
 COMMIT;
 
