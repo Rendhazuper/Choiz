@@ -35,6 +35,7 @@ const Login = () => {
       );
 
       if (response.status === 200) {
+        console.log(response.status);
         const { level, username } = response.data;
         setMessage("Anda berhasil login!");
         setVariant("success");
@@ -86,10 +87,10 @@ const Login = () => {
   };
 
   return (
-    <div className="kon-login login relative justify-center items-center min-h-screen">
-      <Container className="">
+    <div className="kon-login login relative ">
+      <Container className="kontainernyalogin">
         <Row>
-          <Col className="judul">
+          <Col className="judulawal">
             <p>CHOIZ</p>
           </Col>
           <Col>

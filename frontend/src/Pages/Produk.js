@@ -13,9 +13,24 @@ const Produk = () => {
       <div>
         <AdminNavbar />
       </div>
-      <div>
-        <ProductGrid isAdmin={true} />
-      </div>
+      <Container>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+          className="margindoang"
+        >
+          <Link to="/productinput">
+            <Button className="buttonproduk">
+              <p> Input product </p>
+            </Button>
+          </Link>
+        </div>
+        <div>
+          <ProductGrid isAdmin={true} />
+        </div>
+      </Container>
     </div>
   );
 };

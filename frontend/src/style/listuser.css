@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+.kontainer-headerlistadmin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.button-tambahadmin {
+  background-color: #b88e2f;
+  border: none;
+  width: 150px;
+  height: 40px;
+}
+.button-tambahadmin:hover {
+  background-color: transparent;
+  border: 1px solid #b88e2f;
+  color: #b88e2f;
+}

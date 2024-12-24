@@ -5,7 +5,7 @@ import axios from "axios";
 import "../style/register.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Register = () => {
+const Regisadmin = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -31,7 +31,7 @@ const Register = () => {
     try {
       const response = await axios.post(
         "http://localhost/Backend/Auth/Register.php",
-        { name, email, username, password, level: "user" },
+        { name, email, username, password, level: "admin" },
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const Register = () => {
         setMessage("Registrasi berhasil! Silakan login.");
         setVariant("success");
         setTimeout(() => {
-          navigate("/login");
+          navigate("/listuser");
         }, 2000);
       } else {
         setMessage(response.data.error || "Terjadi kesalahan saat registrasi.");
@@ -68,7 +68,7 @@ const Register = () => {
   return (
     <div className="kon-register register relative justify-center items-center min-h-screen">
       <Container>
-        <Row>
+        <Row className="kontainer-regisadmin">
           <Col className="judul">
             <p>CHOIZ</p>
           </Col>
@@ -157,4 +157,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Regisadmin;

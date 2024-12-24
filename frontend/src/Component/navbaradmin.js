@@ -52,7 +52,7 @@ const AdminNavbar = () => {
         <Navbar.Collapse id="navbarNav" className="justify-content-center">
           <Nav className="mx-auto">
             <Nav.Link
-              href="/UserCRUD"
+              href="/listuser"
               style={{ marginLeft: "75px", marginRight: "75px" }}
             >
               User
@@ -75,27 +75,6 @@ const AdminNavbar = () => {
             >
               <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              style={{ marginLeft: "10px", marginRight: "10px" }}
-              href="#"
-            >
-              <BsSearch />
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              style={{ marginLeft: "10px", marginRight: "10px" }}
-              href="#"
-            >
-              <BsHeart />
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link style={{ marginLeft: "10px" }} href="/cart">
-              <BsCart3 />
-            </Nav.Link>
           </Nav.Item>
         </Nav>
       </Container>

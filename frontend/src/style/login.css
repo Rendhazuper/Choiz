@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
 
-.judul {
+.judulawal {
   /* background-color: red; */
   color: black;
   display: flex;
@@ -21,7 +21,13 @@
   font: "Poppins", sans-serif;
   background-image: url("../asset/Login.png");
   background-size: cover; /* Agar gambar memenuhi seluruh area */
-  background-position: center center; /* Menjaga posisi gambar tetap di tengah */
+  background-position: center center;
+}
+
+.kontainernyalogin {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
@@ -31,17 +37,12 @@ h1 {
 .label {
   color: black;
 }
-
-.password {
-  background-color: red;
-}
 .login {
   color: black;
   min-height: 100vh; /* Mengatur tinggi kontainer agar setidaknya 100% dari tinggi layar */
   display: flex;
-  justify-content: center; /* Menempatkan elemen di tengah secara horizontal */
+  justify-content: center;
   align-items: center; /* Menempatkan elemen di tengah secara vertikal */
-  color: white;
 }
 .Button {
   margin-left: 10px;

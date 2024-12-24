@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
+
+.buttonproduk {
+  background-color: #b88e2f;
+  border: none;
+  width: 150px;
+  height: 50px;
+}
+
+.buttonproduk p {
+  color: white;
+}
+
+.container {
+  margin: auto;
+  margin-top: 50px;
+  width: 100%;
+}
+
+.margindoang {
+  padding-right: 38px;
+  width: 100%;
+}

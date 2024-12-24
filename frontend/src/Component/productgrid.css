@@ -43,13 +43,11 @@
   color: #fff;
 }
 
-
 .pagination-container button:disabled {
   background-color: #ddd;
   color: #aaa;
   cursor: not-allowed;
 }
-
 
 .pagination-container button:hover {
   background-color: #b88e2f;

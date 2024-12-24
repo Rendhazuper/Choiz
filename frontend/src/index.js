@@ -20,6 +20,9 @@ import About from "./Pages/About";
 import Cart from "./Pages/Cart";
 import HomeAdmin from "./Pages/Homeadmin";
 import Produk from "./Pages/Produk";
+import EditProduk from "./Pages/edit-product";
+import Listuser from "./Pages/listuser";
+import Regisadmin from "./Pages/regisadmin";
 
 const router = createBrowserRouter([
   {
@@ -74,12 +77,21 @@ const router = createBrowserRouter([
     path: "/produk",
     element: <Produk />,
   },
+  {
+    path: "/edit-product/:id",
+    element: <EditProduk />,
+  },
+  {
+    path: "/listuser",
+    element: <Listuser />,
+  },
+  {
+    path: "/regisadmin",
+    element: <Regisadmin />,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={router} />);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

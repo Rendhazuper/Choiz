@@ -28,7 +28,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  /* height: 100vh; */
+  margin: 100px;
+  /* background-color: red; */
 }
 
 .kolom-button {
@@ -73,7 +75,8 @@
     font-size: 25px;
   }
   .judul {
-    display: none;
+    /* display: none; */
+    margin: 0px;
   }
   .kolom-button {
     margin: 10x;
@@ -83,6 +86,7 @@
     height: 100%;
   }
   .centerrow {
-    gap: 10px;
+    /* gap: 10px; */
+    margin: 100px;
   }
 }
