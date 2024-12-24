@@ -30,10 +30,11 @@ $email = $input["email"];
 $password = $input["password"];
 $nama = $input["name"];
 $username = $input["username"];
+$level = $input["level"];
 
 //query pakai prepared statement
-$stmt = $conn->prepare("INSERT INTO users (email, username, name, password, level) VALUES (?, ?, ?, ?, 'user')");
-$stmt->bind_param("ssss", $email, $username, $nama, $password);
+$stmt = $conn->prepare("INSERT INTO users (email, username, name, password, level) VALUES (?, ?, ?, ?, ?)");
+$stmt->bind_param("sssss", $email, $username, $nama, $password, $level);
 
 if ($stmt->execute()) {
     http_response_code(200);
