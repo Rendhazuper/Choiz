@@ -47,7 +47,13 @@ if ($id) {
     }
 } else {
     // Jika tidak ada id, ambil semua produk
-    $sql = "SELECT * FROM produk";
+    $sql = "SELECT p.*, 
+        (SELECT SUM(ssp.stok) 
+         FROM stok_size_produk ssp 
+         INNER JOIN size_produk sp ON ssp.id_size = sp.id_size 
+         WHERE sp.id_produk = p.id_produk) as total_stok 
+        FROM produk p 
+        HAVING total_stok > 0";
     
     // Eksekusi query
     $result = $conn->query($sql);
