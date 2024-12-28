@@ -6,6 +6,7 @@ import bannershop from "../asset/Baju/bannershop.png";
 import "../style/cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Col, Row, Table, Button, Spinner } from "react-bootstrap";
+import { FaTrash } from "react-icons/fa";
 
 const Cart = () => {
   const [cartData, setCartData] = useState([]);
@@ -34,11 +35,12 @@ const Cart = () => {
           }
         );
 
-        if (response.data.cart) {
+        if (response.data && response.data.cart) {
           setCartData(response.data.cart);
           calculateTotal(response.data.cart);
         } else {
           setError(response.data.error || "Error fetching cart data.");
+          setCartData([]);
         }
       } catch (error) {
         console.error("Error:", error);
@@ -70,35 +72,39 @@ const Cart = () => {
       setError(null);
 
       const username = sessionStorage.getItem("username");
-      console.log("Sending data to backend:", { username, totalAmount: total });
+      console.log("Sending data to backend:", {
+        username,
+        totalAmount: total,
+      });
 
-      // Membuat objek data yang akan dikirim
       const data = {
         username: username,
         totalAmount: total,
+        items: cartData.map((item) => ({
+          id_produk: item.id_produk,
+          id_size: item.id_size,
+          quantity: item.jumlah,
+          price: item.harga,
+        })),
       };
 
-      // Menggunakan fetch untuk mengirimkan data ke server
       const response = await fetch("http://localhost/Backend/Auth/Order.php", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Mengirimkan data dalam format JSON
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data), // Mengubah objek menjadi JSON
+        body: JSON.stringify(data),
       });
 
-      const responseData = await response.json(); // Mengambil respons sebagai JSON
+      const responseData = await response.json();
 
       console.log("Response from backend:", responseData);
 
-      // Memeriksa apakah token ada dalam respons
       if (responseData.token) {
         window.snap.pay(responseData.token, {
           onSuccess: function (result) {
             alert("Payment Success!");
             console.log(result);
-
-            // Kirim data setelah pembayaran sukses ke backend untuk memindahkan produk ke riwayat transaksi
             const username = sessionStorage.getItem("username");
 
             const moveToHistoryData = {
@@ -106,7 +112,6 @@ const Cart = () => {
               order_id: result.order_id,
             };
 
-            // Kirim request ke backend untuk memindahkan produk ke riwayat transaksi
             fetch("http://localhost/Backend/Auth/MoveToHistory.php", {
               method: "POST",
               headers: {
@@ -116,11 +121,13 @@ const Cart = () => {
             })
               .then((response) => response.json())
               .then((data) => {
+                console.log("Response from MoveToHistory:", data);
                 if (data.success) {
                   console.log("Order history updated:", data);
                   alert(
                     "Products have been successfully moved to your order history!"
                   );
+                  window.location.reload(); // Refresh the page after successful move to history
                 } else {
                   console.log("Error moving to order history:", data.error);
                   alert("Failed to move products to order history.");
@@ -154,6 +161,18 @@ const Cart = () => {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id_cart) => {
+    try {
+      await axios.post("http://localhost/Backend/Auth/deleteCartItem.php", {
+        id_cart,
+      });
+      setCartData(cartData.filter((item) => item.id_cart !== id_cart));
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting item:", error);
     }
   };
 
@@ -206,12 +225,12 @@ const Cart = () => {
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>SubTotal</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody className="bodynya">
                   {cartData.map((item) => (
                     <tr key={item.id_cart}>
-                      {/* Kolom Gambar */}
                       <td className="image-col">
                         <img
                           src={item.gambar_produk}
@@ -220,29 +239,30 @@ const Cart = () => {
                           className="mb-4"
                         />
                       </td>
-
-                      {/* Kolom Nama Produk */}
                       <td className="product-col">
                         {item.nama_produk} ({item.size})
                       </td>
-
-                      {/* Kolom Harga */}
                       <td className="price-col">
                         {new Intl.NumberFormat("id-ID", {
                           style: "currency",
                           currency: "IDR",
                         }).format(item.harga)}
                       </td>
-
-                      {/* Kolom Jumlah */}
                       <td className="quantity-col">{item.jumlah}</td>
-
-                      {/* Kolom Total Harga */}
                       <td className="subtotal-col">
                         {new Intl.NumberFormat("id-ID", {
                           style: "currency",
                           currency: "IDR",
                         }).format(item.harga * item.jumlah)}
+                      </td>
+                      <td className="action-col">
+                        <FaTrash
+                          style={{
+                            color: "red",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleDelete(item.id_cart)}
+                        />
                       </td>
                     </tr>
                   ))}

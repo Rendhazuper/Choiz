@@ -1,8 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -13,7 +12,7 @@ html, body {
 
 .App {
   text-align: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .App-logo {
@@ -52,96 +51,95 @@ html, body {
 }
 
 .banner {
-  width: 100vw; 
-  height: 606px; 
+  width: 100vw;
+  height: 606px;
   object-fit: cover;
   display: flex;
-  justify-content: flex-end;  /* Menempatkan card di sisi kanan */
+  justify-content: flex-end; /* Menempatkan card di sisi kanan */
 }
 
-.kartu{
-  width : 700px;
-  padding : 50px 0 50px 0;
-  position: absolute !important; 
+.kartu {
+  width: 700px;
+  padding: 50px 0 50px 0;
+  position: absolute !important;
   top: 150px;
   right: 50px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-.text1{
-  font-family: 'Poppins', sans-serif;
+.text1 {
+  font-family: "Poppins", sans-serif;
   font-size: 18px;
 }
-.textsub{
-  font-family: 'Poppins', sans-serif;
+.textsub {
+  font-family: "Poppins", sans-serif;
   font-size: 52px;
   font-weight: bolder;
-  color : #B88E2F
+  color: #b88e2f;
 }
-.paragraf{
-  font-family: 'Poppins', sans-serif;
+.paragraf {
+  font-family: "Poppins", sans-serif;
   font-size: 18px;
   font-weight: medium;
 }
 
-.section1{
+.section1 {
   position: relative;
 }
-.button.btn{
-  background-color: #B88E2F;
+.button.btn {
+  background-color: #b88e2f;
   border: 0px;
-  color : white;
+  color: white;
   width: 150px;
   height: 50px;
 }
 
-.button.btn:hover{
-  background-color : white;
-  color : #B88E2F;
-  border : 1px solid #B88E2F;
+.button.btn:hover {
+  background-color: white;
+  color: #b88e2f;
+  border: 1px solid #b88e2f;
   width: 150px;
   height: 50px;
 }
 
-.section2{
-  margin-top : 40px;
-
+.section2 {
+  margin-top: 40px;
 }
 
-.kon-imeg{
+.kon-imeg {
   width: 18rem;
 }
 
-.button2.btn{
-  width : 245px;
-  height : 48px;
+.button2.btn {
+  width: 245px;
+  height: 48px;
   background-color: white;
-  color : #B88E2F;
-  border : 1px solid #B88E2F;
+  color: #b88e2f;
+  border: 1px solid #b88e2f;
 }
 .button2.btn:hover {
-  background-color: #B88E2F;
+  background-color: #b88e2f;
   color: white;
   border: none;
 }
 
-.header{
-  font-family: 'Poppins', sans-serif;
-    font-weight: bolder;
-    color : #333333;
+.header {
+  font-family: "Poppins", sans-serif;
+  font-weight: bolder;
+  color: #333333;
 }
 
-.subheader{
-  font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    color: #666666;
+.subheader {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  color: #666666;
 }
-.section4{
-  background-color: #FCF8F3;
+.section4 {
+  background-color: #fcf8f3;
   width: 100vw;
 }
 
-.section6{
-  background-color: #E6DBC6;
+.section6 {
+  background-color: #e6dbc6;
   width: 100vw;
 }

@@ -8,14 +8,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const Forgot = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
-  const [variant, setVariant] = useState("success"); 
+  const [variant, setVariant] = useState("success");
 
   const handleForgot = async () => {
- 
     if (!email) {
       setMessage("Email harus diisi.");
       setVariant("danger");
-      return; 
+      return;
     }
 
     try {
@@ -34,22 +33,21 @@ const Forgot = () => {
         setMessage("Token berhasil dikirim. Silakan cek email Anda.");
         setVariant("success");
       } else {
-       
-        setMessage(response.data.error || "Terjadi kesalahan saat mengirim link reset password");
+        setMessage(
+          response.data.error ||
+            "Terjadi kesalahan saat mengirim link reset password"
+        );
         setVariant("danger");
       }
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
-
           setMessage("Email pengguna tidak ditemukann");
           setVariant("danger");
         } else if (error.response.status === 404) {
-         
           setMessage("Email pengguna tidak ditemukan");
           setVariant("danger");
         } else {
-        
           setMessage(error.response?.data?.error || "Terjadi kesalahan");
           setVariant("danger");
         }
@@ -57,7 +55,6 @@ const Forgot = () => {
         setMessage("Tidak dapat terhubung ke server");
         setVariant("danger");
       } else {
-        
         setMessage("Terjadi kesalahan yang tidak diketahui");
         setVariant("danger");
       }
@@ -65,8 +62,8 @@ const Forgot = () => {
   };
 
   return (
-    <div className="kon-forgot forgot relative justify-center items-center min-h-screen">
-      <Container className="kon-forgot">
+    <div className="kon-forgot forgot relative ">
+      <Container className="kontainernyaforgot">
         <Row>
           <Col className="judul">
             <p>CHOIZ</p>
@@ -84,7 +81,12 @@ const Forgot = () => {
               <Row>
                 <Form.Group className="mb-3" controlId="email">
                   <Form.Label className="label">Email</Form.Label>
-                  <Form.Control type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </Form.Group>
               </Row>
               <Row>

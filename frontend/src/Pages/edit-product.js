@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "../style/detailproduk.css";
 
@@ -144,6 +145,14 @@ const EditProduk = () => {
   return (
     <div>
       <Container>
+        <Row className="align-items-center mb-4">
+          <Col className="text-start">
+            <Link to="/produk">
+              <Button variant="danger">Cancel</Button>
+            </Link>
+          </Col>
+        </Row>
+
         <h1>Edit Product</h1>
         <Form onSubmit={handleSubmit}>
           {/* Nama Produk */}

@@ -2,14 +2,6 @@ import React from "react";
 import "./productCard.css";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-  FaShoppingCart,
-  FaHeart,
-  FaEye,
-  FaRandom,
-  FaStar,
-  FaRegStar,
-} from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ProductCard = ({

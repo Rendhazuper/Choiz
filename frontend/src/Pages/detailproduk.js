@@ -54,10 +54,11 @@ const DetailProduk = ({ produk }) => {
   }, [navigate]);
 
   const handleSizeClick = (size) => {
-    setSelectedSize(size);
+    setSelectedSize(size); // Perbarui ukuran yang dipilih
     const selectedSizeObj = product.sizes.find((item) => item.size === size);
     if (selectedSizeObj) {
-      setStok(selectedSizeObj.stok);
+      setStok(selectedSizeObj.stok); // Perbarui stok untuk ukuran yang dipilih
+      setQuantity(1); // Reset quantity ke nilai awal
       console.log("Button clicked for size: ", size);
     }
   };
@@ -207,10 +208,9 @@ const DetailProduk = ({ produk }) => {
   const addToCart = async () => {
     if (!id) {
       console.error("Product data is missing or invalid.");
-      return; // Jangan lanjutkan jika produk belum terisi atau ID produk tidak valid
+      return;
     }
 
-    // Ambil username dari sessionStorage
     const username = sessionStorage.getItem("username");
     if (!username) {
       console.error("User not logged in.");
@@ -283,7 +283,6 @@ const DetailProduk = ({ produk }) => {
           <Container className="kontrakan">
             <Row>
               <Col className="col-kiri" md={6}>
-                {/* Pastikan URL gambar benar */}
                 <Image src={"/" + product.gambar_produk} />
               </Col>
               <Col className="col-kanan" md={7}>
@@ -298,29 +297,41 @@ const DetailProduk = ({ produk }) => {
                   <Col className="size">
                     <p>Size</p>
                     {Array.isArray(product.sizes) ? (
-                      product.sizes.map((size, index) => (
-                        <Button
-                          key={index}
-                          variant="primary"
-                          onClick={() => handleSizeClick(size.size)}
-                          style={{
-                            marginRight: "18px",
-                            backgroundColor:
-                              selectedSize === size.size ? "#B88E2F" : "white",
-                            color:
-                              selectedSize === size.size ? "white" : "#B88E2F",
-                            border:
-                              selectedSize === size.size
-                                ? "#B88E2F"
-                                : "1px solid #B88E2F",
-                            padding: "10px 20px",
-                          }}
-                        >
-                          {size.size}
-                        </Button>
-                      ))
+                      product.sizes
+                        .filter((size) => size.stok > 0)
+                        .map((size, index) => (
+                          <Button
+                            key={index}
+                            variant="primary"
+                            onClick={() => handleSizeClick(size.size)}
+                            style={{
+                              marginRight: "18px",
+                              backgroundColor:
+                                selectedSize === size.size
+                                  ? "#B88E2F"
+                                  : "white",
+                              color:
+                                selectedSize === size.size
+                                  ? "white"
+                                  : "#B88E2F",
+                              border:
+                                selectedSize === size.size
+                                  ? "#B88E2F"
+                                  : "1px solid #B88E2F",
+                              padding: "10px 20px",
+                            }}
+                          >
+                            {size.size}
+                          </Button>
+                        ))
                     ) : (
                       <p>{product.size}</p>
+                    )}
+                    {selectedSize && stok !== null && (
+                      <p>
+                        Stok untuk ukuran <strong>{selectedSize}</strong>:{" "}
+                        {stok}
+                      </p>
                     )}
                     <p>Color</p>
                     <div
