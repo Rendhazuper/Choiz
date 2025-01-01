@@ -110,6 +110,12 @@ const Cart = () => {
             const moveToHistoryData = {
               username: username,
               order_id: result.order_id,
+              items: cartData.map((item) => ({
+                id_produk: item.id_produk,
+                id_size: item.id_size,
+                quantity: item.jumlah,
+                price: item.harga,
+              })),
             };
 
             fetch("http://localhost/Backend/Auth/MoveToHistory.php", {
@@ -122,19 +128,22 @@ const Cart = () => {
               .then((response) => response.json())
               .then((data) => {
                 console.log("Response from MoveToHistory:", data);
-                if (data.success) {
+
+                if (data.status === "success") {
                   console.log("Order history updated:", data);
                   alert(
                     "Products have been successfully moved to your order history!"
                   );
-                  window.location.reload(); // Refresh the page after successful move to history
+                  window.location.reload();
                 } else {
-                  console.log("Error moving to order history:", data.error);
-                  alert("Failed to move products to order history.");
+                  console.error("Error from server:", data);
+                  alert(
+                    data.message || "Failed to move products to order history."
+                  );
                 }
               })
               .catch((err) => {
-                console.error("Error:", err);
+                console.error("Error in MoveToHistory:", err);
                 alert("Something went wrong while processing your order.");
               });
           },
@@ -257,12 +266,15 @@ const Cart = () => {
                       </td>
                       <td className="action-col">
                         <FaTrash
-                          style={{
-                            color: "red",
-                            cursor: "pointer",
-                          }}
+                          className="trash-icon"
                           onClick={() => handleDelete(item.id_cart)}
                         />
+                        <button
+                          className="delete-button"
+                          onClick={() => handleDelete(item.id_cart)}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))}

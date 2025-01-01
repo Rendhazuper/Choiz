@@ -1,11 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
 
 .judulawal {
-  /* background-color: red; */
   color: black;
   display: flex;
-  justify-content: center; /* Menempatkan teks di tengah secara horizontal */
-  align-items: center; /* Menempatkan teks di tengah secara vertikal */
+  justify-content: center;
+  align-items: center;
   font-size: 96px;
   font-family: "Montserrat", sans-serif;
 }
@@ -39,17 +38,50 @@ h1 {
 }
 .login {
   color: black;
-  min-height: 100vh; /* Mengatur tinggi kontainer agar setidaknya 100% dari tinggi layar */
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center; /* Menempatkan elemen di tengah secara vertikal */
+  align-items: center;
 }
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: -1rem;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.forgot-password,
+.signup-text,
+.signup-link {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-text {
+  color: #333;
+}
+
+.forgot-password:hover,
+.signup-link:hover {
+  text-decoration: underline;
+}
+
 .Button {
-  margin-left: 10px;
-  width: 97%;
   background-color: #b88e2f;
   color: white;
   font-size: 16px;
+  border: none;
+  margin-bottom: 0.5rem;
+}
+
+.Button:hover {
+  background-color: #b88e2f;
 }
 
 .kolom .button {
@@ -59,15 +91,7 @@ h1 {
   color: white;
   font-size: 16px;
 }
-.Forgot .left {
-  text-align: left;
-  flex: 1;
-}
 
-.Forgot .right {
-  text-align: right;
-  flex: 1;
-}
 .Forgot {
   display: flex;
   flex-direction: column;
@@ -76,4 +100,26 @@ h1 {
 p {
   margin: 0;
   color: black;
+}
+
+@media (max-width: 768px) {
+  .kon-login {
+    background-image: none;
+  }
+  .kontainernyalogin {
+    display: flex;
+  }
+  .judulawal {
+    font-size: 95px;
+  }
+
+  .auth-links {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: -2rem;
+  }
+
+  .signup-text {
+    margin-top: 0.5rem;
+  }
 }

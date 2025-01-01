@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import { BsArrowRight, BsChevronRight, BsChevronLeft } from "react-icons/bs";
 import cowok1 from "../asset/Baju/carousel.png";
@@ -8,6 +8,16 @@ import "./stylecarousel.css";
 
 const CardCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const cards = [
     {
       title: "01",
@@ -42,7 +52,7 @@ const CardCarousel = () => {
   return (
     <Container className="kontainerpenting">
       <Row>
-        <Col className="kolom1 text-start" md={6}>
+        <Col className="kolom1" md={6}>
           <h2 className="kolom1judul">50+ Outfit stores</h2>
           <p className="kolompara">
             Our outfit store more than 50+ to make our customers have a lot of

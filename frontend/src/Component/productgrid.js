@@ -1,103 +1,123 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import ProductCard from "./productCard";
 import axios from "axios";
 import "./productgrid.css";
 
-const ProductGrid = ({ isAdmin }) => {
+const ProductGrid = ({
+  showGrid,
+  itemsToShow,
+  sortBy,
+  categoryFilter,
+  isAdmin,
+}) => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 16;
-  const itemsPerRow = 4;
 
-  // Mengambil produk untuk halaman yang sedang aktif
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = products.slice(
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/Backend/Auth/getproduct.php"
+        );
+        console.log("Fetched products:", response.data);
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+        console.log(error.response?.data);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsToShow, categoryFilter]);
+
+  const filteredAndSortedProducts = useMemo(() => {
+    console.log("Filtering products. Category:", categoryFilter);
+    console.log("All products:", products);
+    console.log("Is Admin:", isAdmin);
+
+    let filtered = isAdmin ? products : [...products];
+
+    if (!isAdmin && categoryFilter && categoryFilter !== "default") {
+      filtered = filtered.filter((product) => {
+        const match = product.id_kategori === categoryFilter;
+        console.log(
+          `Product ${product.id_produk} category ${product.id_kategori} matches filter ${categoryFilter}: ${match}`
+        );
+        return match;
+      });
+    }
+
+    console.log("Filtered products:", filtered);
+
+    let sorted = [...filtered];
+    switch (sortBy) {
+      case "price_asc":
+        sorted.sort((a, b) => parseFloat(a.harga) - parseFloat(b.harga));
+        break;
+      case "price_desc":
+        sorted.sort((a, b) => parseFloat(b.harga) - parseFloat(a.harga));
+        break;
+      default:
+        // No sorting
+        break;
+    }
+
+    console.log("Sorted products:", sorted);
+    return sorted;
+  }, [products, sortBy, categoryFilter, isAdmin]);
+
+  const indexOfLastProduct = currentPage * itemsToShow;
+  const indexOfFirstProduct = indexOfLastProduct - itemsToShow;
+  const currentProducts = filteredAndSortedProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
-  // Membagi produk menjadi baris-baris dengan jumlah produk per baris
-  const rows = [];
-  for (let i = 0; i < currentProducts.length; i += itemsPerRow) {
-    rows.push(currentProducts.slice(i, i + itemsPerRow));
-  }
+  const totalPages = Math.ceil(filteredAndSortedProducts.length / itemsToShow);
 
-  const paginationRef = useRef(null); // Referensi untuk bagian pagination
+  console.log("Current state:", {
+    itemsToShow,
+    currentPage,
+    totalProducts: filteredAndSortedProducts.length,
+    currentProducts: currentProducts.length,
+    sortBy,
+    categoryFilter,
+    isAdmin,
+  });
 
-  useEffect(() => {
-    axios
-      // .get('http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/getproduct.php')
-      .get("http://localhost/Backend/Auth/getproduct.php")
-      .then((response) => {
-        console.log(response.data); // Periksa bentuk data yang diterima
-        setProducts(response.data); // Simpan produk ke state
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-        console.log(error.response.data);
-      });
-  }, []);
-
-  // Fungsi untuk mengubah halaman dan menggulirkan ke bawah
   const paginate = (pageNumber, event) => {
-    event.preventDefault(); // Mencegah scroll otomatis ke atas saat pagination diklik
+    event.preventDefault();
     setCurrentPage(pageNumber);
-
-    // Scroll ke bagian bawah setelah pagination
-    setTimeout(() => {
-      window.scrollTo({
-        top: document.body.scrollHeight, // Scroll ke bawah halaman
-        behavior: "smooth", // Efek scroll halus
-      });
-    }, 200); // Delay untuk memastikan setState sudah diterapkan
   };
 
-  // Menghitung jumlah total halaman berdasarkan total produk
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  if (products.length === 0) {
+    return <p>Loading products...</p>;
+  }
 
   return (
-    <Container className="rowindex">
-      {/* Menampilkan produk dalam baris */}
-      {currentProducts.length > 0 ? (
-        [...Array(Math.ceil(currentProducts.length / itemsPerRow))].map(
-          (_, rowIndex) => (
-            <Row key={rowIndex} className="d-flex justify-content-center">
-              {currentProducts
-                .slice(rowIndex * itemsPerRow, (rowIndex + 1) * itemsPerRow)
-                .map((product) => (
-                  <Col
-                    key={product.id_produk}
-                    sm={12}
-                    md={6}
-                    lg={3} // Membagi 4 produk per baris
-                    className="d-flex justify-content-center"
-                  >
-                    <ProductCard
-                      idProduk={product.id_produk}
-                      namaProduk={product.nama_produk}
-                      harga={product.harga}
-                      gambarProduk={"/" + product.gambar_produk}
-                      kategori={product.kategori}
-                      isAdmin={isAdmin}
-                    />
-                  </Col>
-                ))}
-            </Row>
-          )
-        )
-      ) : (
-        <p>No products available</p>
-      )}
-
-      {/* Pagination */}
+    <Container fluid className="rowindex">
+      <Row>
+        {currentProducts.map((product) => (
+          <Col xs={6} md={3} key={product.id_produk}>
+            <ProductCard
+              idProduk={product.id_produk}
+              namaProduk={product.nama_produk}
+              harga={product.harga}
+              gambarProduk={"/" + product.gambar_produk}
+              kategori={product.kategori}
+              isAdmin={isAdmin}
+              showAsList={!showGrid}
+            />
+          </Col>
+        ))}
+      </Row>
       {totalPages > 1 && (
-        <div
-          ref={paginationRef} // Menambahkan referensi ke bagian pagination
-          className="pagination-container d-flex justify-content-center mt-4"
-        >
-          {/* Tombol Previous hanya muncul jika currentPage > 1 */}
+        <div className="pagination-container d-flex justify-content-center mt-4">
           {currentPage > 1 && (
             <Button
               onClick={(e) => paginate(currentPage - 1, e)}
@@ -107,7 +127,6 @@ const ProductGrid = ({ isAdmin }) => {
             </Button>
           )}
 
-          {/* Menampilkan tombol untuk halaman */}
           {[...Array(totalPages)].map((_, index) => (
             <Button
               key={index}
@@ -120,7 +139,6 @@ const ProductGrid = ({ isAdmin }) => {
             </Button>
           ))}
 
-          {/* Tombol Next hanya muncul jika currentPage < totalPages */}
           {currentPage < totalPages && (
             <Button
               onClick={(e) => paginate(currentPage + 1, e)}

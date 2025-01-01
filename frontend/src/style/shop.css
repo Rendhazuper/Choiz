@@ -1,81 +1,177 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
-
-.bannershop{ 
-    position: relative;
-    width: 100vw;
+.bannershop {
+  position: relative;
+  width: 100vw;
 }
 
-.foto{
-    width: 100vw;
+.foto {
+  width: 100vw;
 }
 
-.tulisanbanner{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+.tulisanbanner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 .kontainerr {
-    background-color: #F9F1E7 ;
-    display: flex;
-    justify-content: center; 
-    align-items: center;     
-    padding: 20px;   
+  background-color: #f9f1e7;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 20px;
 }
 
+.kolomkiri {
+  flex: 1;
+  margin-right: 20px;
+}
 
+.kolomkanan {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #333;
+}
 
-.Dropdown{
-    display: flex;
-    width : max-content;
-    align-items: center; 
-    justify-content: end;
-    gap : 15px;
-    /* background-color: black; */
+.showing-results {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+  padding: 5px 0;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+.desktop-filter {
+  display: flex;
+  align-items: center;
+}
+
+.Dropdown {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 15px;
 }
 
 .Dropdown .Toggle {
-    background-color: white;
-    border-radius: 0;         
-    color: #9F9F9F;       
-    border: 1px solid #ccc;  
+  background-color: white;
+  border-radius: 0;
+  color: #9f9f9f;
+  border: 1px solid #ccc;
 }
 
 .Dropdown .Toggle:focus,
 .Dropdown .Toggle:active,
 .Dropdown .Toggle:hover {
-    background-color: white;  
-    color: #9F9F9F;           
-    border: 1px solid #ccc;  
-    outline: none;         
-   }   
-
-.kolomkiri{
-    display: flex;
-    gap : 20px;
-    align-items: center;
-    /* background-color: red; */
+  background-color: white;
+  color: #9f9f9f;
+  border: 1px solid #ccc;
+  outline: none;
 }
 
-.drop1{
-    display: flex;
-    align-items: center; 
-    gap : 15px
+.drop1 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-
-.kontainerr .kolomkiri, .kontainerr .Dropdown {
-    margin-right: 500px;  /* Menambahkan jarak antar kolom */
+.futer {
+  background-color: #e6dbc6;
+  width: 100vw;
 }
 
-.kontainerr .Dropdown {
-    margin-right: 0;  /* Optional: jika Anda ingin menghapus margin di kolom terakhir */
+.filter-button {
+  display: none;
 }
 
-.futer{
-    background-color: #E6DBC6;
-    width: 100vw;
+.filter-popup {
+  display: flex;
+  gap: 15px;
+}
+
+.close-popup {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .kontainerr,
+  .kolomkiri,
+  .kolomkanan,
+  .Dropdown,
+  .filter-toggle-btn,
+  .Dropdown .Toggle {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    position: static !important;
+    transform: none !important;
+    left: auto !important;
+    right: auto !important;
   }
+  .filter-toggle-btn,
+  .Dropdown .Toggle {
+    width: auto !important;
+    min-width: 100px !important;
+    max-width: 150px !important;
+  }
+
+  .filter-toggle-btn,
+  .filter-toggle-btn:hover {
+    background-color: #b88e2f;
+    color: white;
+    border: none;
+  }
+
+  /* Mencegah pergeseran saat tombol ditekan */
+  .filter-toggle-btn:active,
+  .filter-toggle-btn:focus,
+  .Dropdown .Toggle:active,
+  .Dropdown .Toggle:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobile-filter-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .filter-toggle-btn,
+  .Dropdown .Toggle {
+    background-color: #b88e2f;
+    color: white;
+    border: 2px solid #b88e2f;
+    padding: 10px 20px;
+    margin: 5px;
+    transition: all 0.3s ease;
+  }
+
+  .filter-toggle-btn:hover,
+  .filter-toggle-btn:focus {
+    background-color: #b88e2f;
+    color: white;
+  }
+
+  .filter-toggle-btn:active,
+  .Dropdown .Toggle:active {
+    background-color: #b88e2f;
+    color: white;
+  }
+  .bannershop {
+    display: none;
+  }
+  .navbar-nav {
+    text-align: center;
+  }
+}

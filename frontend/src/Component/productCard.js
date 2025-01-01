@@ -20,7 +20,7 @@ const ProductCard = ({
   const linkTo = isAdmin ? `/edit-product/${idProduk}` : `/produk/${idProduk}`;
 
   return (
-    <Card className="cardu text-start" style={{ width: "20rem" }}>
+    <Card className="cardu text-start">
       <Link to={linkTo} style={{ textDecoration: "none", color: "inherit" }}>
         <Card.Img
           variant="top"

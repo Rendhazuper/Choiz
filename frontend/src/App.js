@@ -49,7 +49,7 @@ function App() {
       </div>
 
       <header className="App-header">
-        <section className="section1">
+        <section className="section1 responsive-banner">
           <Image className="banner" src={banner} />
           <Card
             className="kartu text-start"

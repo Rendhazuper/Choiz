@@ -28,7 +28,12 @@ const Produk = () => {
           </Link>
         </div>
         <div>
-          <ProductGrid isAdmin={true} />
+          <ProductGrid
+            isAdmin={true}
+            showGrid={true}
+            itemsToShow={12} // Atau jumlah yang Anda inginkan
+            sortBy="default"
+          />
         </div>
       </Container>
     </div>

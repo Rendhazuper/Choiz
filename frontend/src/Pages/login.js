@@ -46,7 +46,7 @@ const Login = () => {
         sessionStorage.setItem("username", username);
 
         if (level === "admin") {
-          setTimeout(() => {
+          setTimeout(() => {/*  */
             navigate("/admin");
           }, 1000);
         } else {
@@ -145,13 +145,17 @@ const Login = () => {
               </Row>
               <Container className="Forgot">
                 <Row>
-                  <p className="left">
-                    <Link to="/forgot">Lupa Password ?</Link>
-                  </p>
-                  <p className="right">
-                    Belum Punya akun ?{" "}
-                    <Link to="/register">Daftar sekarang</Link>
-                  </p>
+                  <div className="auth-links">
+                    <Link className="forgot-password" to="/forgot">
+                      Lupa Password?
+                    </Link>
+                    <span className="signup-text">
+                      Belum Punya akun?{" "}
+                      <Link className="signup-link" to="/register">
+                        Daftar sekarang
+                      </Link>
+                    </span>
+                  </div>
                 </Row>
               </Container>
             </Container>

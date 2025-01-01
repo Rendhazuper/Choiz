@@ -1,17 +1,15 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 500px; 
-  overflow: hidden; 
+  height: 500px;
+  overflow: hidden;
 }
 .carousel-wrapper {
   display: flex;
   height: 100%;
-  transition: transform 0.5s ease; 
+  transition: transform 0.5s ease;
 }
 .carousel-content {
   display: flex;
@@ -19,55 +17,50 @@
 }
 .carousel-card {
   position: relative;
-  flex: 0 0 50%; 
+  flex: 0 0 50%;
   transition: transform 0.3s ease, opacity 0.3s ease;
   overflow: hidden;
 }
 .carousel-card-full {
-  flex: 0 0 50%; 
-  height: 100%; 
-  transform: scale(1); 
+  flex: 0 0 50%;
+  height: 100%;
+  transform: scale(1);
 }
 .carousel-card-partial {
-  flex: 0 0 50%; 
-  height: 70%; 
-  opacity: 0.8; 
-  transform: scale(0.95); 
+  flex: 0 0 50%;
+  height: 70%;
+  opacity: 0.8;
+  transform: scale(0.95);
 }
 
-/* Mengatur gambar dalam setiap card */
 .carousel-card img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Menjaga gambar tetap proporsional */
+  object-fit: cover;
   border-radius: 8px;
 }
 
-/* Style untuk body card yang berisi teks dan tombol */
 .carousel-card-body {
   padding: 10px;
   width: 200px;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.75); /* Latar belakang dengan transparansi */
-  color: black; /* Teks berwarna hitam */
+  background-color: rgba(255, 255, 255, 0.75);
+  color: black;
   position: absolute;
   bottom: 20px;
   left: 20px;
   right: 0;
 }
 
-/* Posisi untuk link di dalam card */
 .hrefnih {
   position: absolute;
-  padding: 0 0 0 200px; /* Menyesuaikan posisi tombol */
+  padding: 0 0 0 200px;
   bottom: 0;
   left: 0;
   right: 0;
   top: 10px;
- 
 }
 
-/* Style untuk tombol 'Prev' dan 'Next' di carousel */
 .carousel-controls {
   position: absolute;
   top: 50%;
@@ -106,14 +99,13 @@
   background-color: #007bff;
 }
 
-
 .carousel-card-body a {
   text-decoration: none;
   color: white;
-  background-color: #B88E2F;
+  background-color: #b88e2f;
   padding: 10px 18px;
   border-radius: 0px;
-  margin : 22px 0 0  0;
+  margin: 22px 0 0 0;
   display: inline-block;
   transition: background-color 0.3s;
 }
@@ -122,67 +114,102 @@
   background-color: #0056b3;
 }
 
-.prev{
-  color :#B88E2F;
+.prev {
+  color: #b88e2f;
   background-color: white;
-  border-radius: 50%; 
-  border: none;  
+  border-radius: 50%;
+  border: none;
 }
 
-.next{ 
-  color :#B88E2F;
+.next {
+  color: #b88e2f;
   background-color: white;
-  border-radius: 50%; 
-  border: none;  
-
+  border-radius: 50%;
+  border: none;
 }
 
-.prev:hover{
-  background-color: #B88E2F;
-  color : white;
+.prev:hover {
+  background-color: #b88e2f;
+  color: white;
 }
 
-.next:hover{
-  background-color: #B88E2F;
-  color : white;
+.next:hover {
+  background-color: #b88e2f;
+  color: white;
 }
 
-.kolom1judul{
-  font-family: 'Poppins', sans-serif;
+.kolom1judul {
+  font-family: "Poppins", sans-serif;
   font-weight: bolder;
-  color: #3A3A3A;
+  color: #3a3a3a;
 }
 
-.kolompara{
-  font-family: 'Poppins', sans-serif;
+.kolompara {
+  font-family: "Poppins", sans-serif;
   font-weight: 300;
   font-size: 16px;
-  color: #3A3A3A;
+  color: #3a3a3a;
+  text-align: left;
   width: 60%;
 }
 
-.kolombutton{
-  font-family: 'Poppins', sans-serif;
+.kolombutton {
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
   font-size: 16px;
   width: 150px;
   height: 50px;
-  background-color: #B88E2F;
+  background-color: #b88e2f;
   border-radius: 0px;
-  border : none; 
+  border: none;
 }
 
-.kolombutton:hover{
+.kolombutton:hover {
   background-color: white;
-  color: #B88E2F;
+  color: #b88e2f;
 }
 
-
-.kolom1{
-  display: flex;              
-  flex-direction: column;     
-  justify-content: center;                   
-  padding: 20px;               
+.kolom1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
 }
 
+@media (max-width: 768px) {
+  .kolom2 {
+    display: none;
+  }
 
+  .kolom1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+  .kolompara {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #3a3a3a;
+    text-align: center;
+    width: 60%;
+  }
+
+  .kolom1judul {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .kolompara {
+    font-size: 1rem;
+    font-weight: normal;
+  }
+  .kolombutton {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}

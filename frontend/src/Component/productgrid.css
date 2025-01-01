@@ -1,23 +1,37 @@
 .rowindex {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 32px;
-  margin-top: 50px;
   width: 100%;
+  padding: 0 10px;
 }
 
-.rowindex .row {
-  width: 100%;
+.row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 20px;
+  padding: 16px;
 }
 
-.rowindex .col {
+.rowindex .row > [class*="col-"] {
+  flex: 0 0 auto;
+  width: calc(20% - 15px); /* 4 kolom dengan gap */
   display: flex;
   justify-content: center;
-  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .rowindex {
+    padding: 0 5px;
+  }
+
+  .row {
+    gap: 10px;
+    padding: 8px;
+  }
+
+  .rowindex .row > [class*="col-"] {
+    width: calc(50% - 5px); /* 2 kolom dengan gap */
+    margin-bottom: 16px;
+  }
 }
 
 .pagination-container {

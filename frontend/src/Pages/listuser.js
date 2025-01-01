@@ -10,6 +10,10 @@ const Listuser = () => {
   const [admins, setAdmins] = useState([]);
 
   useEffect(() => {
+    fetchAdmins();
+  }, []);
+
+  const fetchAdmins = () => {
     axios
       .get("http://localhost/Backend/Admin/getuser.php")
       .then((response) => {
@@ -22,7 +26,24 @@ const Listuser = () => {
       .catch((error) => {
         console.error("Error fetching admin data:", error);
       });
-  }, []);
+  };
+
+  const handleDeleteUser = (email) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      axios
+        .post("http://localhost/Backend/Admin/deleteuser.php", { email })
+        .then((response) => {
+          if (response.data.status === "success") {
+            setAdmins(admins.filter((admin) => admin.email !== email));
+          } else {
+            console.error("Failed to delete user");
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting user:", error);
+        });
+    }
+  };
 
   return (
     <div>
@@ -43,6 +64,7 @@ const Listuser = () => {
                     <th>Email</th>
                     <th>Username</th>
                     <th>Password</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody className="body-listadmin">
@@ -52,11 +74,20 @@ const Listuser = () => {
                         <td>{admin.email}</td>
                         <td>{admin.username}</td>
                         <td>{admin.password}</td>
+                        <td>
+                          <Button 
+                            variant="danger" 
+                            size="sm" 
+                            onClick={() => handleDeleteUser(admin.email)}
+                          >
+                            Delete
+                          </Button>
+                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="3">No data available</td>
+                      <td colSpan="4">No data available</td>
                     </tr>
                   )}
                 </tbody>
@@ -68,4 +99,5 @@ const Listuser = () => {
     </div>
   );
 };
+
 export default Listuser;

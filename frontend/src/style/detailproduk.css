@@ -202,7 +202,7 @@
   background-color: #fffdd0;
 }
 
-.bawah {
+.detail-produk-bawah {
   display: flex;
   align-items: center;
   gap: 25px;
@@ -227,4 +227,185 @@
   height: auto;
   margin: 100px;
   color: #2fb846;
+}
+
+.detail-product-container {
+  margin-bottom: 20px;
+  padding-left: 120px;
+  background-color: #f9f1e7;
+}
+
+.detail-product-row {
+  padding: 10px 0;
+}
+
+.detail-product-breadcrumb {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-product-breadcrumb a,
+.detail-product-breadcrumb p {
+  margin: 0;
+  padding: 0;
+}
+
+.detail-product-breadcrumb a {
+  text-decoration: none;
+  color: #000;
+}
+
+.detail-product-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Tambahkan media queries untuk responsif */
+@media screen and (max-width: 768px) {
+  .kon-detail {
+    margin: 20px; /* Kurangi margin di layar kecil */
+  }
+
+  .col-kiri {
+    width: 100%; /* Ubah lebar menjadi full width */
+    height: auto; /* Biarkan tinggi menyesuaikan */
+    margin-bottom: 20px;
+  }
+
+  .col-kanan {
+    margin-left: 0;
+    padding: 0 15px; /* Tambah padding di kiri-kanan */
+  }
+
+  .description {
+    width: 100%; /* Ubah lebar menjadi full width */
+    height: auto; /* Biarkan tinggi menyesuaikan */
+  }
+
+  .row3 {
+    width: 100%; /* Ubah lebar menjadi full width */
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .colImage {
+    display: none; /* Menyembunyikan colImage di mode responsif */
+  }
+
+  .detail-product-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .detail-produk-bawah {
+    flex-direction: column; /* Stack elements vertically on mobile */
+    align-items: stretch;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mt-3 {
+    width: 100%; /* Buat tombol full width di mobile */
+  }
+
+  .size {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .size .btn-group {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px;
+  }
+
+  .size Button {
+    flex: 0 0 auto; /* Mencegah tombol meregang */
+    margin: 5px;
+    width: auto;
+    min-width: 60px;
+  }
+
+  /* Container untuk quantity controls */
+  .quantity-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .quantity-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: auto; /* Mengubah dari 100% ke auto */
+  }
+
+  .quantity-controls button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+  }
+
+  .quantity-controls span {
+    margin: 0 15px;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .detail-produk-bawah {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: row; /* Mengubah ke row untuk horizontal */
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .action-buttons Button {
+    flex: 1;
+    max-width: 200px; /* Membatasi lebar maksimum tombol */
+    margin: 5px;
+    height: 50px;
+  }
+
+  /* Menyesuaikan container deskripsi agar tidak ada space kosong */
+  .deskripsiproduk {
+    margin-top: 20px;
+    padding: 0 15px;
+  }
+}
+
+/* Tambahkan untuk tablet */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .kon-detail {
+    margin: 30px;
+  }
+
+  .col-kiri {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .description {
+    width: 100%;
+  }
 }

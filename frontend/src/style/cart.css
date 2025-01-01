@@ -88,6 +88,119 @@
 }
 
 .bodynya td {
-  /* text-align: center; */
   vertical-align: middle;
+}
+
+/* Style default untuk icon trash */
+.action-col .trash-icon {
+  color: red;
+  cursor: pointer;
+}
+
+/* Sembunyikan button delete di desktop */
+.action-col .delete-button {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .Cart {
+    display: none;
+  }
+
+  /* Container styles */
+  .container {
+    padding: 0 10px;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+
+  table thead {
+    display: none;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .bodynya tr {
+    display: flex;
+    flex-wrap: wrap; /* Allow content to wrap */
+    align-items: flex-start;
+    padding: 15px;
+    background-color: #f9f1e7;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    width: calc(100vw - 30px);
+    gap: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Container untuk gambar */
+  .image-col {
+    width: 70px; /* Kurangi ukuran gambar */
+    min-width: 70px;
+    margin: 0;
+  }
+
+  .image-col img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  /* Konten utama */
+  .product-col,
+  .price-col,
+  .quantity-col,
+  .subtotal-col {
+    padding: 0;
+    margin: 0;
+    font-size: 14px; /* Kurangi ukuran font */
+  }
+
+  .product-col {
+    width: calc(100% - 90px); /* Full width minus image width and gap */
+  }
+
+  /* Container untuk price, quantity, subtotal */
+  .price-col,
+  .quantity-col,
+  .subtotal-col {
+    flex: 1;
+    min-width: auto; /* Allow shrinking */
+    text-align: left;
+  }
+
+  /* Action button */
+  .action-col {
+    width: calc(100% - 90px); /* Sama dengan width product-col */
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-left: auto; /* Push ke kanan */
+  }
+
+  .action-col .trash-icon {
+    display: none;
+  }
+
+  .action-col .delete-button {
+    display: block;
+    width: 100%; /* Full width dari parent */
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .futercart {
+    display: none;
+  }
 }

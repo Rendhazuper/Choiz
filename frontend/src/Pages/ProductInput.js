@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import AdminNavbar from "../Component/navbaradmin";
@@ -16,6 +16,27 @@ const ProductInput = () => {
   const [deskripsi, setDeskripsi] = useState("");
   const [message, setMessage] = useState(null);
   const [variant, setVariant] = useState("success");
+  const [kategoriList, setKategoriList] = useState([]);
+
+  useEffect(() => {
+    const fetchKategori = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/Backend/Admin/GetKategori.php"
+        );
+        if (response.status === 200) {
+          setKategoriList(response.data);
+        } else {
+          setMessage("Gag al memuat kategori.");
+          setVariant("danger");
+        }
+      } catch (error) {
+        setMessage("Terjadi kesalahan saat memuat kategori.");
+        setVariant("danger");
+      }
+    };
+    fetchKategori();
+  }, []);
 
   const handleFileChange = (e) => {
     setGambarProduk(e.target.files[0]);
@@ -145,7 +166,6 @@ const ProductInput = () => {
                     </Form.Group>
                   </Row>
 
-                  {/* Size Selection as Checkboxes */}
                   <Form.Group className="mb-3">
                     <Form.Label className="label">Ukuran</Form.Label>
                     {["XS", "S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
@@ -164,7 +184,7 @@ const ProductInput = () => {
                         >
                           {size}
                         </label>
-                        {/* Stock input next to checkbox */}
+
                         {sizes.includes(size) && (
                           <input
                             type="number"
@@ -194,13 +214,19 @@ const ProductInput = () => {
 
                   <Row>
                     <Form.Group className="mb-3" controlId="kategori">
-                      <Form.Label className="label">Kategori</Form.Label>
+                      <Form.Label>Kategori</Form.Label>
                       <Form.Control
-                        type="text"
-                        placeholder="Masukkan kategori produk"
+                        as="select"
                         value={kategori}
                         onChange={(e) => setKategori(e.target.value)}
-                      />
+                      >
+                        <option value="">Pilih Kategori</option>
+                        {kategoriList.map((kat) => (
+                          <option key={kat.id_kategori} value={kat.id_kategori}>
+                            {kat.nama_kategori}
+                          </option>
+                        ))}
+                      </Form.Control>
                     </Form.Group>
                   </Row>
 
