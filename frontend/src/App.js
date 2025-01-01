@@ -2,16 +2,14 @@ import axios from "axios";
 import "./App.css";
 import MyNavbar from "./Component/navbar";
 import Footer from "./Component/Footer";
-import ProductCard from "./Component/productCard";
-import ProductGridDetail from "./Component/productgriddetail";
 import banner from "./asset/banner.png";
 import Theme from "./Component/theme";
 import Share from "./Component/share";
 import CardCarousel from "./Component/Carousel";
-import ProductGrid from "./Component/productgrid";
-import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
+import { Button, Image, Card } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function App() {
   const navigate = useNavigate();
@@ -59,7 +57,9 @@ function App() {
               <h2 className="text1 mb-4">New Outfit</h2>
               <h3 className="textsub">Discover Our New Collection</h3>
               <p className="paragraf mb-4">Style evolution, skip the price</p>
-              <Button className="button">BUY NOW</Button>
+              <Link to="/shop">
+                <Button className="button">BUY NOW</Button>
+              </Link>
             </Card.Body>
           </Card>
         </section>

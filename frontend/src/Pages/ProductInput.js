@@ -214,7 +214,7 @@ const ProductInput = () => {
 
                   <Row>
                     <Form.Group className="mb-3" controlId="kategori">
-                      <Form.Label>Kategori</Form.Label>
+                      <Form.Label className="label">Kategori</Form.Label>
                       <Form.Control
                         as="select"
                         value={kategori}

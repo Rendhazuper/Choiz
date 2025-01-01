@@ -5,6 +5,7 @@ import cowok1 from "../asset/Baju/carousel.png";
 import cowok2 from "../asset/Baju/cowok2.png";
 import cowok3 from "../asset/Baju/cowok3.png";
 import "./stylecarousel.css";
+import { Link } from "react-router-dom";
 
 const CardCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -58,9 +59,11 @@ const CardCarousel = () => {
             Our outfit store more than 50+ to make our customers have a lot of
             choice for the outfit
           </p>
-          <Button className="kolombutton" variant="primary mt-5 ">
-            Explore More
-          </Button>
+          <Link to="/shop">
+            <Button className="kolombutton" variant="primary mt-5">
+              Explore More
+            </Button>
+          </Link>
         </Col>
 
         {/* Kolom kanan (Carousel) */}

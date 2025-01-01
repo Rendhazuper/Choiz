@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Container, Row, Col, Button, Image, Modal } from "react-bootstrap";
 import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Image,
-  Toast,
-  ToastContainer,
-} from "react-bootstrap";
-import { BsFacebook, BsLinkedin, BsTwitterX } from "react-icons/bs";
+  BsFacebook,
+  BsLinkedin,
+  BsTwitterX,
+  BsCheckCircle,
+} from "react-icons/bs";
 import ProductGridDetail from "../Component/productgriddetail";
 import { useNavigate } from "react-router";
 import MyNavbar from "../Component/navbar";
@@ -21,12 +18,14 @@ const DetailProduk = ({ produk }) => {
   const [product, setProduk] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [cart, setCart] = useState([]);
   const [stok, setStok] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => setShowModal(false);
 
   const checkLogin = async () => {
     try {
@@ -114,8 +113,6 @@ const DetailProduk = ({ produk }) => {
         },
       ],
     };
-
-    console.log("Sending data:", data); // Untuk debugging
 
     try {
       const response = await fetch("http://localhost/Backend/Auth/Order.php", {
@@ -255,7 +252,7 @@ const DetailProduk = ({ produk }) => {
       if (result.error) {
         alert(result.error);
       } else {
-        setShowToast(true);
+        setShowModal(true);
         console.log(result.message);
       }
     } catch (error) {
@@ -271,6 +268,16 @@ const DetailProduk = ({ produk }) => {
 
   return (
     <div>
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Body className="text-center">
+          <BsCheckCircle size={60} color="green" />
+          <h5 className=" text-center">Success!</h5>
+          <p>Product has been added to your cart.</p>
+          <Button variant="success" onClick={handleCloseModal}>
+            OK
+          </Button>
+        </Modal.Body>
+      </Modal>
       <MyNavbar />
       <div className="detail-product-banner">
         <Container className="detail-product-container" fluid>
@@ -446,17 +453,6 @@ const DetailProduk = ({ produk }) => {
           </Row>
         </Container>
       </section>
-      <ToastContainer position="top-end">
-        <Toast
-          show={showToast}
-          onClose={() => setShowToast(false)}
-          delay={3000}
-          autohide
-          className="custom-toast"
-        >
-          <Toast.Body>Success! Product added to cart.</Toast.Body>
-        </Toast>
-      </ToastContainer>
     </div>
   );
 };

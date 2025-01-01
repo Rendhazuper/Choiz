@@ -1,7 +1,7 @@
 // src/components/Navbar.js
 import React from "react";
-import { Navbar, Nav, NavDropdown, Container, Button } from "react-bootstrap";
-import { BsPerson, BsSearch, BsHeart, BsCart3 } from "react-icons/bs";
+import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
+import { BsPerson } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AdminNavbar = () => {
@@ -49,7 +49,7 @@ const AdminNavbar = () => {
           CHOIZ
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" />
-        <Navbar.Collapse id="navbarNav" className="justify-content-center">
+        <Navbar.Collapse id="navbarNav">
           <Nav className="mx-auto">
             <Nav.Link
               href="/listuser"
@@ -63,20 +63,25 @@ const AdminNavbar = () => {
             >
               Product
             </Nav.Link>
+            <div className="d-lg-none">
+              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            </div>
+          </Nav>
+          <Nav className="d-none d-lg-flex navbar-icons">
+            <Nav.Item>
+              <NavDropdown
+                title={<BsPerson />}
+                id="navbar-person-dropdown"
+                align="end"
+                menuVariant="light"
+              >
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
-        <Nav className="d-flex navbar-icons ">
-          <Nav.Item>
-            <NavDropdown
-              title={<BsPerson />}
-              id="navbar-person-dropdown"
-              align="end"
-              menuVariant="light"
-            >
-              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-            </NavDropdown>
-          </Nav.Item>
-        </Nav>
       </Container>
     </Navbar>
   );

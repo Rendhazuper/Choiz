@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Dropdown,
-  Image,
-  Collapse,
-  Button,
-} from "react-bootstrap";
-import { BsGrid, BsViewList } from "react-icons/bs";
+import { Dropdown, Image, Collapse, Button } from "react-bootstrap";
 import MyNavbar from "../Component/navbar";
 import bannershop from "../asset/Baju/bannershop.png";
 import ProductGrid from "../Component/productgrid";
@@ -90,14 +81,6 @@ const Shop = () => {
   const handleCategoryChange = (category) => {
     console.log("Changing category:", category);
     setSelectedCategory(category.toString());
-  };
-
-  const handleGrid = () => {
-    setShowGrid(true);
-  };
-
-  const handleList = () => {
-    setShowGrid(false);
   };
 
   const getSortLabel = (sortOption) => {
