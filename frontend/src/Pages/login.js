@@ -46,7 +46,8 @@ const Login = () => {
         sessionStorage.setItem("username", username);
 
         if (level === "admin") {
-          setTimeout(() => {/*  */
+          setTimeout(() => {
+            /*  */
             navigate("/admin");
           }, 1000);
         } else {

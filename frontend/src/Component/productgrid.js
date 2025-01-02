@@ -96,7 +96,7 @@ const ProductGrid = ({
   };
 
   if (products.length === 0) {
-    return <p>Loading products...</p>;
+    return <p>There is no product</p>;
   }
 
   return (

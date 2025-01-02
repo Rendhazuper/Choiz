@@ -17,34 +17,29 @@ const Cart = () => {
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        console.log(
-          "Checking if username exists in sessionStorage:",
-          sessionStorage.getItem("username")
-        );
         const username = sessionStorage.getItem("username");
-        console.log("Username from localStorage:", username);
-        if (!username) {
-          setError("Please log in to view your cart.");
-          setLoading(false);
-          return;
-        }
+        console.log("Username from session:", username);
+
         const response = await axios.post(
           "http://localhost/Backend/Auth/getCart.php",
-          {
-            username: username,
-          }
+          { username }
         );
+        console.log("Response from server:", response.data);
 
-        if (response.data && response.data.cart) {
+        if (response.data.cart) {
           setCartData(response.data.cart);
-          calculateTotal(response.data.cart);
+          const total = response.data.cart.reduce(
+            (sum, item) => sum + item.harga * item.jumlah,
+            0
+          );
+          setTotal(total);
         } else {
-          setError(response.data.error || "Error fetching cart data.");
           setCartData([]);
+          setTotal(0);
         }
       } catch (error) {
-        console.error("Error:", error);
-        setError("An error occurred while fetching cart data.");
+        console.error("Error fetching cart:", error);
+        setError("Failed to load cart data");
       } finally {
         setLoading(false);
       }
@@ -53,12 +48,16 @@ const Cart = () => {
     fetchCartData();
   }, []);
 
-  const calculateTotal = (cart) => {
-    let totalAmount = 0;
-    cart.forEach((item) => {
-      totalAmount += item.harga * item.jumlah;
-    });
-    setTotal(totalAmount);
+  const handleDelete = async (id_cart) => {
+    try {
+      await axios.post("http://localhost/Backend/Auth/deleteCartItem.php", {
+        id_cart,
+      });
+      setCartData(cartData.filter((item) => item.id_cart !== id_cart));
+      window.location.reload();
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   const handleCheckout = async () => {
@@ -72,19 +71,19 @@ const Cart = () => {
       setError(null);
 
       const username = sessionStorage.getItem("username");
-      console.log("Sending data to backend:", {
-        username,
-        totalAmount: total,
-      });
-
+      console.log("Sending data to backend:", { username, totalAmount: total });
       const data = {
         username: username,
         totalAmount: total,
         items: cartData.map((item) => ({
           id_produk: item.id_produk,
           id_size: item.id_size,
+          id_warna: item.id_warna,
           quantity: item.jumlah,
           price: item.harga,
+          nama_produk: item.nama_produk,
+          size: item.size,
+          nama_warna: item.nama_warna,
         })),
       };
 
@@ -97,7 +96,6 @@ const Cart = () => {
       });
 
       const responseData = await response.json();
-
       console.log("Response from backend:", responseData);
 
       if (responseData.token) {
@@ -113,8 +111,12 @@ const Cart = () => {
               items: cartData.map((item) => ({
                 id_produk: item.id_produk,
                 id_size: item.id_size,
+                id_warna: item.id_warna,
                 quantity: item.jumlah,
                 price: item.harga,
+                nama_produk: item.nama_produk,
+                size: item.size,
+                nama_warna: item.nama_warna,
               })),
             };
 
@@ -167,21 +169,9 @@ const Cart = () => {
       }
     } catch (error) {
       setError("Error during checkout.");
-      console.log(error);
+      console.error("Checkout error:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id_cart) => {
-    try {
-      await axios.post("http://localhost/Backend/Auth/deleteCartItem.php", {
-        id_cart,
-      });
-      setCartData(cartData.filter((item) => item.id_cart !== id_cart));
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting item:", error);
     }
   };
 
@@ -189,9 +179,19 @@ const Cart = () => {
     return (
       <div>
         <MyNavbar />
-        <div className="loading-container">
+        <div
+          className="loading-container"
+          style={{
+            minHeight: "60vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
           <Spinner animation="border" role="status" />
-          <span>Loading...</span>
+          <span>Loading cart...</span>
         </div>
         <Footer />
       </div>
@@ -202,7 +202,15 @@ const Cart = () => {
     return (
       <div>
         <MyNavbar />
-        <div className="error-container">
+        <div
+          className="error-container"
+          style={{
+            minHeight: "60vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <h2>{error}</h2>
         </div>
         <Footer />
@@ -210,11 +218,36 @@ const Cart = () => {
     );
   }
 
-  return (
-    <div>
+  if (cartData.length === 0) {
+    return (
       <div>
         <MyNavbar />
+        <div
+          className="empty-cart-container"
+          style={{
+            minHeight: "60vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          <h2>Your cart is empty</h2>
+          <Button variant="primary" href="/shop">
+            Continue Shopping
+          </Button>
+        </div>
+        <Footer />
       </div>
+    );
+  }
+
+  console.log("Current cartData:", cartData);
+
+  return (
+    <div>
+      <MyNavbar />
       <div className="Cart">
         <img className="fotocart" src={bannershop} alt="Cart Banner" />
         <div className="tulisanbanner1">
@@ -249,7 +282,7 @@ const Cart = () => {
                         />
                       </td>
                       <td className="product-col">
-                        {item.nama_produk} ({item.size})
+                        {item.nama_produk} ({item.size} - {item.nama_warna})
                       </td>
                       <td className="price-col">
                         {new Intl.NumberFormat("id-ID", {
@@ -286,12 +319,15 @@ const Cart = () => {
                 <Col className="cardtotal1">
                   <div className="kontencardtotal1">
                     <p className="judultotal">Cart Totals</p>
-
                     <div className="rowtotal">
                       <p className="labeltotal">Total: </p>
-                      <p className="nominal">Rp {total.toLocaleString()}</p>
+                      <p className="nominal">
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                        }).format(total)}
+                      </p>
                     </div>
-
                     <Button className="checkoutbut" onClick={handleCheckout}>
                       Check Out
                     </Button>
@@ -302,9 +338,7 @@ const Cart = () => {
           </Row>
         </Container>
       </div>
-      <div className="futercart">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

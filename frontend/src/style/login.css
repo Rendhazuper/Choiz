@@ -114,9 +114,10 @@ p {
   }
 
   .auth-links {
-    flex-direction: column;
+    display: flex; /* Pastikan display flex tetap ada */
+    flex-direction: column; /* Tata letak vertikal */
     align-items: flex-start;
-    margin-top: -2rem;
+    margin-top: 2rem;
   }
 
   .signup-text {

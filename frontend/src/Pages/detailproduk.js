@@ -17,6 +17,7 @@ const DetailProduk = ({ produk }) => {
   const { id } = useParams();
   const [product, setProduk] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedWarna, setSelectedWarna] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [stok, setStok] = useState(0);
   const [showToast, setShowToast] = useState(false);
@@ -54,17 +55,23 @@ const DetailProduk = ({ produk }) => {
 
   const handleSizeClick = (size) => {
     setSelectedSize(size);
-    const selectedSizeObj = product.sizes.find((item) => item.size === size);
-    if (selectedSizeObj) {
-      setStok(selectedSizeObj.stok);
-      setQuantity(1);
-      console.log("Button clicked for size: ", size);
+    setSelectedWarna(null);
+    setQuantity(1);
+
+    const selectedSizeData = product.sizes.find((item) => item.size === size);
+    if (selectedSizeData) {
+      setStok(0);
     }
+  };
+
+  const handleWarnaClick = (warnaData) => {
+    setSelectedWarna(warnaData.nama_warna);
+    setStok(warnaData.stok);
+    setQuantity(1);
   };
 
   const handleIncrease = () => {
     if (quantity < stok) {
-      // Pastikan tidak melebihi stok
       setQuantity(quantity + 1);
     }
   };
@@ -79,6 +86,7 @@ const DetailProduk = ({ produk }) => {
     axios
       .get(`http://localhost/Backend/Auth/getproduct.php?id=${id}`)
       .then((response) => {
+        console.log("Raw API Response:", response.data);
         setProduk(response.data);
       })
       .catch((error) => {
@@ -91,28 +99,13 @@ const DetailProduk = ({ produk }) => {
   }
 
   const onPurchase = async () => {
-    if (!selectedSize) {
-      alert("Please select a size first.");
+    if (!selectedSize || !selectedWarna) {
+      alert("Please select a size and color first.");
       return;
     }
 
-    const totalAmount = product.harga * quantity;
     const username = sessionStorage.getItem("username");
-
-    // Tambahkan items ke data yang dikirim
-    const data = {
-      username: username,
-      totalAmount: totalAmount,
-      items: [
-        {
-          id: product.id_produk,
-          name: product.nama_produk,
-          price: product.harga,
-          quantity: quantity,
-          size: selectedSize,
-        },
-      ],
-    };
+    const totalAmount = product.harga * quantity;
 
     try {
       const response = await fetch("http://localhost/Backend/Auth/Order.php", {
@@ -120,7 +113,20 @@ const DetailProduk = ({ produk }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          username: username,
+          totalAmount: totalAmount,
+          items: [
+            {
+              id_produk: id,
+              nama_produk: product.nama_produk,
+              harga: product.harga,
+              jumlah: quantity,
+              size: selectedSize,
+              nama_warna: selectedWarna,
+            },
+          ],
+        }),
       });
 
       if (!response.ok) {
@@ -128,69 +134,39 @@ const DetailProduk = ({ produk }) => {
       }
 
       const responseData = await response.json();
-      console.log("Response:", responseData); // Untuk debugging
 
       if (responseData.token) {
         window.snap.pay(responseData.token, {
           onSuccess: function (result) {
             alert("Payment Success!");
-            console.log(result);
 
-            const moveToHistoryData = {
-              username: username,
-              order_id: result.order_id,
-              product_id: id,
-              quantity: quantity,
-              total_amount: totalAmount,
-              size_id: selectedSize,
-            };
-            console.log("Move to history data: ", moveToHistoryData);
-
-            // Kirim request untuk memindahkan produk ke riwayat transaksi
             fetch("http://localhost/Backend/Auth/pindahhistory.php", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(moveToHistoryData),
+              body: JSON.stringify({
+                username: username,
+                order_id: result.order_id,
+                items: [
+                  {
+                    id_produk: id,
+                    size: selectedSize,
+                    nama_warna: selectedWarna,
+                    quantity: quantity,
+                    price: product.harga * quantity,
+                  },
+                ],
+              }),
             })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error(
-                    "Failed to communicate with the server. Status: " +
-                      response.status
-                  );
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.status === "success") {
+                  alert("Payment successful and order has been processed!");
+                  window.location.reload();
+                } else {
+                  throw new Error(data.message || "Failed to process order");
                 }
-
-                return response.text(); // Ambil respons sebagai teks untuk debugging
-              })
-              .then((text) => {
-                console.log("Response Text: ", text); // Log respons sebagai teks
-
-                // Coba untuk mengurai JSON
-                try {
-                  const data = JSON.parse(text); // Ubah teks ke JSON jika formatnya benar
-                  console.log("Parsed Data:", data);
-
-                  if (data.success) {
-                    alert(
-                      "Products have been successfully moved to your order history!"
-                    );
-                  } else {
-                    console.log("Error moving to order history:", data.error);
-                    alert("Failed to move products to order history.");
-                  }
-                } catch (error) {
-                  console.error("Failed to parse JSON:", error);
-                  alert("Error: Invalid JSON response.");
-                }
-              })
-              .catch((err) => {
-                console.error("Error:", err);
-                alert(
-                  "Something went wrong while processing your order: " +
-                    err.message
-                );
               });
           },
           onPending: function (result) {
@@ -202,24 +178,19 @@ const DetailProduk = ({ produk }) => {
             console.log(result);
           },
           onClose: function () {
-            alert("You closed the popup without finishing the payment.");
+            alert("You closed the popup without finishing the payment");
           },
         });
-      } else {
-        setError(
-          "Error with payment gateway: " +
-            (responseData.error || "No token received.")
-        );
       }
     } catch (error) {
-      console.error("Error while processing payment:", error);
+      console.error("Error:", error);
       alert("Error processing payment: " + error.message);
     }
   };
 
   const addToCart = async () => {
-    if (!selectedSize) {
-      alert("Please select a size first.");
+    if (!selectedSize || !selectedWarna) {
+      alert("Please select a size and color first.");
       return;
     }
 
@@ -229,16 +200,33 @@ const DetailProduk = ({ produk }) => {
       return;
     }
 
-    const data = {
-      username: username,
-      id_produk: id,
-      jumlah: quantity,
-      id_size: selectedSize,
-    };
-
     try {
+      // Dapatkan id_warna dari data produk
+      const selectedSizeData = product.sizes.find(
+        (s) => s.size === selectedSize
+      );
+      const selectedWarnaData = selectedSizeData.warna.find(
+        (w) => w.nama_warna === selectedWarna
+      );
+
+      if (!selectedWarnaData) {
+        alert("Color data not found");
+        return;
+      }
+
+      const data = {
+        username: username,
+        id_produk: id,
+        jumlah: quantity,
+        size: selectedSize,
+        warna: selectedWarnaData.nama_warna,
+        stok: selectedWarnaData.stok,
+      };
+
+      console.log("Sending cart data:", data); // Debug
+
       const response = await fetch(
-        "http://localhost/Backend/Auth/addToCart.php",
+        "http://localhost/Backend/Auth/addtocart.php",
         {
           method: "POST",
           headers: {
@@ -311,88 +299,123 @@ const DetailProduk = ({ produk }) => {
                 </Col>
                 <Col className="size">
                   <p>Size</p>
-                  {Array.isArray(product.sizes) ? (
-                    product.sizes
-                      .filter((size) => size.stok > 0)
-                      .map((size, index) => (
+                  <div className="size-button-group">
+                    {Array.isArray(product.sizes) &&
+                      product.sizes.map((sizeData, index) => (
                         <Button
                           key={index}
                           variant="primary"
-                          onClick={() => handleSizeClick(size.size)}
+                          className="size-button"
+                          onClick={() => handleSizeClick(sizeData.size)}
                           style={{
-                            marginRight: "18px",
                             backgroundColor:
-                              selectedSize === size.size ? "#B88E2F" : "white",
+                              selectedSize === sizeData.size
+                                ? "#B88E2F"
+                                : "white",
                             color:
-                              selectedSize === size.size ? "white" : "#B88E2F",
+                              selectedSize === sizeData.size
+                                ? "white"
+                                : "#B88E2F",
                             border:
-                              selectedSize === size.size
+                              selectedSize === sizeData.size
                                 ? "#B88E2F"
                                 : "1px solid #B88E2F",
-                            padding: "10px 20px",
                           }}
                         >
-                          {size.size}
+                          {sizeData.size}
                         </Button>
-                      ))
-                  ) : (
-                    <p>{product.size}</p>
+                      ))}
+                  </div>
+
+                  {selectedSize && (
+                    <>
+                      <p>Warna</p>
+                      <div className="color-button-group">
+                        {product.sizes
+                          .find((s) => s.size === selectedSize)
+                          ?.warna.map((warnaData, index) => (
+                            <Button
+                              key={index}
+                              variant="primary"
+                              className="color-button"
+                              onClick={() => handleWarnaClick(warnaData)}
+                              disabled={warnaData.stok === 0}
+                              style={{
+                                backgroundColor:
+                                  selectedWarna === warnaData.nama_warna
+                                    ? "#B88E2F"
+                                    : "white",
+                                color:
+                                  selectedWarna === warnaData.nama_warna
+                                    ? "white"
+                                    : "#B88E2F",
+                                border:
+                                  selectedWarna === warnaData.nama_warna
+                                    ? "#B88E2F"
+                                    : "1px solid #B88E2F",
+                              }}
+                            >
+                              {warnaData.nama_warna}{" "}
+                              {warnaData.stok === 0 ? "(Habis)" : ""}
+                            </Button>
+                          ))}
+                      </div>
+                    </>
                   )}
-                  {selectedSize && stok !== null && (
-                    <p>
-                      Stok untuk ukuran <strong>{selectedSize}</strong>: {stok}
-                    </p>
+
+                  {selectedSize && selectedWarna && (
+                    <>
+                      <p>Quantity</p>
+                      <Col className="detail-produk-bawah">
+                        <div className="quantity-controls">
+                          <Button
+                            onClick={handleDecrease}
+                            disabled={quantity <= 1}
+                            style={{
+                              backgroundColor:
+                                quantity > 1 ? "#B88E2F" : "white",
+                              color: quantity > 1 ? "white" : "#B88E2F",
+                              border:
+                                quantity > 1 ? "none" : "1px solid #B88E2F",
+                            }}
+                          >
+                            -
+                          </Button>
+                          <span>{quantity}</span>
+                          <Button
+                            onClick={handleIncrease}
+                            disabled={quantity >= stok}
+                            style={{
+                              backgroundColor:
+                                quantity < stok ? "#B88E2F" : "white",
+                              color: quantity < stok ? "white" : "#B88E2F",
+                              border:
+                                quantity < stok ? "none" : "1px solid #B88E2F",
+                            }}
+                          >
+                            +
+                          </Button>
+                        </div>
+                        <p>Stok: {stok}</p>
+                        <div className="action-buttons">
+                          <Button
+                            onClick={addToCart}
+                            variant="success"
+                            className="mt-3"
+                          >
+                            Add to Cart
+                          </Button>
+                          <Button
+                            onClick={onPurchase}
+                            variant="info"
+                            className="mt-3 ms-2"
+                          >
+                            Buy Now
+                          </Button>
+                        </div>
+                      </Col>
+                    </>
                   )}
-                  <p>Color</p>
-                  <div
-                    className={`colored-container ${product.warna.toLowerCase()}`}
-                  />
-                  <p>Quantity</p>
-                  <Col className="detail-produk-bawah">
-                    <div className="quantity-controls">
-                      <Button
-                        onClick={handleDecrease}
-                        disabled={quantity <= 1}
-                        style={{
-                          backgroundColor: quantity > 1 ? "#B88E2F" : "white",
-                          color: quantity > 1 ? "white" : "#B88E2F",
-                          border: quantity > 1 ? "none" : "1px solid #B88E2F",
-                        }}
-                      >
-                        -
-                      </Button>
-                      <span>{quantity}</span>
-                      <Button
-                        onClick={handleIncrease}
-                        disabled={quantity >= stok}
-                        style={{
-                          backgroundColor:
-                            quantity < stok ? "#B88E2F" : "white",
-                          color: quantity < stok ? "white" : "#B88E2F",
-                          border:
-                            quantity < stok ? "none" : "1px solid #B88E2F",
-                        }}
-                      >
-                        +
-                      </Button>
-                    </div>
-                    <div className="action-buttons">
-                      <Button
-                        onClick={addToCart}
-                        variant="success"
-                        className="mt-3"
-                      >
-                        Add to Cart
-                      </Button>
-                      <Button
-                        onClick={onPurchase}
-                        variant="info"
-                        className="mt-3 ms-2"
-                      >
-                        Buy Now
-                      </Button>
-                    </div>
-                  </Col>
                 </Col>
                 <Col className="deskripsibawah">
                   <hr />

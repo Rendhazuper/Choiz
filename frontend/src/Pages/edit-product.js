@@ -16,6 +16,7 @@ const EditProduk = () => {
   });
   const [image, setImage] = useState(null);
   const [stok, setStok] = useState({});
+  const [availableColors, setAvailableColors] = useState([]);
   const navigate = useNavigate();
 
   // Mengambil data produk dari API
@@ -24,24 +25,34 @@ const EditProduk = () => {
       .get(`http://localhost/Backend/Auth/getproduct.php?id=${id}`)
       .then((response) => {
         const data = response.data;
-        console.log("Fetched product data:", data);
+        console.log("API Response:", response.data);
+
         if (data && data.nama_produk) {
-          setProduct({
+          // Set product basic info
+          const productData = {
             nama_produk: data.nama_produk,
             color: data.warna || "",
             price: data.harga || "",
             description: data.deskripsi || "",
-            sizes: data.sizes.map((sizeObj) => sizeObj.size), // Extract sizes from the array of objects
-          });
+            sizes: data.sizes.map((sizeObj) => sizeObj.size),
+          };
 
-          // Initialize stock based on sizes
+          // Initialize stok with existing data
           const initialStok = {};
           data.sizes.forEach((sizeObj) => {
-            initialStok[sizeObj.size] = sizeObj.stok; // Set stock for each size
+            initialStok[sizeObj.size] = {};
+            if (sizeObj.warna && Array.isArray(sizeObj.warna)) {
+              sizeObj.warna.forEach((warnaObj) => {
+                // Pastikan nama_warna dalam lowercase untuk konsistensi
+                const namaWarna = warnaObj.nama_warna.toLowerCase();
+                initialStok[sizeObj.size][namaWarna] = parseInt(warnaObj.stok);
+              });
+            }
           });
+
+          console.log("Initial stok:", initialStok);
+          setProduct(productData);
           setStok(initialStok);
-        } else {
-          console.error("Product data not found!");
         }
       })
       .catch((error) => {
@@ -49,12 +60,30 @@ const EditProduk = () => {
       });
   }, [id]);
 
+  // Tambahkan useEffect untuk mengambil data warna
+  useEffect(() => {
+    // Ambil data warna dari database menggunakan GetWarna.php yang sudah ada
+    axios
+      .get("http://localhost/Backend/Admin/GetWarna.php")
+      .then((response) => {
+        if (response.data && !response.data.error) {
+          console.log("Fetched colors:", response.data);
+          setAvailableColors(response.data);
+        } else {
+          console.error("Error in color data:", response.data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching colors:", error);
+      });
+  }, []);
+
   // Fungsi untuk mengubah ukuran produk
   const handleSizeChange = (size) => {
     if (product.sizes.includes(size)) {
       setProduct({
         ...product,
-        sizes: product.sizes.filter((item) => item !== size),
+        sizes: product.sizes.filter((s) => s !== size),
       });
       const newStok = { ...stok };
       delete newStok[size];
@@ -66,38 +95,87 @@ const EditProduk = () => {
       });
       setStok({
         ...stok,
-        [size]: stok[size] || 0,
+        [size]: {},
       });
     }
   };
 
+  const handleColorChange = (size, color) => {
+    const newStok = { ...stok };
+    if (newStok[size]?.[color] !== undefined) {
+      delete newStok[size][color];
+      if (Object.keys(newStok[size]).length === 0) {
+        delete newStok[size];
+      }
+    } else {
+      if (!newStok[size]) {
+        newStok[size] = {};
+      }
+      newStok[size][color] = 0;
+    }
+    setStok(newStok);
+  };
+
   // Fungsi untuk mengubah stok produk
-  const handleStockChange = (size, value) => {
+  const handleStockChange = (size, color, value) => {
     setStok({
       ...stok,
-      [size]: value,
+      [size]: {
+        ...stok[size],
+        [color]: value === "" ? "" : parseInt(value) || 0,
+      },
     });
+  };
+
+  // Fungsi helper untuk mengecek warna
+  const isColorAvailable = (size, color) => {
+    console.log(
+      `Checking color ${color} for size ${size}:`,
+      stok[size]?.[color]
+    );
+    return stok[size]?.[color] !== undefined;
+  };
+
+  // Fungsi helper untuk mendapatkan stok
+  const getStockValue = (size, color) => {
+    const value = stok[size]?.[color];
+    return value === undefined ? "" : value.toString();
   };
 
   // Fungsi untuk submit form
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      !product.nama_produk ||
-      !product.price ||
-      !product.color ||
-      !product.description ||
-      !product.sizes.length
-    ) {
-      alert("Please fill in all fields.");
+    // Validasi dasar
+    if (!product.nama_produk || !product.price || !product.description) {
+      alert("Please fill in product name, price, and description.");
+      return;
+    }
+
+    // Validasi size dan stok
+    if (product.sizes.length === 0) {
+      alert("Please select at least one size.");
+      return;
+    }
+
+    // Validasi apakah setiap size memiliki minimal satu warna dengan stok
+    let hasValidStock = false;
+    for (const size of product.sizes) {
+      if (stok[size] && Object.keys(stok[size]).length > 0) {
+        hasValidStock = true;
+        break;
+      }
+    }
+
+    if (!hasValidStock) {
+      alert("Please add at least one color and stock for selected sizes.");
       return;
     }
 
     const formData = new FormData();
     formData.append("id", id);
     formData.append("name", product.nama_produk);
-    formData.append("color", product.color);
+    formData.append("color", product.color || ""); // Make color optional
     formData.append("price", product.price);
     formData.append("description", product.description);
     formData.append("sizes", JSON.stringify(product.sizes));
@@ -115,6 +193,7 @@ const EditProduk = () => {
       })
       .catch((error) => {
         console.error("Error updating product:", error);
+        alert("Error updating product: " + error.message);
       });
   };
 
@@ -210,36 +289,83 @@ const EditProduk = () => {
             />
           </Form.Group>
 
-          {/* Ukuran Produk */}
+          {/* Ukuran dan Warna Produk */}
           <Form.Group>
-            <Form.Label>Sizes</Form.Label>
-            {["XS", "S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
-              <div key={size} className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id={`size-${size}`}
-                  checked={product.sizes.includes(size)} // Memastikan checkbox tercentang jika ukuran ada di state
-                  onChange={() => handleSizeChange(size)}
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor={`size-${size}`}
-                  style={{ color: "black", marginLeft: "10px" }}
-                >
-                  {size}
-                </label>
-                {product.sizes.includes(size) && (
-                  <input
-                    type="number"
-                    placeholder={`Stock for ${size}`}
-                    value={stok[size] || ""}
-                    onChange={(e) => handleStockChange(size, e.target.value)}
-                    style={{ width: "60px", marginLeft: "10px" }}
-                  />
+            <Form.Label>Sizes and Colors</Form.Label>
+            <div className="size-color-container">
+              <div className="sizes-column">
+                {["XS", "S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
+                  <div key={size} className="size-item">
+                    <Form.Check
+                      type="checkbox"
+                      id={`size-${size}`}
+                      checked={product.sizes.includes(size)}
+                      onChange={() => handleSizeChange(size)}
+                      label={size}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="colors-column">
+                {product.sizes.length > 0 && (
+                  <div className="colors-grid">
+                    <div className="color-header">Available Colors:</div>
+                    {product.sizes.map((size) => (
+                      <div key={size} className="color-section">
+                        <div className="size-label">{size}:</div>
+                        <div className="color-options">
+                          {availableColors.map((colorObj) => {
+                            const isChecked = isColorAvailable(
+                              size,
+                              colorObj.nama_warna.toLowerCase()
+                            );
+                            return (
+                              <div
+                                key={`${size}-${colorObj.nama_warna}`}
+                                className="color-item"
+                              >
+                                <Form.Check
+                                  type="checkbox"
+                                  id={`${size}-${colorObj.nama_warna}`}
+                                  checked={isChecked}
+                                  onChange={() =>
+                                    handleColorChange(
+                                      size,
+                                      colorObj.nama_warna.toLowerCase()
+                                    )
+                                  }
+                                  label={colorObj.nama_warna}
+                                />
+                                {isChecked && (
+                                  <Form.Control
+                                    type="number"
+                                    min="0"
+                                    value={getStockValue(
+                                      size,
+                                      colorObj.nama_warna.toLowerCase()
+                                    )}
+                                    onChange={(e) =>
+                                      handleStockChange(
+                                        size,
+                                        colorObj.nama_warna.toLowerCase(),
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="Stock"
+                                    className="stock-input"
+                                  />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
-            ))}
+            </div>
           </Form.Group>
 
           {/* Gambar Produk */}
