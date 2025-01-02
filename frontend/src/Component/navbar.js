@@ -81,16 +81,16 @@ const MyNavbar = () => {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll" className="justify-content-between">
           <Nav className="mx-auto">
-            <Nav.Link href="/" className="mx-2">
+            <Nav.Link href="/" className="mx-4">
               Home
             </Nav.Link>
-            <Nav.Link href="/shop" className="mx-2">
+            <Nav.Link href="/shop" className="mx-4">
               Shop
             </Nav.Link>
-            <Nav.Link href="/about" className="mx-2">
+            <Nav.Link href="/about" className="mx-4">
               About
             </Nav.Link>
-            <Nav.Link href="/Contact" className="mx-2">
+            <Nav.Link href="/Contact" className="mx-4">
               Contact
             </Nav.Link>
           </Nav>

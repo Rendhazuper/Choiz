@@ -1,4 +1,5 @@
 <?php
+session_set_cookie_params(5); // 5 seconds
 session_start();
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -61,17 +62,22 @@ if ($result->num_rows > 0) {
     }
 
     if ($passwordValid) {
-        http_response_code(200);
-
-        $_SESSION['user'] = [
-            'username' => $user["username"],
-            'level' => $user["level"]
-        ];
+        error_log('Login successful, setting up session...'); // Debug log
         
+        $_SESSION['start_time'] = time();
+        $_SESSION['expire_time'] = $_SESSION['start_time'] + (5); // 5 seconds
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['level'] = $user['level'];
+        $_SESSION['username'] = $user['username'];
+        
+        error_log('Session data set: ' . print_r($_SESSION, true)); // Debug log
+        
+        http_response_code(200);
         echo json_encode([
-            "message" => "Login berhasil",
-            "username" => $user["username"],
-            "level" => $user["level"]
+            'status' => 'success',
+            'level' => $user['level'],
+            'username' => $user['username'],
+            'expire_time' => $_SESSION['expire_time']
         ]);
 
         // Hanya hash password jika bukan admin dan password belum di-hash

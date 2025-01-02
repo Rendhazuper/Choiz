@@ -1,73 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
-.kontainer{
-    /* background-color: red; */
-    position: relative;
-    width: 100vw;
-    margin-left: 100px;
-    padding-top: 50px;
-    overflow-x: hidden;
-    font-family: 'Poppins', sans-serif;
-
+.kontainer {
+  position: relative;
+  width: 100%;
+  padding: 50px 100px;
+  font-family: "Poppins", sans-serif;
+  background-color: #e6dbc6;
+  color: #333;
 }
 
-ul{
-    color: black;
-    font-size: 16px;
+.footer-content {
+  max-width: 300px;
+  text-align: left;
 }
 
-li{
-    list-style-type:none;
-    margin-bottom: 20px;
+.Judul {
+  font-size: 40px;
+  font-weight: bolder;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
-.Judul{
-    font-size: 16px;
-    font-weight: bolder ;
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
 }
 
-.copyrait{
-    font-size: 16px;
-    font-weight: 300;
+li {
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: left;
 }
 
-.newsletter{
-    font-size: 16px;
-    font-weight: 400;
+.copyrait {
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 20px;
+  text-align: left;
 }
 
-/* Menghapus border default dan menambahkan hanya border bawah pada input */
-.input-group .form-control {
-    border: none; /* Menghapus border */
-    border-bottom: 2px solid black ; /* Menambahkan garis bawah biru */
-    border-radius: 0; /* Menghilangkan sudut melengkung pada input */
-    box-shadow: none; /* Menghilangkan shadow saat input aktif */
-    padding-left: 0; /* Menghilangkan padding kiri */
-    padding-right: 0; /* Menghilangkan padding kanan */
-    background-color: transparent; /* Membuat latar belakang transparan */
-    color: #333; /* Warna teks untuk placeholder dan input */
+.footer-link {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: #666; /* Optional: slightly darker on hover */
+}
+
+.brand-name {
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .kontainer {
+    padding: 50px 20px;
   }
-  
-  /* Mengubah warna placeholder */
-  .input-group .form-control::placeholder {
-    color: black; /* Warna placeholder */
-    opacity: 1; /* Menghilangkan transparansi */
+
+  .footer-content {
+    margin: 0 auto;
+    text-align: center;
   }
-  
-  /* Style tombol "Enter" */
-  .input-group .btn {
-    border: none; /* Menghapus border tombol */
-    background-color: transparent; /* Latar belakang transparan */
-    color: black; /* Warna teks tombol */
-    font-weight: bold; /* Membuat teks tombol lebih tebal */
-    border-radius: 0; /* Sudut tombol tanpa lengkungan */
-    padding-left: 10px;
-    padding-right: 10px;
-    transition: color 0.3s ease;
+
+  .Judul {
+    text-align: center;
   }
-  
-  /* Tombol saat hover */
-  .input-group .btn:hover {
-    color: black; /* Ubah warna tombol saat hover */
+
+  ul {
+    text-align: center;
   }
-  
+
+  li {
+    text-align: center;
+  }
+
+  .copyrait {
+    text-align: center;
+  }
+}

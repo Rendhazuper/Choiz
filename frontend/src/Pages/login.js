@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { BsEye, BsEyeSlash, BsEyeFill } from "react-icons/bs";
@@ -13,6 +13,40 @@ const Login = () => {
   const [variant, setVariant] = useState("success");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const checkSession = async () => {
+    try {
+      console.log("Checking session...");
+      const response = await axios.get(
+        "http://localhost/Backend/Auth/CheckSession.php",
+        { withCredentials: true }
+      );
+
+      console.log("Session status:", response.data.status);
+
+      if (response.data.status === "expired") {
+        console.log("Session expired, logging out...");
+        sessionStorage.clear();
+        navigate("/login");
+        setMessage("Sesi Anda telah berakhir. Silakan login kembali.");
+        setVariant("info");
+      }
+    } catch (error) {
+      console.error("Error checking session:", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Setting up session checker...");
+    const sessionChecker = setInterval(checkSession, 2000);
+
+    checkSession();
+
+    return () => {
+      console.log("Cleaning up session checker...");
+      clearInterval(sessionChecker);
+    };
+  }, []);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -36,7 +70,7 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log(response.status);
-        const { level, username } = response.data;
+        const { level, username, expire_time } = response.data;
         setMessage("Anda berhasil login!");
         setVariant("success");
 
@@ -44,6 +78,14 @@ const Login = () => {
 
         sessionStorage.setItem("userLevel", level);
         sessionStorage.setItem("username", username);
+        sessionStorage.setItem("expire_time", expire_time);
+
+        setTimeout(() => {
+          sessionStorage.clear();
+          navigate("/login");
+          setMessage("Sesi Anda telah berakhir. Silakan login kembali.");
+          setVariant("info");
+        }, 60000);
 
         if (level === "admin") {
           setTimeout(() => {
@@ -87,6 +129,11 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin();
+  };
+
   return (
     <div className="kon-login login relative ">
       <Container className="kontainernyalogin">
@@ -104,46 +151,48 @@ const Login = () => {
                   <Alert variant={variant}>{message}</Alert>
                 </Row>
               )}
-              <Row>
-                <Form.Group className="mb-3" controlId="email">
-                  <Form.Label className="label">Email address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="name@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Group>
-              </Row>
-              <Row>
-                <Form.Group className="mb-3" controlId="password">
-                  <Form.Label className="label">Password</Form.Label>
-                  <div className="d-flex align-items-center">
+              <form onSubmit={handleSubmit}>
+                <Row>
+                  <Form.Group className="mb-3" controlId="email">
+                    <Form.Label className="label">Email address</Form.Label>
                     <Form.Control
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      style={{ paddingRight: "40px" }}
+                      type="text"
+                      placeholder="name@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                    <div
-                      onClick={togglePassword}
-                      style={{
-                        color: "black",
-                        cursor: "pointer",
-                        marginLeft: "-30px",
-                      }}
-                    >
-                      {showPassword ? <BsEyeSlash /> : <BsEyeFill />}
+                  </Form.Group>
+                </Row>
+                <Row>
+                  <Form.Group className="mb-3" controlId="password">
+                    <Form.Label className="label">Password</Form.Label>
+                    <div className="d-flex align-items-center">
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ paddingRight: "40px" }}
+                      />
+                      <div
+                        onClick={togglePassword}
+                        style={{
+                          color: "black",
+                          cursor: "pointer",
+                          marginLeft: "-30px",
+                        }}
+                      >
+                        {showPassword ? <BsEyeSlash /> : <BsEyeFill />}
+                      </div>
                     </div>
-                  </div>
-                </Form.Group>
-              </Row>
-              <Row>
-                <Button className="Button" onClick={handleLogin}>
-                  Login
-                </Button>
-              </Row>
+                  </Form.Group>
+                </Row>
+                <Row>
+                  <Button className="Button" type="submit">
+                    Login
+                  </Button>
+                </Row>
+              </form>
               <Container className="Forgot">
                 <Row>
                   <div className="auth-links">
