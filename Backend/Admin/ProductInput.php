@@ -17,27 +17,34 @@ try {
     exit;
 }
 
+error_log("Received POST data: " . print_r($_POST, true));
+error_log("Received FILES data: " . print_r($_FILES, true));
+
 if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warna']) && isset($_POST['kategori']) && isset($_POST['stocks']) && isset($_POST['harga']) && isset($_FILES['gambar_produk']) && isset($_POST['deskripsi'])) {
 
     $nama_produk = $_POST['nama_produk'];
     $sizes = json_decode($_POST['sizes']); 
-    $warna = $_POST['warna'];
+    $warna = json_decode($_POST['warna'], true);
     $kategori = $_POST['kategori'];
-    $stocks = json_decode($_POST['stocks'], true); 
+    $stocks = json_decode($_POST['stocks'], true);
     $harga = intval($_POST['harga']);
     $deskripsi = $_POST['deskripsi'];
+
+    error_log("Decoded data:");
+    error_log("sizes: " . print_r($sizes, true));
+    error_log("warna: " . print_r($warna, true));
+    error_log("stocks: " . print_r($stocks, true));
 
     if (
         strlen($nama_produk) > 255 || !is_array($sizes) ||
         array_filter($sizes, fn($size) => strlen($size) > 50) ||
-        strlen($warna) > 50 || strlen($kategori) > 100 ||
-        array_filter($stocks, fn($stok) => $stok < 0) ||
+        !is_array($warna) || strlen($kategori) > 100 ||
         $harga < 0 || strlen($deskripsi) > 65535
     ) {
         exit;
     }
 
-    // Process image upload
+
     $gambar_path = '';
     if ($_FILES['gambar_produk']['error'] === UPLOAD_ERR_OK) {
         $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
@@ -52,7 +59,7 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
             exit;
         }
 
-        // Generate unique filename
+
         $file_extension = pathinfo($_FILES['gambar_produk']['name'], PATHINFO_EXTENSION);
         $unique_filename = uniqid() . '.' . $file_extension;
         $upload_directory = 'C:\\PUNYA SAYA\\Portofolio\\choiz - Copy\\frontend\\public\\asset\\produk\\';
@@ -72,85 +79,21 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
             exit;
         }
     }
-
-    // Check if product already exists
-    $stmtCheck = $conn->prepare("SELECT id_produk FROM produk WHERE nama_produk = ?");
-    $stmtCheck->bind_param("s", $nama_produk);
-    $stmtCheck->execute();
-    $resultCheck = $stmtCheck->get_result();
-
-    if ($resultCheck->num_rows > 0) {
-        // Product exists, update stock only
-        $row = $resultCheck->fetch_assoc();
-        $id_produk = $row['id_produk'];
-
-        // Update size_produk and stok_size_produk
-        // Update size_produk
-        $querySize = "UPDATE size_produk SET size = CASE ";
-        $paramsSize = [];
-        $typesSize = "";
-
-        foreach ($sizes as $i => $size) {
-            $querySize .= "WHEN id_produk = ? AND size = ? THEN ? ";
-            $paramsSize[] = $id_produk;
-            $paramsSize[] = $size;
-            $paramsSize[] = $size;
-            $typesSize .= "iss";
-        }
-        $querySize .= "END WHERE id_produk = ?";
-
-        // Update stok_size_produk
-        $queryStok = "UPDATE stok_size_produk SET stok = CASE ";
-        $paramsStok = [];
-        $typesStok = "";
-
-        foreach ($stocks as $i => $stok) {
-            $queryStok .= "WHEN id_size = ? THEN ? ";
-            $paramsStok[] = $id_produk;
-            $paramsStok[] = $stok;
-            $typesStok .= "ii";
-        }
-        $queryStok .= "END WHERE id_size IN (SELECT id_size FROM size_produk WHERE id_produk = ?)";
-
-        // Execute queries
-        try {
-            $conn->begin_transaction();
-
-            // Update size_produk
-            $stmtSize = $conn->prepare($querySize);
-            $stmtSize->bind_param($typesSize, ...$paramsSize);
-            $stmtSize->execute();
-
-            // Update stok_size_produk
-            $stmtStok = $conn->prepare($queryStok);
-            $stmtStok->bind_param($typesStok, ...$paramsStok);
-            $stmtStok->execute();
-
-            // Commit transaction
-            $conn->commit();
-            $stmtSize->close();
-            $stmtStok->close();
-            echo json_encode(["message" => "Produk stok diperbarui."]);
-        } catch (Exception $e) {
-            $conn->rollback();
-            echo json_encode(["error" => "Terjadi kesalahan saat memperbarui data."]);
-            exit;
-        }
-
-    } else {
-        // Product doesn't exist, insert new product
+  
         $conn->begin_transaction();
 
         try {
-            // Insert new product
-            $stmt = $conn->prepare("INSERT INTO produk (nama_produk, warna, kategori, harga, gambar_produk, deskripsi) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $nama_produk, $warna, $kategori, $harga, $gambar_path, $deskripsi);
-            $stmt->execute();
+            $stmt = $conn->prepare("INSERT INTO produk (nama_produk, id_kategori, harga, gambar_produk, deskripsi) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sisss", $nama_produk, $kategori, $harga, $gambar_path, $deskripsi);
+            $result = $stmt->execute();
             
-            // Get the last inserted product ID
+            // Debug: Log query result
+            error_log("Product insert result: " . ($result ? "success" : "failed"));
+            
             $id_produk = $conn->insert_id;
+            error_log("Generated product ID: " . $id_produk);
 
-            // Insert sizes into size_produk
+            // Insert sizes
             $query = "INSERT INTO size_produk (id_produk, size) VALUES ";
             $values = [];
             $params = [];
@@ -164,56 +107,65 @@ if (isset($_POST['nama_produk']) && isset($_POST['sizes']) && isset($_POST['warn
             }
 
             $query .= implode(", ", $values);
-
             $stmtSize = $conn->prepare($query);
             $stmtSize->bind_param($types, ...$params);
             $stmtSize->execute();
 
-            // Insert stok into stok_size_produk
-            $querySize = "INSERT INTO stok_size_produk (id_size, stok) VALUES ";
-            $valuesSize = [];
-            $paramsSize = [];
-            $typesSize = "";
-
-            $stmtIdSize = $conn->prepare("SELECT id_size FROM size_produk WHERE id_produk = ?");
+            // Get inserted size IDs
+            $stmtIdSize = $conn->prepare("SELECT id_size, size FROM size_produk WHERE id_produk = ?");
             $stmtIdSize->bind_param("i", $id_produk);
             $stmtIdSize->execute();
             $resultIdSize = $stmtIdSize->get_result();
-            $idSize = [];
+            $sizeMap = [];
             while ($row = $resultIdSize->fetch_assoc()) {
-                $idSize[] = $row;
+                $sizeMap[$row['size']] = $row['id_size'];
             }
 
-            $i = 0;
-            foreach ($stocks as $stok) {
-                $valuesSize[] = "(?, ?)";
-                $paramsSize[] = $idSize[$i]['id_size'];
-                $paramsSize[] = $stok;
-                $typesSize .= "ii";
-                $i++;
+            // Insert stok untuk setiap kombinasi size dan warna
+            $queryStok = "INSERT INTO stok_size_produk (id_size, id_warna, stok) VALUES ";
+            $valuesStok = [];
+            $paramsStok = [];
+            $typesStok = "";
+
+            foreach ($stocks as $size => $warnaStok) {
+                $id_size = $sizeMap[$size];
+                foreach ($warnaStok as $id_warna => $stok) {
+                    $valuesStok[] = "(?, ?, ?)";
+                    $paramsStok[] = $id_size;
+                    $paramsStok[] = $id_warna;
+                    $paramsStok[] = $stok;
+                    $typesStok .= "iii";
+                }
             }
 
-            $querySize .= implode(", ", $valuesSize);
-
-            $stmtStok = $conn->prepare($querySize);
-            $stmtStok->bind_param($typesSize, ...$paramsSize);
+            $queryStok .= implode(", ", $valuesStok);
+            $stmtStok = $conn->prepare($queryStok);
+            $stmtStok->bind_param($typesStok, ...$paramsStok);
             $stmtStok->execute();
 
             $conn->commit();
-            $stmt->close();
-            $stmtSize->close();
-            $stmtIdSize->close();
-            $stmtStok->close();
-            echo json_encode(["message" => "Produk berhasil ditambahkan."]);
+            echo json_encode(["message" => "Produk berhasil ditambahkan.", "id_produk" => $id_produk]);
         } catch (Exception $e) {
             $conn->rollback();
-            echo json_encode(["error" => "Terjadi kesalahan saat memasukkan data."]);
+            error_log("Error in transaction: " . $e->getMessage());
+            echo json_encode(["error" => "Terjadi kesalahan saat memasukkan data: " . $e->getMessage()]);
             exit;
         }
-    }
+    
 
 } else {
-    echo json_encode(["error" => "Input tidak lengkap. Harap periksa kembali."]);
+    $missing = [];
+    if (!isset($_POST['nama_produk'])) $missing[] = 'nama_produk';
+    if (!isset($_POST['sizes'])) $missing[] = 'sizes';
+    if (!isset($_POST['warna'])) $missing[] = 'warna';
+    if (!isset($_POST['kategori'])) $missing[] = 'kategori';
+    if (!isset($_POST['stocks'])) $missing[] = 'stocks';
+    if (!isset($_POST['harga'])) $missing[] = 'harga';
+    if (!isset($_FILES['gambar_produk'])) $missing[] = 'gambar_produk';
+    if (!isset($_POST['deskripsi'])) $missing[] = 'deskripsi';
+    
+    error_log("Missing fields: " . implode(", ", $missing));
+    echo json_encode(["error" => "Input tidak lengkap. Fields yang hilang: " . implode(", ", $missing)]);
 }
 
 $conn->close();

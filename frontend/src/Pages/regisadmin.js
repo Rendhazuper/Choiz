@@ -30,8 +30,8 @@ const Regisadmin = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost/Backend/Auth/Register.php",
-        { name, email, username, password, level: "admin" },
+        "http://localhost/Backend/admin/RegisterAdmin.php",
+        { name, email, username, password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Regisadmin = () => {
       );
 
       if (response.status === 200) {
-        setMessage("Registrasi berhasil! Silakan login.");
+        setMessage("Registrasi admin berhasil!");
         setVariant("success");
         setTimeout(() => {
           navigate("/listuser");

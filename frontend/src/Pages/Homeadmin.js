@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { BsPerson, BsPencilSquare } from "react-icons/bs";
+import { BsPerson, BsPencilSquare, BsBook } from "react-icons/bs";
 import "../style/Homeadmin.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const HomeAdmin = () => {
   return (
-    <div>
-      <div className="register relative justify-center items-center min-h-screen">
-        <Container className="kontainernya">
+    <div className="homeadmin-page">
+      <div className="homeadmin-wrapper">
+        <Container className="container-homeadmin">
           <Row className="centerrow">
             <Col className="judul">
               <p>CHOIZ</p>
@@ -39,6 +38,18 @@ const HomeAdmin = () => {
                       }}
                     />
                     <p> Edit Product </p>
+                  </Button>
+                </Link>
+                <Link to="/listarticle" style={{ textDecoration: "none" }}>
+                  <Button className="button-admin">
+                    <BsBook
+                      style={{
+                        color: "#B88E2F",
+                        width: "30px",
+                        height: "30px",
+                      }}
+                    />
+                    <p> Edit Article </p>
                   </Button>
                 </Link>
               </Container>

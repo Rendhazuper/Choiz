@@ -1,16 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
+.homeadmin-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.homeadmin-wrapper {
+  width: 100%;
+}
+
+.container-homeadmin {
+  display: flex;
+  justify-content: center;
+}
+
 .judul {
   display: flex;
   flex-direction: column;
   gap: 0px;
   width: fit-content;
   height: fit-content;
-}
-
-.kontainernya {
-  display: flex;
-  justify-content: center;
 }
 
 .judul p {
@@ -28,14 +39,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: 100vh; */
-  margin: 100px;
-  /* background-color: red; */
 }
 
 .kolom-button {
   display: flex;
-  gap: 60px;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .button-admin {
@@ -57,13 +67,13 @@
 
 .button-admin:hover p,
 .button-admin:hover svg {
-  color: white;
-  fill: white;
+  color: white !important;
 }
 
 .button-admin p {
   font-size: 20px;
   color: #b88e2f;
+  margin: 5px 0 0 0;
 }
 
 @media (max-width: 768px) {
@@ -71,22 +81,9 @@
     width: 150px;
     height: 80px;
   }
-  .button-admin .icon {
-    font-size: 25px;
-  }
-  .judul {
-    /* display: none; */
-    margin: 0px;
-  }
-  .kolom-button {
-    margin: 10x;
-  }
 
-  .container {
-    height: 100%;
-  }
-  .centerrow {
-    /* gap: 10px; */
-    margin: 100px;
+  .kolom-button {
+    gap: 10px;
+    justify-content: center;
   }
 }

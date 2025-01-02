@@ -1,77 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap');
+.judul {
+  /* background-color: red; */
+  color: black;
+  display: flex;
+  justify-content: center; /* Menempatkan teks di tengah secara horizontal */
+  align-items: center; /* Menempatkan teks di tengah secara vertikal */
+  font-size: 96px;
+  font-family: "Montserrat", sans-serif;
+}
 
+.kolom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+}
 
-.judul{
-    /* background-color: red; */
-    color: black;
-    display: flex;
-    justify-content: center; /* Menempatkan teks di tengah secara horizontal */
-    align-items: center; /* Menempatkan teks di tengah secara vertikal */
-    font-size: 96px;
-    font-family: 'Montserrat', sans-serif;
-  }
+.kon-reset {
+  font: "Poppins", sans-serif;
+  background-image: url("../asset/Login.png");
+  background-size: cover; /* Agar gambar memenuhi seluruh area */
+  background-position: center center; /* Menjaga posisi gambar tetap di tengah */
+}
 
-  .kolom {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap : 5px;
-  }
+h1 {
+  color: black;
+}
 
-  .kon-reset{
-    font: 'Poppins', sans-serif;
-    background-image: url("../asset/Login.png"); 
-    background-size: cover; /* Agar gambar memenuhi seluruh area */
-    background-position: center center; /* Menjaga posisi gambar tetap di tengah */
-  }
-  
-  h1{
-    color: black;
-  }
-
-  .label{
-    color:black;
-  }
-  .reset { 
-    color:black;
-    min-height: 100vh; /* Mengatur tinggi kontainer agar setidaknya 100% dari tinggi layar */
-    display: flex;
-    justify-content: center; /* Menempatkan elemen di tengah secara horizontal */
-    align-items: center; /* Menempatkan elemen di tengah secara vertikal */
-    color: white; 
-  
-  }
-  .Button{
-    margin-left:10px ;
-    width: 97%;
-    background-color: #B88E2F; 
-    color: white;
-    font-size: 16px;
-  }
-
-  .kolom .button{
-      padding: 10px 20px; 
-  width: 100%;
-  background-color: #B88E2F; 
+.label {
+  color: black;
+}
+.reset {
+  color: black;
+  min-height: 100vh; /* Mengatur tinggi kontainer agar setidaknya 100% dari tinggi layar */
+  display: flex;
+  justify-content: center; /* Menempatkan elemen di tengah secara horizontal */
+  align-items: center; /* Menempatkan elemen di tengah secara vertikal */
+  color: white;
+}
+.Button {
+  margin-left: 10px;
+  width: 97%;
+  background-color: #b88e2f;
   color: white;
   font-size: 16px;
-  }
-  .Reset .left {
-    text-align: left; 
-    flex: 1; 
-  }
-  
-  .Reset .right {
-    text-align: right; 
-    flex: 1; 
-  }
-  .Reset{
+}
+
+.kolom .button {
+  padding: 10px 20px;
+  width: 100%;
+  background-color: #b88e2f;
+  color: white;
+  font-size: 16px;
+}
+.Reset .left {
+  text-align: left;
+  flex: 1;
+}
+
+.Reset .right {
+  text-align: right;
+  flex: 1;
+}
+.Reset {
   display: flex;
-  flex-direction: column; 
-  justify-content: space-between; 
-  }
-  p{
-    margin: 0;
-    color : black;
-  }
+  flex-direction: column;
+  justify-content: space-between;
+}
+p {
+  margin: 0;
+  color: black;
+}
+
+.Reset .right a.link-login {
+  color: #0000ff;
+  text-decoration: underline;
+}

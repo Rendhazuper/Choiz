@@ -9,6 +9,7 @@ const Forgot = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [variant, setVariant] = useState("success");
+  const navigate = useNavigate();
 
   const handleForgot = async () => {
     if (!email) {
@@ -19,7 +20,6 @@ const Forgot = () => {
 
     try {
       const response = await axios.post(
-        // "http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/Forgot.php",//backend
         "http://localhost/Backend/Auth/Forgot.php",
         { email },
         {
@@ -29,40 +29,24 @@ const Forgot = () => {
         }
       );
 
-      if (response.status === 200) {
-        setMessage("Token berhasil dikirim. Silakan cek email Anda.");
-        setVariant("success");
+      if (response.data.success) {
+        navigate(`/reset?email=${email}`);
       } else {
-        setMessage(
-          response.data.error ||
-            "Terjadi kesalahan saat mengirim link reset password"
-        );
+        setMessage("Email tidak terdaftar");
         setVariant("danger");
       }
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          setMessage("Email pengguna tidak ditemukann");
-          setVariant("danger");
-        } else if (error.response.status === 404) {
-          setMessage("Email pengguna tidak ditemukan");
-          setVariant("danger");
-        } else {
-          setMessage(error.response?.data?.error || "Terjadi kesalahan");
-          setVariant("danger");
-        }
-      } else if (error.request) {
-        setMessage("Tidak dapat terhubung ke server");
-        setVariant("danger");
+      if (error.response?.status === 404) {
+        setMessage("Email tidak terdaftar");
       } else {
-        setMessage("Terjadi kesalahan yang tidak diketahui");
-        setVariant("danger");
+        setMessage("Terjadi kesalahan saat memproses permintaan");
       }
+      setVariant("danger");
     }
   };
 
   return (
-    <div className="kon-forgot forgot relative ">
+    <div className="kon-forgot forgot relative">
       <Container className="kontainernyaforgot">
         <Row>
           <Col className="judul">

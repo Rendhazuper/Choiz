@@ -13,75 +13,53 @@ import bannershop from "../asset/Baju/bannershop.png";
 import Footer from "../Component/Footer";
 import { Link } from "react-router-dom";
 import MyNavbar from "../Component/navbar";
-import artikel1 from "../asset/artikel1.png";
-import artikel2 from "../asset/artikel2.png";
-import artikel3 from "../asset/artikel3.png";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import "../style/about.css";
 
-const articles = [
-  {
-    id: 1,
-    title: "Going all-in with casual style",
-    author: "Penulis 1",
-    date: "2024-12-14",
-    category: "Kategori 1",
-    description: "Deskripsi singkat artikel 1.",
-    image: artikel1,
-    link: "/article/1",
-  },
-  {
-    id: 2,
-    title: "Exploring new ways of fashion",
-    author: "Penulis 2",
-    date: "2024-12-13",
-    category: "Kategori 2",
-    description: "Deskripsi singkat artikel 2.",
-    image: artikel2,
-    link: "/article/2",
-  },
-  {
-    id: 3,
-    title: "Korean style these days",
-    author: "Penulis 3",
-    date: "2024-12-12",
-    category: "Kategori 3",
-    description: "Deskripsi singkat artikel 3.",
-    image: artikel3,
-    link: "/article/3",
-  },
-];
-
 const About = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const checkLogin = async () => {
-    try {
-      // const response = await axios.get("http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/cekLogin.php", {
-      const response = await axios.get(
-        "http://localhost/Backend/Auth/cekLogin.php",
-        {
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        setUser(response.data);
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        navigate("/login");
-      } else {
-        console.error("Error checking login:", error);
-      }
-    }
-  };
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredArticles, setFilteredArticles] = useState([]);
 
   useEffect(() => {
-    checkLogin();
-  }, [navigate]);
+    const fetchArticles = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/Backend/Auth/getArticle.php"
+        );
+        if (response.data.status === "success") {
+          setArticles(response.data.data);
+          setFilteredArticles(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  useEffect(() => {
+    const results = articles.filter(
+      (article) =>
+        article.judul.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        article.deskripsi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        article.kategori.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredArticles(results);
+  }, [searchTerm, articles]);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
-    <div className="about ">
+    <div className="about">
       <div>
         <MyNavbar />
       </div>
@@ -96,25 +74,46 @@ const About = () => {
         <Container className="kon-artikel">
           <Row>
             <Col md={8}>
-              {articles.map((article) => (
-                <Card key={article.id} className="kontainerartikel mb-4">
-                  <Card.Img variant="top" src={article.image} />
-                  <Card.Body className="kontenartikel">
-                    <Card.Title className="judulartikel mb-3">
-                      {article.title}
-                    </Card.Title>
-                    <Card.Text className="deskripsiartikel mb-5">
-                      {article.description}
-                    </Card.Text>
-                    <Link
-                      to={article.link}
-                      className="tombolartikel btn btn-primary"
-                    >
-                      Read More
-                    </Link>
-                  </Card.Body>
-                </Card>
-              ))}
+              {filteredArticles.length > 0 ? (
+                filteredArticles.map((article) => (
+                  <Card
+                    key={article.id_artikel}
+                    className="kontainerartikel mb-4"
+                  >
+                    {article.gambar && (
+                      <Card.Img
+                        variant="top"
+                        src={`data:image/jpeg;base64,${article.gambar}`}
+                      />
+                    )}
+                    <Card.Body className="kontenartikel">
+                      <Card.Title className="judulartikel mb-3">
+                        {article.judul}
+                      </Card.Title>
+                      <Card.Text className="deskripsiartikel mb-5">
+                        {article.deskripsi}
+                      </Card.Text>
+                      <div className="article-meta mb-3">
+                        <span>By {article.author}</span>
+                        <span className="ms-3">
+                          {new Date(article.date).toLocaleDateString()}
+                        </span>
+                        <span className="ms-3">{article.kategori}</span>
+                      </div>
+                      <Link
+                        to={`/article/${article.id_artikel}`}
+                        className="tombolartikel btn btn-primary"
+                      >
+                        Read More
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                ))
+              ) : (
+                <div className="no-results">
+                  <p>Tidak ada artikel yang sesuai dengan pencarian.</p>
+                </div>
+              )}
             </Col>
             <Col md={4}>
               <InputGroup
@@ -129,6 +128,8 @@ const About = () => {
                   type="text"
                   placeholder="Search..."
                   aria-label="Search"
+                  value={searchTerm}
+                  onChange={handleSearch}
                   style={{
                     width: "40%",
                     border: "none",
@@ -142,18 +143,9 @@ const About = () => {
                     borderRadius: "0 4px 4px 0",
                   }}
                 >
-                  <BsSearch /> {/* Icon Search */}
+                  <BsSearch />
                 </InputGroup.Text>
               </InputGroup>
-
-              <ul className="list-unstyled">
-                <h4>Category</h4>
-                <li>Casual</li>
-                <li>Chic</li>
-                <li>Preppy</li>
-                <li>Skena</li>
-                <li>Emo</li>
-              </ul>
             </Col>
           </Row>
         </Container>

@@ -24,6 +24,7 @@
   font-weight: 600;
   font-size: 36px;
 }
+
 .masih p {
   font-weight: 400;
   font-size: 16px;
@@ -43,5 +44,54 @@
 }
 
 .textarea {
-  width: 580px;
+  width: 100%;
+}
+
+.contact-submit-btn {
+  background-color: #b88e2f !important;
+  color: white !important;
+  border: none !important;
+}
+
+.contact-submit-btn:hover {
+  background-color: #9c7829 !important;
+  color: white !important;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .rou {
+    margin: 20px;
+  }
+
+  /* Mengatur urutan tampilan pada mobile */
+  .contact-info-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-info {
+    order: -1; /* Memindahkan info kontak ke atas */
+    margin-bottom: 30px;
+  }
+
+  .contact-form {
+    order: 2;
+  }
+
+  /* Styling untuk info kontak pada mobile */
+  .contact-info h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  .contact-info p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* Membuat form full width pada mobile */
+  .form-control {
+    width: 100%;
+  }
 }

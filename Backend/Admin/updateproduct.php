@@ -19,9 +19,9 @@ $response = ["success" => false, "message" => "Unknown error occurred"];
 // Mulai transaksi
 $conn->begin_transaction();
 try {
-    $sql_update_product = "UPDATE produk SET nama_produk = ?, warna = ?, harga = ?, deskripsi = ? WHERE id_produk = ?";
+    $sql_update_product = "UPDATE produk SET nama_produk = ?, harga = ?, deskripsi = ? WHERE id_produk = ?";
     $stmt = $conn->prepare($sql_update_product);
-    $stmt->bind_param("ssdsi", $nama_produk, $warna, $harga, $deskripsi, $id_produk);
+    $stmt->bind_param("sdsi", $nama_produk, $harga, $deskripsi, $id_produk);
     $stmt->execute();
 
      // Process image upload
@@ -94,14 +94,33 @@ try {
  }
 
 
- $sql_update_stock = "INSERT INTO stok_size_produk (id_size, stok) VALUES (?, ?) ON DUPLICATE KEY UPDATE stok = ?";
- $stmt = $conn->prepare($sql_update_stock);
+ $sql_delete_stocks = "DELETE ssp FROM stok_size_produk ssp 
+                      INNER JOIN size_produk sp ON ssp.id_size = sp.id_size 
+                      WHERE sp.id_produk = ?";
+ $stmt = $conn->prepare($sql_delete_stocks);
+ $stmt->bind_param("i", $id_produk);
+ $stmt->execute();
 
- foreach ($sizes as $size) {
-     $stock = isset($stocks[$size]) ? $stocks[$size] : 0; 
+
+ $sql_insert_stock = "INSERT INTO stok_size_produk (id_size, id_warna, stok) VALUES (?, ?, ?)";
+ $stmt = $conn->prepare($sql_insert_stock);
+
+ foreach ($stocks as $size => $colors) {
      if (isset($size_ids[$size])) {
-         $stmt->bind_param("iii", $size_ids[$size], $stock, $stock);
-         $stmt->execute();
+         foreach ($colors as $color_name => $stock) {
+             // Get warna ID
+             $sql_get_warna = "SELECT id_warna FROM warna WHERE nama_warna = ?";
+             $warna_stmt = $conn->prepare($sql_get_warna);
+             $warna_stmt->bind_param("s", $color_name);
+             $warna_stmt->execute();
+             $warna_result = $warna_stmt->get_result();
+             $warna_data = $warna_result->fetch_assoc();
+
+             if ($warna_data) {
+                 $stmt->bind_param("iii", $size_ids[$size], $warna_data['id_warna'], $stock);
+                 $stmt->execute();
+             }
+         }
      }
  }
 

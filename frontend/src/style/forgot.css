@@ -77,3 +77,8 @@ p {
   margin: 0;
   color: black;
 }
+
+.Forgot .right a {
+  color: #0000ff !important;
+  text-decoration: underline !important;
+}

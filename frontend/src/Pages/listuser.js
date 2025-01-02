@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
+import { Container, Row, Col, Button, Table } from "react-bootstrap";
 import axios from "axios";
 import AdminNavbar from "../Component/navbaradmin";
 import "../style/listuser.css";
@@ -75,9 +75,9 @@ const Listuser = () => {
                         <td>{admin.username}</td>
                         <td>{admin.password}</td>
                         <td>
-                          <Button 
-                            variant="danger" 
-                            size="sm" 
+                          <Button
+                            variant="danger"
+                            size="sm"
                             onClick={() => handleDeleteUser(admin.email)}
                           >
                             Delete

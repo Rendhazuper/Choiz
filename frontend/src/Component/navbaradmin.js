@@ -63,6 +63,12 @@ const AdminNavbar = () => {
             >
               Product
             </Nav.Link>
+            <Nav.Link
+              href="/listarticle"
+              style={{ marginLeft: "75px", marginRight: "75px" }}
+            >
+              Article
+            </Nav.Link>
             <div className="d-lg-none">
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
             </div>

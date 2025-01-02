@@ -19,6 +19,10 @@ import Produk from "./Pages/Produk";
 import EditProduk from "./Pages/edit-product";
 import Listuser from "./Pages/listuser";
 import Regisadmin from "./Pages/regisadmin";
+import Article from "./Pages/Article";
+import ListArticle from "./Pages/listarticle";
+import ArticleInput from "./Pages/ArticleInput";
+import EditArticle from "./Pages/EditArticle";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +88,22 @@ const router = createBrowserRouter([
   {
     path: "/regisadmin",
     element: <Regisadmin />,
+  },
+  {
+    path: "/article/:id",
+    element: <Article />,
+  },
+  {
+    path: "/listarticle",
+    element: <ListArticle />,
+  },
+  {
+    path: "/articleinput",
+    element: <ArticleInput />,
+  },
+  {
+    path: "/edit-article/:id",
+    element: <EditArticle />,
   },
 ]);
 

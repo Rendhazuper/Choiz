@@ -1,80 +1,79 @@
 <?php
-// Mengatur header untuk mengizinkan koneksi dari frontend
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-// koneksi ke db / helper
-try {
-    require_once "../Helper/DB.php";
-    require_once "../Helper/Helpers.php";
-} catch (Exception $err) {
-    echo "Error: " . $err->getMessage();
-};
+require_once "../Helper/DB.php";
 
-$input = json_decode(file_get_contents("php://input"), true);
-$token = $input['token'] ?? '';
+$input = json_decode(file_get_contents('php://input'), true);
+$email = $input['email'] ?? '';
 $newPassword = $input['newPassword'] ?? '';
 
 // Validasi input
-if (empty($token) || empty($newPassword)) {
+if (empty($email) || empty($newPassword)) {
     http_response_code(400);
-    echo json_encode(["error" => "Token dan password baru harus diisi."]);
+    echo json_encode(["error" => "Email dan password baru harus diisi"]);
     exit;
 }
 
-// Periksa token reset password
-$stmt = $conn->prepare("SELECT username, expires_at FROM password_resets WHERE token = ?");
-$stmt->bind_param("s", $token);
-$stmt->execute();
-$result = $stmt->get_result();
+try {
+    // Cek password lama
+    $checkStmt = $conn->prepare("SELECT password FROM users WHERE email = ?");
+    $checkStmt->bind_param("s", $email);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
 
-if ($result->num_rows === 0) {
-    http_response_code(400);
-    echo json_encode(["error" => "Token reset password tidak valid."]);
-    exit;
-}
+    if ($result->num_rows === 0) {
+        http_response_code(404);
+        echo json_encode(["error" => "Email tidak ditemukan"]);
+        exit;
+    }
 
-$resetData = $result->fetch_assoc();
-$username = $resetData['username'];
+    $userData = $result->fetch_assoc();
+    $oldPassword = $userData['password'];
 
-// Cek apakah token sudah kedaluwarsa
-$expiresAt = strtotime($resetData['expires_at']);
-$currentTime = time();
+    // Cek apakah password baru sama dengan password lama
+    if (password_verify($newPassword, $oldPassword) || $newPassword === $oldPassword) {
+        http_response_code(400);
+        echo json_encode(["error" => "Password baru tidak boleh sama dengan password lama"]);
+        exit;
+    }
 
-if ($currentTime > $expiresAt) {
-    http_response_code(401);
-    echo json_encode(["error" => "Token reset password sudah kedaluwarsa."]);
-    exit;
-}
+    // Hash password baru
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
-// Hash password baru
-// $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+    // Update password pengguna
+    $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
+    $updateStmt->bind_param("ss", $hashedPassword, $email);
 
-// Update password pengguna
-$stmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-$stmt->bind_param("ss", $newPassword, $username);
+    if (!$updateStmt->execute()) {
+        http_response_code(500);
+        echo json_encode(["error" => "Gagal mengupdate password"]);
+        exit;
+    }
 
-if (!$stmt->execute()) {
+    if ($updateStmt->affected_rows === 0) {
+        http_response_code(404);
+        echo json_encode(["error" => "Email tidak ditemukan"]);
+        exit;
+    }
+
+    echo json_encode([
+        "success" => true,
+        "message" => "Password berhasil direset"
+    ]);
+
+} catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(["error" => "Terjadi kesalahan saat mereset password."]);
-    exit;
+    echo json_encode([
+        "error" => "Terjadi kesalahan: " . $e->getMessage()
+    ]);
 }
 
-// Hapus token reset password setelah berhasil
-$stmt = $conn->prepare("DELETE FROM password_resets WHERE token = ?");
-$stmt->bind_param("s", $token);
-$stmt->execute();
-
-// Kirim respons berhasil
-http_response_code(200);
-echo json_encode(["message" => "Password berhasil direset."]);
-
-$stmt->close();
 $conn->close();

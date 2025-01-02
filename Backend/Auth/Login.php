@@ -3,13 +3,13 @@ session_start();
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
-
 
 if (isset($_SESSION['user'])) {
     http_response_code(200);
@@ -18,17 +18,15 @@ if (isset($_SESSION['user'])) {
         "username" => $_SESSION['user']['username'],
         "level" => $_SESSION['user']['level']
     ]);
-    
     exit;
 }
 
 try {
-    require_once  "../Helper/DB.php"; //ubah sini buat db
+    require_once "../Helper/DB.php";
 } catch (Exception $err) {
     echo "Error: " . $err->getMessage();
 }
 
-// Membaca data JSON dari body request
 $input = json_decode(file_get_contents("php://input"), true);
 
 if (!isset($input["email"]) || !isset($input["password"])) {
@@ -39,35 +37,59 @@ if (!isset($input["email"]) || !isset($input["password"])) {
 
 $email = $conn->real_escape_string($input["email"]);
 $password = $input["password"];
-$level = '';
 
 // Query untuk memeriksa pengguna berdasarkan email
-$sql = "SELECT * FROM users WHERE email = '$email'";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM users WHERE email = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
+    $storedPassword = $user["password"];
+    $isHashed = strlen($storedPassword) > 40; // Asumsi password hash selalu lebih panjang dari 40 karakter
 
-    // Verifikasi password
-    if ($password === $user["password"]) {
+    $passwordValid = false;
+
+    if ($isHashed) {
+        // Coba verifikasi dengan password_verify untuk user biasa
+        $passwordValid = password_verify($password, $storedPassword);
+    } else {
+        // Bandingkan string biasa untuk admin
+        $passwordValid = ($password === $storedPassword);
+    }
+
+    if ($passwordValid) {
         http_response_code(200);
 
         $_SESSION['user'] = [
             'username' => $user["username"],
             'level' => $user["level"]
         ];
-        echo json_encode(array(
+        
+        echo json_encode([
             "message" => "Login berhasil",
             "username" => $user["username"],
             "level" => $user["level"]
-        ));
+        ]);
+
+        // Hanya hash password jika bukan admin dan password belum di-hash
+        if (!$isHashed && $user["level"] !== "admin") {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
+            $updateStmt->bind_param("ss", $hashedPassword, $email);
+            $updateStmt->execute();
+            $updateStmt->close();
+        }
     } else {
-        http_response_code(401);  // Password salah
+        http_response_code(401);
         echo json_encode(["error" => "Password salah"]);
     }
 } else {
-    http_response_code(404);  // Pengguna tidak ditemukan
+    http_response_code(404);
     echo json_encode(["error" => "Pengguna tidak ditemukan"]);
 }
 
+$stmt->close();
 $conn->close();

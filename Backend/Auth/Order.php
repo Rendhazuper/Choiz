@@ -14,12 +14,16 @@ header("Content-Type: application/json; charset=UTF-8");
 
 $data = json_decode(file_get_contents('php://input'), true);
 
-
-if (isset($data['username']) && isset($data['totalAmount'])) {
+if (isset($data['username']) && isset($data['totalAmount']) && isset($data['items'])) {
     $username = $data['username'];
     $totalAmount = $data['totalAmount'];
+    $items = $data['items']; // Simpan items yang dikirim
+    
+    // Simpan items ke session untuk digunakan di pindahhistory.php
+    session_start();
+    $_SESSION['checkout_items'] = $items;
 } else {
-    echo json_encode(['error' => 'Username or Total Amount is missing.']);
+    echo json_encode(['error' => 'Required data is missing.']);
     exit;
 }
 // Buat order ID yang unik (misalnya menggunakan timestamp atau UUID)

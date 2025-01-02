@@ -10,19 +10,19 @@ const Reset = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
   const [variant, setVariant] = useState("success");
-  const [token, setToken] = useState("");
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const tokenFromUrl = searchParams.get("token");
+    const emailFromUrl = searchParams.get("email");
 
-    if (!tokenFromUrl) {
-      setMessage("Token reset password tidak valid.");
+    if (!emailFromUrl) {
+      setMessage("Email tidak valid.");
       setVariant("danger");
     } else {
-      setToken(tokenFromUrl);
+      setEmail(emailFromUrl);
     }
   }, [location]);
 
@@ -44,7 +44,7 @@ const Reset = () => {
       const response = await axios.post(
         "http://localhost/Backend/Auth/Reset.php",
         {
-          token: token,
+          email: email,
           newPassword: password,
         },
         {
@@ -54,7 +54,7 @@ const Reset = () => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.data.success) {
         setMessage("Password berhasil direset. Silakan login.");
         setVariant("success");
         setTimeout(() => {
@@ -65,7 +65,7 @@ const Reset = () => {
       if (error.response) {
         switch (error.response.status) {
           case 400:
-            setMessage("Token reset password tidak valid.");
+            setMessage("Password baru tidak boleh sama dengan password lama.");
             break;
           case 401:
             setMessage("Token sudah kedaluwarsa.");
@@ -132,7 +132,10 @@ const Reset = () => {
               <Container className="Reset">
                 <Row>
                   <p className="right">
-                    Ingat password ? <Link to="/login">Login</Link>
+                    Ingat password ?{" "}
+                    <Link to="/login" className="link-login">
+                      Login
+                    </Link>
                   </p>
                 </Row>
               </Container>

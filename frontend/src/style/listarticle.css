@@ -1,0 +1,91 @@
+.listarticle-page {
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.button-add {
+  background-color: transparent;
+  border: 1px solid #b88e2f;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+}
+
+.button-add p {
+  color: #b88e2f;
+  margin: 0;
+  font-size: 16px;
+}
+
+.button-add:hover {
+  background-color: #b88e2f;
+  border-color: #b88e2f;
+}
+
+.button-add:hover p {
+  color: white;
+}
+
+.article-card {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.article-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.article-body {
+  padding: 25px;
+}
+
+.article-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.article-desc {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.article-meta {
+  font-size: 14px;
+  color: #888;
+}
+
+.article-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.article-actions .btn {
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .button-container {
+    margin: 20px 0;
+  }
+
+  .article-body {
+    padding: 15px;
+  }
+
+  .article-title {
+    font-size: 20px;
+  }
+
+  .article-actions {
+    flex-wrap: wrap;
+  }
+}

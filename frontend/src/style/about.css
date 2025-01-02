@@ -1,8 +1,71 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
-.bannershop {
+.container-artikel {
+  padding: 50px 100px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.artikel-content {
+  padding-right: 30px;
+}
+
+.artikel-sidebar {
+  position: relative;
+}
+
+.sidebar-wrapper {
+  position: sticky;
+  top: 20px;
+}
+
+.search-artikel {
+  border: 1px solid #9f9f9f;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.search-artikel input {
+  border: none;
+}
+
+.search-artikel .input-group-text {
+  background: transparent;
+  border: none;
+}
+
+.category-artikel {
+  margin-top: 30px;
+}
+
+.category-artikel h4 {
+  margin-bottom: 20px;
+}
+
+.category-artikel li {
+  margin-bottom: 15px;
+  color: #9f9f9f;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.category-artikel li:hover {
+  color: #333;
+}
+
+.banner-about {
   position: relative;
   width: 100vw;
+  height: 300px;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  overflow: hidden;
+}
+
+.foto-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tulisannya {
@@ -10,36 +73,29 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
+  color: black;
 }
 
-.kon-artikel {
-  padding-top: 50px;
-  width: 100vw;
-}
-
-.kontainerartikel {
+.card-artikel {
   border: none;
 }
 
-.lebarform {
-  width: 20px;
-}
-.kontenartikel {
+.body-artikel {
   padding: 20px;
 }
-.judulartikel {
+
+.title-artikel {
   font-size: 30px;
   font-weight: 500;
 }
 
-.deskripsiartikel {
+.desc-artikel {
   font-size: 16px;
   font-weight: 400;
   color: #9f9f9f;
 }
 
-.tombolartikel {
+.link-artikel {
   background: none;
   border: none;
   color: black;
@@ -49,13 +105,94 @@
   cursor: pointer;
 }
 
-.tombolartikel:hover {
+.link-artikel:hover {
   color: #333;
   text-decoration: none;
-  background: none;
 }
 
-.futernya {
+.footer-about {
   width: 100vw;
   background-color: #e6dbc6;
+}
+
+@media (max-width: 768px) {
+  .container-artikel {
+    padding: 20px;
+  }
+
+  .artikel-content {
+    padding-right: 0;
+    margin-bottom: 30px;
+  }
+
+  .sidebar-wrapper {
+    position: static;
+  }
+}
+
+.kontainerartikel {
+  margin-bottom: 30px;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kontainerartikel .card-img-top {
+  height: 300px;
+  object-fit: cover;
+}
+
+.kontenartikel {
+  padding: 20px;
+}
+
+.judulartikel {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.deskripsiartikel {
+  color: #666;
+  line-height: 1.6;
+}
+
+.article-meta {
+  font-size: 14px;
+  color: #888;
+}
+
+.tombolartikel {
+  background-color: #b88e2f !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 20px;
+  text-decoration: none;
+}
+
+.tombolartikel:hover {
+  background-color: #b88e2f !important;
+  color: white !important;
+}
+
+.tombolartikel:focus {
+  box-shadow: none !important;
+}
+
+.tombolartikel:active {
+  background-color: #b88e2f !important;
+  color: white !important;
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: none;
 }
