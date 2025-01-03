@@ -6,6 +6,7 @@ import {
   BsLinkedin,
   BsTwitterX,
   BsCheckCircle,
+  BsXCircle,
 } from "react-icons/bs";
 import ProductGridDetail from "../Component/productgriddetail";
 import { useNavigate } from "react-router";
@@ -25,6 +26,8 @@ const DetailProduk = ({ produk }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [stockCheckInterval, setStockCheckInterval] = useState(null);
+  const [showUnavailableModal, setShowUnavailableModal] = useState(false);
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -87,14 +90,59 @@ const DetailProduk = ({ produk }) => {
       .get(`http://localhost/Backend/Auth/getproduct.php?id=${id}`)
       .then((response) => {
         console.log("Raw API Response:", response.data);
+        if (!response.data || Object.keys(response.data).length === 0) {
+          setShowUnavailableModal(true);
+          return;
+        }
         setProduk(response.data);
       })
       .catch((error) => {
         console.error("Error fetching product detail:", error);
+        setShowUnavailableModal(true);
       });
   }, [id]);
 
-  if (!product) {
+  const checkStockAvailability = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost/Backend/Auth/getproduct.php?id=${id}`
+      );
+      const updatedProduct = response.data;
+
+      // Check if all sizes and colors are out of stock
+      const hasAnyStock = updatedProduct.sizes.some((size) =>
+        size.warna.some((warna) => warna.stok > 0)
+      );
+
+      if (!hasAnyStock) {
+        alert("Sorry, this item is completely out of stock!");
+        navigate("/shop");
+      }
+    } catch (error) {
+      console.error("Error checking stock:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Check stock every second
+    const interval = setInterval(checkStockAvailability, 1000);
+    setStockCheckInterval(interval);
+
+    return () => {
+      if (stockCheckInterval) {
+        clearInterval(stockCheckInterval);
+      }
+    };
+  }, []); // Now runs regardless of selection state
+
+  const formatHarga = product
+    ? new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(product.harga)
+    : "";
+
+  if (!product && !showUnavailableModal) {
     return <div>Loading...</div>;
   }
 
@@ -249,11 +297,6 @@ const DetailProduk = ({ produk }) => {
     }
   };
 
-  const formatHarga = new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  }).format(product.harga);
-
   return (
     <div>
       <Modal show={showModal} onHide={handleCloseModal} centered>
@@ -266,216 +309,256 @@ const DetailProduk = ({ produk }) => {
           </Button>
         </Modal.Body>
       </Modal>
-      <MyNavbar />
-      <div className="detail-product-banner">
-        <Container className="detail-product-container" fluid>
-          <Row className="detail-product-row d-flex" gap={10}>
-            <Col className="detail-product-breadcrumb">
-              <Link to={`/home`}>Home</Link>
-              <p> &gt; </p>
-              <Link to={`/shop`}>Shop</Link>
-              <p> &gt; </p>
-              <p> | </p>
-              <p> {product.nama_kategori} </p>
-            </Col>
-          </Row>
-        </Container>
-      </div>
 
-      <section className="kon-detail">
-        <Container className="kontrakan" fluid>
-          <Row>
-            <Col xs={12} className="col-kiri" md={6}>
-              <Image src={"/" + product.gambar_produk} />
-            </Col>
-            <Col xs={12} className="col-kanan" md={7}>
-              <Container>
-                <Col className="Header">
-                  <h2>{product.nama_produk}</h2>
-                  <h3>{formatHarga}</h3>
-                </Col>
-                <Col className="description text-start">
-                  <p>{product.deskripsi}</p>
-                </Col>
-                <Col className="size">
-                  <p>Size</p>
-                  <div className="size-button-group">
-                    {Array.isArray(product.sizes) &&
-                      product.sizes.map((sizeData, index) => (
-                        <Button
-                          key={index}
-                          variant="primary"
-                          className="size-button"
-                          onClick={() => handleSizeClick(sizeData.size)}
-                          style={{
-                            backgroundColor:
-                              selectedSize === sizeData.size
-                                ? "#B88E2F"
-                                : "white",
-                            color:
-                              selectedSize === sizeData.size
-                                ? "white"
-                                : "#B88E2F",
-                            border:
-                              selectedSize === sizeData.size
-                                ? "#B88E2F"
-                                : "1px solid #B88E2F",
-                          }}
-                        >
-                          {sizeData.size}
-                        </Button>
-                      ))}
-                  </div>
+      <Modal
+        show={showUnavailableModal}
+        onHide={() => {
+          setShowUnavailableModal(false);
+          navigate("/shop");
+        }}
+        centered
+      >
+        <Modal.Body className="text-center">
+          <BsXCircle size={60} color="red" />
+          <h5 className="text-center">Sorry!</h5>
+          <p>Product unavailable.</p>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowUnavailableModal(false);
+              navigate("/shop");
+            }}
+          >
+            Back to Shop
+          </Button>
+        </Modal.Body>
+      </Modal>
 
-                  {selectedSize && (
-                    <>
-                      <p>Warna</p>
-                      <div className="color-button-group">
-                        {product.sizes
-                          .find((s) => s.size === selectedSize)
-                          ?.warna.map((warnaData, index) => (
+      {product && (
+        <>
+          <MyNavbar />
+          <div className="detail-product-banner">
+            <Container className="detail-product-container" fluid>
+              <Row className="detail-product-row d-flex" gap={10}>
+                <Col className="detail-product-breadcrumb">
+                  <Link to={`/home`}>Home</Link>
+                  <p> &gt; </p>
+                  <Link to={`/shop`}>Shop</Link>
+                  <p> &gt; </p>
+                  <p> | </p>
+                  <p> {product.nama_kategori} </p>
+                </Col>
+              </Row>
+            </Container>
+          </div>
+
+          <section className="kon-detail">
+            <Container className="kontrakan" fluid>
+              <Row>
+                <Col xs={12} className="col-kiri" md={6}>
+                  <Image src={"/" + product.gambar_produk} />
+                </Col>
+                <Col xs={12} className="col-kanan" md={7}>
+                  <Container>
+                    <Col className="Header">
+                      <h2>{product.nama_produk}</h2>
+                      <h3>{formatHarga}</h3>
+                    </Col>
+                    <Col className="description text-start">
+                      <p>{product.deskripsi}</p>
+                    </Col>
+                    <Col className="size">
+                      <p>Size</p>
+                      <div className="size-button-group">
+                        {Array.isArray(product.sizes) &&
+                          product.sizes.map((sizeData, index) => (
                             <Button
                               key={index}
                               variant="primary"
-                              className="color-button"
-                              onClick={() => handleWarnaClick(warnaData)}
-                              disabled={warnaData.stok === 0}
+                              className="size-button"
+                              onClick={() => handleSizeClick(sizeData.size)}
                               style={{
                                 backgroundColor:
-                                  selectedWarna === warnaData.nama_warna
+                                  selectedSize === sizeData.size
                                     ? "#B88E2F"
                                     : "white",
                                 color:
-                                  selectedWarna === warnaData.nama_warna
+                                  selectedSize === sizeData.size
                                     ? "white"
                                     : "#B88E2F",
                                 border:
-                                  selectedWarna === warnaData.nama_warna
+                                  selectedSize === sizeData.size
                                     ? "#B88E2F"
                                     : "1px solid #B88E2F",
                               }}
                             >
-                              {warnaData.nama_warna}{" "}
-                              {warnaData.stok === 0 ? "(Habis)" : ""}
+                              {sizeData.size}
                             </Button>
                           ))}
                       </div>
-                    </>
-                  )}
 
-                  {selectedSize && selectedWarna && (
-                    <>
-                      <p>Quantity</p>
-                      <Col className="detail-produk-bawah">
-                        <div className="quantity-controls">
-                          <Button
-                            onClick={handleDecrease}
-                            disabled={quantity <= 1}
-                            style={{
-                              backgroundColor:
-                                quantity > 1 ? "#B88E2F" : "white",
-                              color: quantity > 1 ? "white" : "#B88E2F",
-                              border:
-                                quantity > 1 ? "none" : "1px solid #B88E2F",
-                            }}
-                          >
-                            -
-                          </Button>
-                          <span>{quantity}</span>
-                          <Button
-                            onClick={handleIncrease}
-                            disabled={quantity >= stok}
-                            style={{
-                              backgroundColor:
-                                quantity < stok ? "#B88E2F" : "white",
-                              color: quantity < stok ? "white" : "#B88E2F",
-                              border:
-                                quantity < stok ? "none" : "1px solid #B88E2F",
-                            }}
-                          >
-                            +
-                          </Button>
+                      {selectedSize && (
+                        <>
+                          <p>Warna</p>
+                          <div className="color-button-group">
+                            {product.sizes
+                              .find((s) => s.size === selectedSize)
+                              ?.warna.map((warnaData, index) => (
+                                <Button
+                                  key={index}
+                                  variant="primary"
+                                  className="color-button"
+                                  onClick={() => handleWarnaClick(warnaData)}
+                                  disabled={warnaData.stok === 0}
+                                  style={{
+                                    backgroundColor:
+                                      selectedWarna === warnaData.nama_warna
+                                        ? "#B88E2F"
+                                        : "white",
+                                    color:
+                                      selectedWarna === warnaData.nama_warna
+                                        ? "white"
+                                        : "#B88E2F",
+                                    border:
+                                      selectedWarna === warnaData.nama_warna
+                                        ? "#B88E2F"
+                                        : "1px solid #B88E2F",
+                                  }}
+                                >
+                                  {warnaData.nama_warna}{" "}
+                                  {warnaData.stok === 0 ? "(Habis)" : ""}
+                                </Button>
+                              ))}
+                          </div>
+                        </>
+                      )}
+
+                      {selectedSize && selectedWarna && (
+                        <>
+                          <p>Quantity</p>
+                          <Col className="detail-produk-bawah">
+                            <div className="quantity-controls">
+                              <Button
+                                onClick={handleDecrease}
+                                disabled={quantity <= 1}
+                                style={{
+                                  backgroundColor:
+                                    quantity > 1 ? "#B88E2F" : "white",
+                                  color: quantity > 1 ? "white" : "#B88E2F",
+                                  border:
+                                    quantity > 1 ? "none" : "1px solid #B88E2F",
+                                }}
+                              >
+                                -
+                              </Button>
+                              <span>{quantity}</span>
+                              <Button
+                                onClick={handleIncrease}
+                                disabled={quantity >= stok}
+                                style={{
+                                  backgroundColor:
+                                    quantity < stok ? "#B88E2F" : "white",
+                                  color: quantity < stok ? "white" : "#B88E2F",
+                                  border:
+                                    quantity < stok
+                                      ? "none"
+                                      : "1px solid #B88E2F",
+                                }}
+                              >
+                                +
+                              </Button>
+                            </div>
+                            <p>Stok: {stok}</p>
+                            <div className="action-buttons">
+                              <Button
+                                onClick={addToCart}
+                                variant="success"
+                                className="mt-3"
+                              >
+                                Add to Cart
+                              </Button>
+                              <Button
+                                onClick={onPurchase}
+                                variant="info"
+                                className="mt-3 ms-2"
+                              >
+                                Buy Now
+                              </Button>
+                            </div>
+                          </Col>
+                        </>
+                      )}
+                    </Col>
+                    <Col className="deskripsibawah">
+                      <hr />
+                      <p>Category: {product.kategori}</p>
+                      <p>Tags: {product.kategori}</p>
+                      <p className="share">
+                        Share:
+                        <div>
+                          <BsFacebook
+                            size={16}
+                            style={{ marginLeft: "10px" }}
+                          />
+                          <BsLinkedin
+                            size={16}
+                            style={{ marginLeft: "10px" }}
+                          />
+                          <BsTwitterX
+                            size={16}
+                            style={{ marginLeft: "10px" }}
+                          />
                         </div>
-                        <p>Stok: {stok}</p>
-                        <div className="action-buttons">
-                          <Button
-                            onClick={addToCart}
-                            variant="success"
-                            className="mt-3"
-                          >
-                            Add to Cart
-                          </Button>
-                          <Button
-                            onClick={onPurchase}
-                            variant="info"
-                            className="mt-3 ms-2"
-                          >
-                            Buy Now
-                          </Button>
-                        </div>
-                      </Col>
-                    </>
-                  )}
+                      </p>
+                    </Col>
+                  </Container>
                 </Col>
-                <Col className="deskripsibawah">
-                  <hr />
-                  <p>Category: {product.kategori}</p>
-                  <p>Tags: {product.kategori}</p>
-                  <p className="share">
-                    Share:
-                    <div>
-                      <BsFacebook size={16} style={{ marginLeft: "10px" }} />
-                      <BsLinkedin size={16} style={{ marginLeft: "10px" }} />
-                      <BsTwitterX size={16} style={{ marginLeft: "10px" }} />
-                    </div>
-                  </p>
+              </Row>
+            </Container>
+          </section>
+          <section>
+            <hr />
+            <Container className="deskripsiproduk">
+              <Row>
+                <Col className="kol1des">
+                  <h4> Description</h4>
                 </Col>
-              </Container>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-      <section>
-        <hr />
-        <Container className="deskripsiproduk">
-          <Row>
-            <Col className="kol1des">
-              <h4> Description</h4>
-            </Col>
-            <Col className="kolom2">
-              <h4> Additional Infomration</h4>
-            </Col>
-          </Row>
-          <Row className="row3">
-            <p> {product.deskripsi} </p>
-          </Row>
-          <Row>
-            <Col className="colImage">
-              <Image className="imeg1" src={"/" + product.gambar_produk} />
-            </Col>
-            <Col className="colImage">
-              <Image className="imeg2" src={"/" + product.gambar_produk} />
-            </Col>
-          </Row>
-        </Container>
-      </section>
-      <section>
-        <hr />
-        <Container className="deskripsiproduk">
-          <Row>
-            <Col className="kol1des">
-              <h4> Related Products</h4>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <div className="product-grid-container">
-                <ProductGridDetail />
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+                <Col className="kolom2">
+                  <h4> Additional Infomration</h4>
+                </Col>
+              </Row>
+              <Row className="row3">
+                <p> {product.deskripsi} </p>
+              </Row>
+              <Row>
+                <Col className="colImage">
+                  <Image className="imeg1" src={"/" + product.gambar_produk} />
+                </Col>
+                <Col className="colImage">
+                  <Image className="imeg2" src={"/" + product.gambar_produk} />
+                </Col>
+              </Row>
+            </Container>
+          </section>
+          <section>
+            <hr />
+            <Container className="deskripsiproduk">
+              <Row>
+                <Col className="kol1des">
+                  <h4> Related Products</h4>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <div className="product-grid-container">
+                    <ProductGridDetail />
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </section>
+        </>
+      )}
     </div>
   );
 };

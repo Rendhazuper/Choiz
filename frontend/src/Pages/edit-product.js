@@ -21,11 +21,19 @@ const EditProduk = () => {
 
   // Mengambil data produk dari API
   useEffect(() => {
+    console.log("Fetching product with ID:", id);
+
     axios
-      .get(`http://localhost/Backend/Auth/getproduct.php?id=${id}`)
+      .get(`http://localhost/Backend/Auth/getproduct.php?id=${id}&isAdmin=true`)
       .then((response) => {
+        console.log("Raw API Response:", response);
         const data = response.data;
-        console.log("API Response:", response.data);
+        console.log("Parsed data:", data);
+
+        if (!data || Object.keys(data).length === 0) {
+          console.log("No data received from API");
+          return;
+        }
 
         if (data && data.nama_produk) {
           // Set product basic info
@@ -34,29 +42,45 @@ const EditProduk = () => {
             color: data.warna || "",
             price: data.harga || "",
             description: data.deskripsi || "",
-            sizes: data.sizes.map((sizeObj) => sizeObj.size),
+            sizes: data.sizes
+              ? data.sizes
+                  .filter((sizeObj) => sizeObj.size !== null) // Filter out null sizes
+                  .map((sizeObj) => sizeObj.size)
+              : [],
           };
 
           // Initialize stok with existing data
           const initialStok = {};
-          data.sizes.forEach((sizeObj) => {
-            initialStok[sizeObj.size] = {};
-            if (sizeObj.warna && Array.isArray(sizeObj.warna)) {
-              sizeObj.warna.forEach((warnaObj) => {
-                // Pastikan nama_warna dalam lowercase untuk konsistensi
-                const namaWarna = warnaObj.nama_warna.toLowerCase();
-                initialStok[sizeObj.size][namaWarna] = parseInt(warnaObj.stok);
+          if (data.sizes) {
+            data.sizes
+              .filter((sizeObj) => sizeObj.size !== null) // Filter out null sizes
+              .forEach((sizeObj) => {
+                initialStok[sizeObj.size] = {};
+                if (sizeObj.warna && Array.isArray(sizeObj.warna)) {
+                  sizeObj.warna.forEach((warnaObj) => {
+                    if (warnaObj && warnaObj.nama_warna) {
+                      // Check if warna object and nama_warna exist
+                      const namaWarna = warnaObj.nama_warna.toLowerCase();
+                      initialStok[sizeObj.size][namaWarna] =
+                        parseInt(warnaObj.stok) || 0;
+                    }
+                  });
+                }
               });
-            }
-          });
+          }
 
+          console.log("Product Data:", productData);
           console.log("Initial stok:", initialStok);
+
           setProduct(productData);
           setStok(initialStok);
+        } else {
+          console.log("Data structure is invalid:", data);
         }
       })
       .catch((error) => {
         console.error("Error fetching product detail:", error);
+        console.error("Error details:", error.response?.data);
       });
   }, [id]);
 

@@ -26,27 +26,39 @@ const Contact = () => {
   });
   const [status, setStatus] = useState("");
 
-  useEffect(() => {
-    const checkLogin = async () => {
-      try {
-        const response = await axios.post(
-          "http://localhost/Backend/Auth/Login.php",
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-
-        if (!response.data.username) {
-          navigate("/login");
+  const checkLoginStatus = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost/Backend/Auth/cekLogin.php",
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      } catch (error) {
+      );
+
+      console.log("Check response:", response.data);
+
+      if (
+        response.data.status === "expired" ||
+        response.data.status === "no_session"
+      ) {
+        console.log("Session ended, logging out...");
+        sessionStorage.clear();
         navigate("/login");
       }
-    };
+    } catch (error) {
+      console.error("Session check error:", error);
+    }
+  };
 
-    checkLogin();
-  }, [navigate]);
+  useEffect(() => {
+    const loginChecker = setInterval(checkLoginStatus, 1000);
+    checkLoginStatus(); // Initial check
+
+    return () => clearInterval(loginChecker);
+  }, []);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;

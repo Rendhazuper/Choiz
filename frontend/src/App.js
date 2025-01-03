@@ -15,30 +15,39 @@ function App() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
-  const checkLogin = async () => {
+  const checkLoginStatus = async () => {
     try {
-      // const response = await axios.get("http://lightcoral-rat-258584.hostingersite.com/Backend/Auth/cekLogin.php", {
       const response = await axios.get(
         "http://localhost/Backend/Auth/cekLogin.php",
         {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
-      if (response.status === 200) {
-        setUser(response.data);
+
+      console.log("Check response:", response.data);
+
+      if (
+        response.data.status === "expired" ||
+        response.data.status === "no_session"
+      ) {
+        console.log("Session ended, logging out...");
+        sessionStorage.clear();
+        navigate("/login");
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        navigate("/login");
-      } else {
-        console.error("Error checking login:", error);
-      }
+      console.error("Session check error:", error);
     }
   };
 
   useEffect(() => {
-    checkLogin();
-  }, [navigate]);
+    const loginChecker = setInterval(checkLoginStatus, 1000);
+    checkLoginStatus(); // Initial check
+
+    return () => clearInterval(loginChecker);
+  }, []);
 
   return (
     <div className="App">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { BsEye, BsEyeSlash, BsEyeFill } from "react-icons/bs";
+import { BsEyeSlash, BsEyeFill } from "react-icons/bs";
 import axios from "axios";
 import "../style/login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,39 +14,29 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const checkSession = async () => {
-    try {
-      console.log("Checking session...");
-      const response = await axios.get(
-        "http://localhost/Backend/Auth/CheckSession.php",
-        { withCredentials: true }
-      );
-
-      console.log("Session status:", response.data.status);
-
-      if (response.data.status === "expired") {
-        console.log("Session expired, logging out...");
-        sessionStorage.clear();
-        navigate("/login");
-        setMessage("Sesi Anda telah berakhir. Silakan login kembali.");
-        setVariant("info");
-      }
-    } catch (error) {
-      console.error("Error checking session:", error);
-    }
-  };
-
   useEffect(() => {
-    console.log("Setting up session checker...");
-    const sessionChecker = setInterval(checkSession, 2000);
+    const checkActiveSession = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/Backend/Auth/cekLogin.php",
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-    checkSession();
-
-    return () => {
-      console.log("Cleaning up session checker...");
-      clearInterval(sessionChecker);
+        if (response.data.status === "active") {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Session check error:", error);
+      }
     };
-  }, []);
+
+    checkActiveSession();
+  }, [navigate]);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -79,13 +69,6 @@ const Login = () => {
         sessionStorage.setItem("userLevel", level);
         sessionStorage.setItem("username", username);
         sessionStorage.setItem("expire_time", expire_time);
-
-        setTimeout(() => {
-          sessionStorage.clear();
-          navigate("/login");
-          setMessage("Sesi Anda telah berakhir. Silakan login kembali.");
-          setVariant("info");
-        }, 60000);
 
         if (level === "admin") {
           setTimeout(() => {

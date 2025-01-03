@@ -17,9 +17,11 @@ const ProductGrid = ({
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost/Backend/Auth/getproduct.php"
-        );
+        const url = isAdmin
+          ? `http://localhost/Backend/Auth/getproduct.php?isAdmin=true`
+          : `http://localhost/Backend/Auth/getproduct.php`;
+
+        const response = await axios.get(url);
         console.log("Fetched products:", response.data);
         setProducts(response.data);
       } catch (error) {
@@ -29,7 +31,7 @@ const ProductGrid = ({
     };
 
     fetchProducts();
-  }, []);
+  }, [isAdmin]);
 
   useEffect(() => {
     setCurrentPage(1);
