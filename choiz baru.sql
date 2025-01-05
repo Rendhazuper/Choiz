@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 02, 2025 at 05:22 PM
+-- Generation Time: Jan 05, 2025 at 05:52 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -82,7 +82,8 @@ CREATE TABLE `cart` (
 --
 
 INSERT INTO `cart` (`id_cart`, `id_user`, `id_produk`, `id_size`, `jumlah`, `id_warna`) VALUES
-(59, 16, 189, 306, 1, 2);
+(59, 16, 189, 306, 1, 2),
+(69, 12, 191, 320, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -156,7 +157,9 @@ INSERT INTO `produk` (`id_produk`, `nama_produk`, `id_kategori`, `harga`, `gamba
 (189, 'jaket skena', 10, 1321, 0x61737365742f70726f64756b2f363737353663653765623836632e706e67, 'tes'),
 (190, 'Jaket bauk', 9, 1321, 0x61737365742f70726f64756b2f363737353738643632663266332e706e67, 'tes'),
 (191, 'Oversized Sweater', 10, 1231, 0x61737365742f70726f64756b2f363737353765643130383730632e706e67, 'tes'),
-(192, 'tes 3', 13, 2132, 0x61737365742f70726f64756b2f363737363231663436366134372e706e67, 'tes');
+(192, 'tes 3', 13, 2132, 0x61737365742f70726f64756b2f363737363231663436366134372e706e67, 'tes'),
+(193, 'tes produk aja', 10, 1231, 0x61737365742f70726f64756b2f363737376238343731366638382e706e67, 'tes'),
+(194, 'tes', 12, 12, 0x61737365742f70726f64756b2f363737376262343730656566642e706e67, 'tes');
 
 -- --------------------------------------------------------
 
@@ -170,6 +173,7 @@ CREATE TABLE `riwayat_transaksi` (
   `id_produk` int(11) NOT NULL,
   `id_size` int(11) DEFAULT NULL,
   `id_warna` int(11) DEFAULT NULL,
+  `alamat` longtext NOT NULL,
   `jumlah` int(11) NOT NULL,
   `total_harga` int(11) NOT NULL,
   `tanggal_transaksi` timestamp NOT NULL DEFAULT current_timestamp()
@@ -179,12 +183,22 @@ CREATE TABLE `riwayat_transaksi` (
 -- Dumping data for table `riwayat_transaksi`
 --
 
-INSERT INTO `riwayat_transaksi` (`id_transaksi`, `id_user`, `id_produk`, `id_size`, `id_warna`, `jumlah`, `total_harga`, `tanggal_transaksi`) VALUES
-(37, '13', 190, 307, 2, 2, 2642, '2025-01-01 17:18:34'),
-(38, '13', 191, NULL, 1, 3, 3693, '2025-01-01 17:47:19'),
-(39, '13', 191, NULL, 1, 1, 1231, '2025-01-01 17:55:05'),
-(40, '13', 192, 322, 2, 1, 2132, '2025-01-02 15:50:08'),
-(41, '13', 192, 322, 1, 1, 2132, '2025-01-02 15:50:08');
+INSERT INTO `riwayat_transaksi` (`id_transaksi`, `id_user`, `id_produk`, `id_size`, `id_warna`, `alamat`, `jumlah`, `total_harga`, `tanggal_transaksi`) VALUES
+(37, '13', 190, 307, 2, '0', 2, 2642, '2025-01-01 17:18:34'),
+(38, '13', 191, NULL, 1, '0', 3, 3693, '2025-01-01 17:47:19'),
+(39, '13', 191, NULL, 1, '0', 1, 1231, '2025-01-01 17:55:05'),
+(40, '13', 192, 322, 2, '0', 1, 2132, '2025-01-02 15:50:08'),
+(41, '13', 192, 322, 1, '0', 1, 2132, '2025-01-02 15:50:08'),
+(42, '13', 190, 307, 1, '0', 1, 1321, '2025-01-03 10:03:37'),
+(43, '13', 191, 320, 5, '0', 1, 1231, '2025-01-03 10:11:09'),
+(44, '13', 191, 320, 1, '0', 10, 12310, '2025-01-03 10:11:09'),
+(45, '13', 191, 320, 2, '0', 5, 6155, '2025-01-03 10:11:09'),
+(46, '13', 191, 320, 3, '0', 5, 6155, '2025-01-03 10:11:09'),
+(47, '13', 191, 321, 1, '0', 1, 1231, '2025-01-03 10:11:09'),
+(48, '13', 193, 323, 1, '0', 1, 1231, '2025-01-03 10:13:57'),
+(49, '13', 193, 324, 1, '0', 1, 1231, '2025-01-03 10:13:57'),
+(50, '13', 194, 327, 2, 'ini alamat ku disini', 1, 12, '2025-01-05 16:19:02'),
+(51, '13', 194, 327, 1, 'ini ngga null ', 1, 12, '2025-01-05 16:22:38');
 
 -- --------------------------------------------------------
 
@@ -206,7 +220,11 @@ INSERT INTO `size_produk` (`id_size`, `id_produk`, `size`) VALUES
 (307, 190, 'XS'),
 (320, 191, 'XS'),
 (321, 191, 'S'),
-(322, 192, 'XS');
+(322, 192, 'XS'),
+(323, 193, 'XS'),
+(324, 193, 'S'),
+(326, 189, 'XS'),
+(327, 194, 'XS');
 
 -- --------------------------------------------------------
 
@@ -225,12 +243,9 @@ CREATE TABLE `stok_size_produk` (
 --
 
 INSERT INTO `stok_size_produk` (`id_size`, `stok`, `id_warna`) VALUES
-(307, 1, 1),
-(320, 10, 1),
-(320, 5, 2),
-(320, 1, 5),
-(320, 5, 3),
-(321, 1, 1);
+(326, 1, 1),
+(327, 0, 1),
+(327, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -252,7 +267,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `email`, `username`, `name`, `password`, `level`) VALUES
-(12, 'giojio936@gmail.com', 'gio', 'gio', 'gio', 'user'),
+(12, 'giojio936@gmail.com', 'gio', 'gio', '$2y$10$M0suzevExC91ZMhizPT0L.VwgHAsvk7lKd9YX4qs9piw6EXT88wUK', 'user'),
 (13, 'ge@gmail.com', 'ge', 'ge', '$2y$10$ifDfo.JhbCdz7Eok5weds.J1M2HFlZIR/Pv6Nz9mh7was8d2Z7Q6m', 'user'),
 (14, 'giovanoalkandri@gmail.com', 'giovanoalkandri', 'Giovano Alkandri', 'asd', 'user'),
 (15, 'giojio825@gmail.com', 'geoooo', 'geoooo', '$2y$10$CYCegFuhTHGb6Vy4j9u4M.2dklJ74zKmQPATlsH/U/zhAJXcZ7WxO', 'user'),
@@ -339,7 +354,8 @@ ALTER TABLE `produk`
 ALTER TABLE `riwayat_transaksi`
   ADD PRIMARY KEY (`id_transaksi`),
   ADD KEY `riwayat_transaksi_size_fk` (`id_size`),
-  ADD KEY `riwayat_transaksi_warna_fk` (`id_warna`);
+  ADD KEY `riwayat_transaksi_warna_fk` (`id_warna`),
+  ADD KEY `id_alamat` (`alamat`(768));
 
 --
 -- Indexes for table `size_produk`
@@ -389,7 +405,7 @@ ALTER TABLE `billing`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -407,19 +423,19 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 
 --
 -- AUTO_INCREMENT for table `riwayat_transaksi`
 --
 ALTER TABLE `riwayat_transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `size_produk`
 --
 ALTER TABLE `size_produk`
-  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=323;
+  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=328;
 
 --
 -- AUTO_INCREMENT for table `users`

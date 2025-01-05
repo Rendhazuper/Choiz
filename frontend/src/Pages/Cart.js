@@ -5,7 +5,15 @@ import Footer from "../Component/Footer";
 import bannershop from "../asset/Baju/bannershop.png";
 import "../style/cart.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Col, Row, Table, Button, Spinner } from "react-bootstrap";
+import {
+  Container,
+  Col,
+  Row,
+  Table,
+  Button,
+  Spinner,
+  Form,
+} from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 
 const Cart = () => {
@@ -13,6 +21,7 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -108,6 +117,7 @@ const Cart = () => {
             const moveToHistoryData = {
               username: username,
               order_id: result.order_id,
+              alamat: address,
               items: cartData.map((item) => ({
                 id_produk: item.id_produk,
                 id_size: item.id_size,
@@ -316,6 +326,25 @@ const Cart = () => {
             </Col>
             <Col>
               <Row>
+                <Col className="shipping-form">
+                  <div className="shipping-content">
+                    <h5 className="mb-3">Shipping Address</h5>
+                    <Form>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={3}
+                          placeholder="Enter your complete address"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                        />
+                      </Form.Group>
+                    </Form>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
                 <Col className="cardtotal1">
                   <div className="kontencardtotal1">
                     <p className="judultotal">Cart Totals</p>
@@ -328,8 +357,12 @@ const Cart = () => {
                         }).format(total)}
                       </p>
                     </div>
-                    <Button className="checkoutbut" onClick={handleCheckout}>
-                      Check Out
+                    <Button
+                      className="checkoutbut"
+                      onClick={handleCheckout}
+                      disabled={!address.trim()}
+                    >
+                      {!address.trim() ? "Checkout" : "Checkout"}
                     </Button>
                   </div>
                 </Col>

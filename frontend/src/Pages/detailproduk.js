@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Container, Row, Col, Button, Image, Modal } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Image,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import {
   BsFacebook,
   BsLinkedin,
@@ -28,6 +36,9 @@ const DetailProduk = ({ produk }) => {
   const [showModal, setShowModal] = useState(false);
   const [stockCheckInterval, setStockCheckInterval] = useState(null);
   const [showUnavailableModal, setShowUnavailableModal] = useState(false);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [isAddressModalConfirmed, setIsAddressModalConfirmed] = useState(false);
 
   const handleCloseModal = () => setShowModal(false);
 
@@ -146,9 +157,28 @@ const DetailProduk = ({ produk }) => {
     return <div>Loading...</div>;
   }
 
+  const handleBuyNowClick = () => {
+    setShowAddressModal(true);
+  };
+
+  const handleAddressSubmit = () => {
+    if (!shippingAddress.trim()) {
+      alert("Please enter shipping address");
+      return;
+    }
+    setIsAddressModalConfirmed(true);
+    setShowAddressModal(false);
+    onPurchase(); // Panggil fungsi pembayaran
+  };
+
   const onPurchase = async () => {
     if (!selectedSize || !selectedWarna) {
       alert("Please select a size and color first.");
+      return;
+    }
+
+    if (!isAddressModalConfirmed) {
+      handleBuyNowClick();
       return;
     }
 
@@ -172,6 +202,7 @@ const DetailProduk = ({ produk }) => {
               jumlah: quantity,
               size: selectedSize,
               nama_warna: selectedWarna,
+              alamat: shippingAddress, // Tambahkan alamat
             },
           ],
         }),
@@ -203,6 +234,7 @@ const DetailProduk = ({ produk }) => {
                     nama_warna: selectedWarna,
                     quantity: quantity,
                     price: product.harga * quantity,
+                    alamat: shippingAddress,
                   },
                 ],
               }),
@@ -332,6 +364,45 @@ const DetailProduk = ({ produk }) => {
             Back to Shop
           </Button>
         </Modal.Body>
+      </Modal>
+
+      <Modal
+        show={showAddressModal}
+        onHide={() => setShowAddressModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Enter Shipping Address</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>Shipping Address</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={shippingAddress}
+                onChange={(e) => setShippingAddress(e.target.value)}
+                placeholder="Enter your complete address"
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowAddressModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleAddressSubmit}
+            disabled={!shippingAddress.trim()}
+          >
+            Confirm
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       {product && (
@@ -478,7 +549,7 @@ const DetailProduk = ({ produk }) => {
                                 Add to Cart
                               </Button>
                               <Button
-                                onClick={onPurchase}
+                                onClick={handleBuyNowClick}
                                 variant="info"
                                 className="mt-3 ms-2"
                               >

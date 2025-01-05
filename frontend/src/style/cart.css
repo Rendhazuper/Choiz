@@ -82,6 +82,18 @@
   border: none;
 }
 
+.checkoutbut:disabled {
+  background-color: #cccccc;
+  border-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.checkoutbut:disabled:hover {
+  background-color: #cccccc;
+  border-color: #cccccc;
+}
+
 .futercart {
   width: 100vw;
   background-color: #e6dbc6;
@@ -203,4 +215,17 @@
   .futercart {
     display: none;
   }
+}
+
+.shipping-content .location-button {
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.shipping-content .form-control {
+  flex: 1;
+}
+
+.shipping-content .d-flex {
+  align-items: start;
 }

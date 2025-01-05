@@ -23,6 +23,7 @@ import Article from "./Pages/Article";
 import ListArticle from "./Pages/listarticle";
 import ArticleInput from "./Pages/ArticleInput";
 import EditArticle from "./Pages/EditArticle";
+import Listpembelian from "./Pages/listpembelian";
 
 const router = createBrowserRouter([
   {
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
   {
     path: "/edit-article/:id",
     element: <EditArticle />,
+  },
+  {
+    path: "/listpembelian",
+    element: <Listpembelian />,
   },
 ]);
 

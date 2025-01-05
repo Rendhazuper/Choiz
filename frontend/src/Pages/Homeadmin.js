@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { BsPerson, BsPencilSquare, BsBook } from "react-icons/bs";
+import { BsPerson, BsPencilSquare, BsBook, BsCart } from "react-icons/bs";
 import "../style/Homeadmin.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -50,6 +50,18 @@ const HomeAdmin = () => {
                       }}
                     />
                     <p> Edit Article </p>
+                  </Button>
+                </Link>
+                <Link to="/listpembelian" style={{ textDecoration: "none" }}>
+                  <Button className="button-admin">
+                    <BsCart
+                      style={{
+                        color: "#B88E2F",
+                        width: "30px",
+                        height: "30px",
+                      }}
+                    />
+                    <p> Pembelian </p>
                   </Button>
                 </Link>
               </Container>

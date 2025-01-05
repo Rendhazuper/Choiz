@@ -69,6 +69,12 @@ const AdminNavbar = () => {
             >
               Article
             </Nav.Link>
+            <Nav.Link
+              href="/listpembelian"
+              style={{ marginLeft: "75px", marginRight: "75px" }}
+            >
+              Pembelian
+            </Nav.Link>
             <div className="d-lg-none">
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
             </div>
