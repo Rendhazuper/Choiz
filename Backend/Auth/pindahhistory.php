@@ -71,7 +71,7 @@ try {
 
     foreach ($items as $item) {
         // Get size_id from size name
-        $sizeQuery = "SELECT id_size FROM size_produk WHERE size = ? AND id_produk = ?";
+        $sizeQuery = "SELECT id_size, size FROM size_produk WHERE size = ? AND id_produk = ?";
         $sizeStmt = $conn->prepare($sizeQuery);
         $sizeStmt->bind_param("si", $item['size'], $item['id_produk']);
         $sizeStmt->execute();
@@ -103,22 +103,28 @@ try {
         $stockData = $stockResult->fetch_assoc();
 
         if (!$stockData) {
-            throw new Exception("Stock not found for size ID: {$sizeData['id_size']} and color ID: {$warnaData['id_warna']}");
+            throw new Exception("Stock not found");
         }
 
-        // Insert into riwayat_transaksi
-        $insertQuery = "INSERT INTO riwayat_transaksi (id_user, id_produk, id_size, id_warna, jumlah, total_harga, tanggal_transaksi) 
-                       VALUES (?, ?, ?, ?, ?, ?, NOW())";
+        // Insert into riwayat_transaksi with size_name
+        $insertQuery = "INSERT INTO riwayat_transaksi 
+                       (id_user, id_produk, id_size, size_name, id_warna, jumlah, total_harga, tanggal_transaksi, alamat) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
         $insertStmt = $conn->prepare($insertQuery);
-        $insertStmt->bind_param("iiiidi", 
+        $insertStmt->bind_param("iiisidds", 
             $user['id_user'], 
             $item['id_produk'], 
             $sizeData['id_size'],
+            $sizeData['size'],  // Simpan nama size
             $warnaData['id_warna'],
             $item['quantity'],
-            $item['price']
+            $item['price'],
+            $item['alamat']
         );
-        $insertStmt->execute();
+        
+        if (!$insertStmt->execute()) {
+            throw new Exception("Failed to insert transaction: " . $insertStmt->error);
+        }
 
         // Update stock
         $newStock = $stockData['stok'] - $item['quantity'];

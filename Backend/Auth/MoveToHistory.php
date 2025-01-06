@@ -68,8 +68,8 @@ try {
     $id_user = $row['id_user'];
     $debug_logs[] = debug_log(3, "User found", ['id_user' => $id_user]);
 
-    // Get cart data
-    $cartQuery = "SELECT c.*, p.harga, w.nama_warna, sp.size 
+    // Get cart data with size information
+    $cartQuery = "SELECT c.*, p.harga, p.nama_produk, w.nama_warna, sp.size as size_name 
                   FROM cart c 
                   JOIN produk p ON c.id_produk = p.id_produk 
                   JOIN warna w ON c.id_warna = w.id_warna
@@ -94,6 +94,7 @@ try {
         $quantity = $cartRow['jumlah'];
         $harga_produk = $cartRow['harga'];
         $total_harga = $harga_produk * $quantity;
+        $alamat = $data['alamat'] ?? ''; // Get shipping address from request data
 
         // Check stock
         $stokQuery = "SELECT stok FROM stok_size_produk WHERE id_size = ? AND id_warna = ?";
@@ -113,12 +114,22 @@ try {
             throw new Exception("Insufficient stock for product_id: $product_id, size_id: $size_id, warna_id: $warna_id");
         }
 
-        // Insert transaction record
+        // Insert transaction record with size_name
         $orderQuery = "INSERT INTO riwayat_transaksi 
-                      (id_user, id_produk, id_size, id_warna, jumlah, total_harga, tanggal_transaksi) 
-                      VALUES (?, ?, ?, ?, ?, ?, NOW())";
+                      (id_user, id_produk, id_size, size_name, id_warna, jumlah, 
+                       total_harga, tanggal_transaksi, alamat) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
         $orderStmt = $conn->prepare($orderQuery);
-        $orderStmt->bind_param("iiiidi", $id_user, $product_id, $size_id, $warna_id, $quantity, $total_harga);
+        $orderStmt->bind_param("iiisidds", 
+            $id_user, 
+            $product_id, 
+            $size_id,
+            $cartRow['size_name'], // Simpan nama size
+            $warna_id,
+            $quantity,
+            $total_harga,
+            $alamat
+        );
         
         if (!$orderStmt->execute()) {
             throw new Exception("Failed to insert transaction: " . $orderStmt->error);
