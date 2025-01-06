@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2025 at 05:52 PM
+-- Generation Time: Jan 06, 2025 at 06:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -172,6 +172,7 @@ CREATE TABLE `riwayat_transaksi` (
   `id_user` varchar(255) NOT NULL,
   `id_produk` int(11) NOT NULL,
   `id_size` int(11) DEFAULT NULL,
+  `size_name` varchar(10) DEFAULT NULL,
   `id_warna` int(11) DEFAULT NULL,
   `alamat` longtext NOT NULL,
   `jumlah` int(11) NOT NULL,
@@ -183,22 +184,24 @@ CREATE TABLE `riwayat_transaksi` (
 -- Dumping data for table `riwayat_transaksi`
 --
 
-INSERT INTO `riwayat_transaksi` (`id_transaksi`, `id_user`, `id_produk`, `id_size`, `id_warna`, `alamat`, `jumlah`, `total_harga`, `tanggal_transaksi`) VALUES
-(37, '13', 190, 307, 2, '0', 2, 2642, '2025-01-01 17:18:34'),
-(38, '13', 191, NULL, 1, '0', 3, 3693, '2025-01-01 17:47:19'),
-(39, '13', 191, NULL, 1, '0', 1, 1231, '2025-01-01 17:55:05'),
-(40, '13', 192, 322, 2, '0', 1, 2132, '2025-01-02 15:50:08'),
-(41, '13', 192, 322, 1, '0', 1, 2132, '2025-01-02 15:50:08'),
-(42, '13', 190, 307, 1, '0', 1, 1321, '2025-01-03 10:03:37'),
-(43, '13', 191, 320, 5, '0', 1, 1231, '2025-01-03 10:11:09'),
-(44, '13', 191, 320, 1, '0', 10, 12310, '2025-01-03 10:11:09'),
-(45, '13', 191, 320, 2, '0', 5, 6155, '2025-01-03 10:11:09'),
-(46, '13', 191, 320, 3, '0', 5, 6155, '2025-01-03 10:11:09'),
-(47, '13', 191, 321, 1, '0', 1, 1231, '2025-01-03 10:11:09'),
-(48, '13', 193, 323, 1, '0', 1, 1231, '2025-01-03 10:13:57'),
-(49, '13', 193, 324, 1, '0', 1, 1231, '2025-01-03 10:13:57'),
-(50, '13', 194, 327, 2, 'ini alamat ku disini', 1, 12, '2025-01-05 16:19:02'),
-(51, '13', 194, 327, 1, 'ini ngga null ', 1, 12, '2025-01-05 16:22:38');
+INSERT INTO `riwayat_transaksi` (`id_transaksi`, `id_user`, `id_produk`, `id_size`, `size_name`, `id_warna`, `alamat`, `jumlah`, `total_harga`, `tanggal_transaksi`) VALUES
+(37, '13', 190, 307, NULL, 2, '0', 2, 2642, '2025-01-01 17:18:34'),
+(38, '13', 191, NULL, NULL, 1, '0', 3, 3693, '2025-01-01 17:47:19'),
+(39, '13', 191, NULL, NULL, 1, '0', 1, 1231, '2025-01-01 17:55:05'),
+(40, '13', 192, 322, NULL, 2, '0', 1, 2132, '2025-01-02 15:50:08'),
+(41, '13', 192, 322, NULL, 1, '0', 1, 2132, '2025-01-02 15:50:08'),
+(42, '13', 190, 307, NULL, 1, '0', 1, 1321, '2025-01-03 10:03:37'),
+(43, '13', 191, 320, NULL, 5, '0', 1, 1231, '2025-01-03 10:11:09'),
+(44, '13', 191, 320, NULL, 1, '0', 10, 12310, '2025-01-03 10:11:09'),
+(45, '13', 191, 320, NULL, 2, '0', 5, 6155, '2025-01-03 10:11:09'),
+(46, '13', 191, 320, NULL, 3, '0', 5, 6155, '2025-01-03 10:11:09'),
+(47, '13', 191, 321, NULL, 1, '0', 1, 1231, '2025-01-03 10:11:09'),
+(48, '13', 193, 323, NULL, 1, '0', 1, 1231, '2025-01-03 10:13:57'),
+(49, '13', 193, 324, NULL, 1, '0', 1, 1231, '2025-01-03 10:13:57'),
+(50, '13', 194, NULL, NULL, 2, 'ini alamat ku disini', 1, 12, '2025-01-05 16:19:02'),
+(51, '13', 194, NULL, NULL, 1, 'ini ngga null ', 1, 12, '2025-01-05 16:22:38'),
+(52, '13', 194, NULL, 'XS', 1, 'tes', 2, 24, '2025-01-06 03:55:51'),
+(53, '13', 194, NULL, 'XS', 1, 'tes lagi', 2, 24, '2025-01-06 03:59:47');
 
 -- --------------------------------------------------------
 
@@ -224,7 +227,7 @@ INSERT INTO `size_produk` (`id_size`, `id_produk`, `size`) VALUES
 (323, 193, 'XS'),
 (324, 193, 'S'),
 (326, 189, 'XS'),
-(327, 194, 'XS');
+(331, 194, 'XS');
 
 -- --------------------------------------------------------
 
@@ -244,8 +247,9 @@ CREATE TABLE `stok_size_produk` (
 
 INSERT INTO `stok_size_produk` (`id_size`, `stok`, `id_warna`) VALUES
 (326, 1, 1),
-(327, 0, 1),
-(327, 1, 2);
+(331, 1, 2),
+(331, 2, 3),
+(331, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -405,7 +409,7 @@ ALTER TABLE `billing`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -429,13 +433,13 @@ ALTER TABLE `produk`
 -- AUTO_INCREMENT for table `riwayat_transaksi`
 --
 ALTER TABLE `riwayat_transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `size_produk`
 --
 ALTER TABLE `size_produk`
-  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=328;
+  MODIFY `id_size` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=332;
 
 --
 -- AUTO_INCREMENT for table `users`

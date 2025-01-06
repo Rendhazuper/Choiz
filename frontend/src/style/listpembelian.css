@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+.purchase-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+/* Styling untuk tabel */
+.purchase-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Styling untuk header tabel */
+.purchase-table thead th {
+  background-color: #f9f1e7;
+  padding: 12px;
+  white-space: nowrap;
+}
+
+/* Styling untuk body tabel */
+.purchase-table-body td {
+  vertical-align: middle;
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Styling untuk gambar produk */
+.purchase-product-image {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  .purchase-header-container h1 {
+    font-size: 24px;
+  }
+
+  /* Card styling */
+  .purchase-table,
+  .purchase-table thead,
+  .purchase-table tbody,
+  .purchase-table tr,
+  .purchase-table th,
+  .purchase-table td {
+    display: block;
+  }
+
+  .purchase-table tr {
+    margin-bottom: 20px;
+    background-color: #f9f1e7;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Tampilkan thead sebagai header card */
+  .purchase-table thead tr {
+    display: none;
+  }
+
+  .purchase-table td {
+    padding: 8px 0;
+    border: none;
+  }
+
+  /* Styling untuk setiap field dalam card */
+  .purchase-table td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #666;
+    display: inline-block;
+    width: 140px;
+  }
+
+  /* Khusus untuk kolom gambar */
+  .purchase-table td:first-child {
+    text-align: center;
+    padding-bottom: 15px;
+  }
+
+  .purchase-table td:first-child:before {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .purchase-product-image {
+    width: 150px;
+    margin: 0 auto;
+  }
+
+  /* Styling untuk alamat */
+  .purchase-table td[data-label="Address"] {
+    white-space: normal;
+    word-wrap: break-word;
+  }
+
+  /* Styling untuk harga */
+  .purchase-table td[data-label="Total Price"] {
+    color: #b88e2f;
+    font-weight: 500;
+  }
+}
